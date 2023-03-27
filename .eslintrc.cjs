@@ -6,7 +6,6 @@ module.exports = {
     node: true,
   },
   extends: ['airbnb-base',
-    'plugin:prettier/recommended'
   ],
   overrides: [
   ],
@@ -15,10 +14,16 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [
-    'prettier'
+    'import',
   ],
   rules: {
     'linebreak-style': 0,
-    'prettier/prettier': 'error'
+    'import/extensions': ['error', 'always', {
+      js: 'always',
+      jsx: 'always',
+      json: 'always',
+      ts: 'always',
+      tsx: 'always',
+    }],
   },
 };
