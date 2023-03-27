@@ -1,16 +1,17 @@
 export const deleteSpecificProduct = async (req, res) =>{
     try {
-        // Validate input data
-        const {reason} = req.body;
-        const productId = parseInt(req.params.id);
-        if (isNaN(productId) || typeof reason !== "string" || reason.trim() === "") {
-            return res.status(400).json({
+        const {reason} = req.body
+        const productId = req.params.id;
+        const isAvailable = await db.Product.findOne({where:{id: productId}});
+        
+        if(isAvailable === null){
+            // If the product doesn't exist, return a JSend fail response with an appropriate message
+            return res.status(404).json({
                 status: "fail",
-                data: { message: "Invalid input data" }
+                data: { message: "Please choose a product to delete!" }
             });
         }
 
-        const isAvailable = await db.Product.findOne({where:{id: productId}});
         if(!isAvailable){
             // If the product is not found in the collection, return a JSend fail response with an appropriate message
             return res.status(401).json({
