@@ -3,6 +3,15 @@ export const deleteSpecificProduct = async (req, res) =>{
         const {reason} = req.body
         const productId = req.params.id;
         const isAvailable = await db.Product.findOne({where:{id: productId}});
+        
+        if(isAvailable === null){
+            // If the product doesn't exist, return a JSend fail response with an appropriate message
+            return res.status(404).json({
+                status: "fail",
+                data: { message: "Please choose a product to delete!" }
+            });
+        }
+
         if(!isAvailable){
             // If the product is not found in the collection, return a JSend fail response with an appropriate message
             return res.status(401).json({
