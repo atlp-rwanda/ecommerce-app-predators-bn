@@ -1,8 +1,8 @@
 // Imports
-const express = require('express');
+import { Router } from 'express';
 
 // Initialization
-const router = express.Router();
+const router = Router();
 
 router.use((req, res) => {
   if (req.accepts('html')) {
@@ -14,4 +14,4 @@ router.use((req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

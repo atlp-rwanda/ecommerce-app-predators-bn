@@ -1,10 +1,14 @@
 // Imports
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const swaggerUiExpress = require('swagger-ui-express');
-const swaggerJsDoc = require('swagger-jsdoc');
-const morgan = require('morgan');
+import express, { json } from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+const { urlencoded } = bodyParser;
+import { serve, setup } from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
+import morgan from 'morgan';
+
+// Routes URL definitions
+import welcomeRoute from './routes/welcome';
 
 // Documentation setup
 const swaggerOptions = {
@@ -44,17 +48,14 @@ const corsOptions = {
 };
 
 // Middleware
-app.use(express.json());
+app.use(json());
 app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-// Routes URL definitions
-const welcomeRoute = require('./routes/welcome');
-
 // Routes
-app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpecs));
+app.use('/api-docs', serve, setup(swaggerSpecs));
 app.use('/', welcomeRoute);
 
 // export the app
-module.exports = app;
+export default app;
