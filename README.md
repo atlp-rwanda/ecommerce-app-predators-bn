@@ -2,6 +2,6 @@
 
 GUIDANCE:
 
-1._____________DOTENV___________________
---> to use anything from enve just call: require('dotenv').config()
---> then use "process.env" where you need that thing you called from .env file
+1.______DOTENV
+-to use anything from enve just call: require('dotenv').config()
+-then use "process.env" where you need that thing you called from .env file
