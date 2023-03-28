@@ -2,7 +2,6 @@
   "name": "ecommerce-app-predators-bn",
   "version": "1.0.0",
   "description": "predator ecommerce project",
-  "type": "module",
   "main": "app.js",
   "directories": {
     "test": "tests"
