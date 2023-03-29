@@ -1,4 +1,4 @@
 {
-    "user_create_success":"L'utilisateur est créé",
+    "welcome_message":"Bienvenue sur l'API RESTful de commerce électronique !",
     "user_retrieved_exception":"Utilisateurs récupérés avec succès"
 }
