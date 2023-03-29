@@ -11,9 +11,10 @@ app.listen(PORT, () => {
 =======
 const express = require('express');
 const i18next = require('i18next');
-const Backend = require('i18next-node-fs-backend');
-const i18nextMiddleware = require('i18next-express-middleware');
+const Backend = require('i18next-fs-backend');
+const middleware = require('i18next-http-middleware');
 
+<<<<<<< HEAD
 
 
 const PORT = process.env.PORT || 8080;
@@ -27,10 +28,22 @@ i18next
         fallbackLng: 'en',
         preload: ['en', 'es']
     });
+=======
+i18next.use(Backend)
+.use(middleware.LanguageDetector)
+.init({
+    fallbackLng: 'en',
+    backend:{
+        loadPath: './locales/{{lng}}/translation.json'
+    }
+})
+>>>>>>> 3e8ee56 (update configuration unneccessary codes removed)
 const app = express();
+app.use(middleware.handle(i18next));
+app.use(express.json());
 
-app.use(i18nextMiddleware.handle(i18next));
 
+<<<<<<< HEAD
 app.get('/greeting', (req, res) => {
     const response = req.t('greeting');
     res.status(200);
@@ -40,3 +53,7 @@ app.listen(PORT, () => {
     console.log(`[Server@${PORT}] On`);
   });
 >>>>>>> 4d652f1 (start up)
+=======
+
+app.listen(4000, () => console.log('Example app listening on port 4000!'));
+>>>>>>> 3e8ee56 (update configuration unneccessary codes removed)

@@ -1,0 +1,4 @@
+{
+    "user_create_success":"User is created",
+    "user_retrieved_exception":"Users retrieved successfully"
+}
