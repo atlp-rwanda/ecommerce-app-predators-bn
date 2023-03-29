@@ -6,6 +6,9 @@ const { urlencoded } = bodyParser;
 import { serve, setup } from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 import morgan from 'morgan';
+import i18next from 'i18next';
+import Backend from 'i18next-fs-backend';
+import middleware from 'i18next-http-middleware';
 
 // Routes URL definitions
 import welcomeRoute from './routes/welcome';
@@ -38,7 +41,15 @@ const swaggerOptions = {
 };
 
 const swaggerSpecs = swaggerJsDoc(swaggerOptions);
-
+// confugiration of internation languages
+i18next.use(Backend)
+.use(middleware.LanguageDetector)
+.init({
+  fallbackLng: 'en',
+  backend:{
+      loadPath: './locales/{{lng}}/translation.json'
+  }
+})
 // Initialization
 const app = express();
 const corsOptions = {
@@ -48,6 +59,7 @@ const corsOptions = {
 };
 
 // Middleware
+app.use(middleware.handle(i18next));
 app.use(json());
 app.use(cors(corsOptions));
 app.use(urlencoded({ extended: true }));
