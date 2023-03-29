@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-dev": "cross-env NODE_ENV=development node index.js",
+    "start-prod": "cross-env NODE_ENV=production node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,10 @@
   },
   "homepage": "https://github.com/atlp-rwanda/ecommerce-app-predators-bn#readme",
   "dependencies": {
+    "cross-env": "^7.0.3",
+    "mocha": "^10.2.0"
+  },
+  "devDependencies": {
     "dotenv": "^16.0.3"
   }
 }
