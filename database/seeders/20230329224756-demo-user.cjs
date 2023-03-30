@@ -10,22 +10,22 @@ module.exports = {
           id: 1,
           name: 'user1',
           email: 'user1@test.com',
-          created_at: new Date(),
-          updated_at: new Date(),
+          created_at: Sequelize.DATE,
+          updated_at: Sequelize.DATE,
         },
         {
           id: 2,
           name: 'user2',
           email: 'user2@test.com',
-          created_at: new Date(),
-          updated_at: new Date(),
+          created_at: Sequelize.DATE,
+          updated_at: Sequelize.DATE,
         },
         {
           id: 3,
           name: 'user3',
           email: 'user3@test.com',
-          created_at: new Date(),
-          updated_at: new Date(),
+          created_at: Sequelize.DATE,
+          updated_at: Sequelize.DATE,
         },
       ],
       {}
@@ -33,11 +33,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete('users', null, {});
   }
 };
