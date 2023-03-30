@@ -7,6 +7,10 @@ import { serve, setup } from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 import morgan from 'morgan';
 
+// Sequelize set-up
+import Sequelize from 'sequelize';
+const sequelize = new Sequelize(process.env.DB_URL);
+
 // Routes URL definitions
 import welcomeRoute from './routes/welcome';
 
