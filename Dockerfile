@@ -1,17 +1,16 @@
-# Use an official Node.js runtime as a parent image
-FROM node:14
-
-# Set the working directory to /app
+FROM node:15
+# set working directory
 WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Install any needed packages specified in package.json
-RUN npm install
-
-# Make port 3000 available to the world outside this container
-EXPOSE 3000
-
-# Define the command to run the application
-CMD ["npm", "run", "dev"]
+# 
+COPY package.json .
+ARG NODE_ENV 
+RUN if [ "$NODE_ENV" = "development" ]; \
+        then  npm install;\
+        else npm install --only=production; \
+        fi 
+# copy all the files from your project\atlp-rwanda\ecommerce-app-predators-bn\tree\ch-project-setup-34
+COPY . ./
+#port the app will be running on
+ENV PORT 3000
+EXPOSE $PORT
+CMD ["npm","start"]
