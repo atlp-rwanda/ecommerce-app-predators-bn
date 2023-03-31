@@ -8,6 +8,12 @@ import swaggerJsDoc from 'swagger-jsdoc';
 import morgan from 'morgan';
 import i18next from './middleware/i18next.js';
 import middleware from 'i18next-http-middleware';
+import dotenv from "dotenv";
+dotenv.config();
+
+// Sequelize set-up
+import { Sequelize } from 'sequelize';
+const sequelize = new Sequelize(process.env.DEV_DATABASE_URL);
 
 // Routes URL definitions
 import welcomeRoute from './routes/welcome';
