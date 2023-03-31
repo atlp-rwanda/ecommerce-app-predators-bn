@@ -9,6 +9,10 @@ import morgan from 'morgan';
 import i18next from './middleware/i18next.js';
 import middleware from 'i18next-http-middleware';
 
+// Sequelize set-up
+import Sequelize from 'sequelize';
+const sequelize = new Sequelize(process.env.DB_URL);
+
 // Routes URL definitions
 import welcomeRoute from './routes/welcome';
 
