@@ -14,9 +14,9 @@
     "seed": "npx sequelize-cli db:seed:all",
     "unseed": "npx sequelize-cli db:seed:undo",
     "down": "npx sequelize-cli db:migrate:undo",
-    "test": "jest",
-    "start": "node --experimental-modules server.js",
-    "dev": "nodemon --experimental-modules --es-module-specifier-resolution=node server.js",
+    "test": "cross-env NODE_ENV=test jest",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=development nodemon --experimental-modules --es-module-specifier-resolution=node server.js",
     "lint": "eslint ."
   },
   "repository": {
@@ -32,7 +32,9 @@
   "homepage": "https://github.com/atlp-rwanda/ecommerce-app-predators-bn#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "config": "^3.3.9",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "dotenv-expand": "^10.0.0",
     "eslint-config-prettier": "^8.8.0",
@@ -48,9 +50,9 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.30.0",
     "sequelize-cli": "^6.6.0",
+    "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.2",
-    "supertest": "^6.3.3"
+    "swagger-ui-express": "^4.6.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",

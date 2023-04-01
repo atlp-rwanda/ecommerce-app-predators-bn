@@ -13,8 +13,9 @@ import middleware from 'i18next-http-middleware';
 import Sequelize from 'sequelize';
 const sequelize = new Sequelize(process.env.DB_URL);
 
+
 // Routes URL definitions
-import welcomeRoute from './routes/welcome';
+import welcomeRoute from './routes/welcome.js';
 
 // Documentation setup
 const swaggerOptions = {
