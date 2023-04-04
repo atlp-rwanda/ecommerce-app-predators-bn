@@ -3,7 +3,6 @@ import register from '../controller/buyer_signup_controller.js';
 
 const router = Router();
 
-router.route('/')
-  .post(register);
+router.post('/', register);
 
 export default router;
