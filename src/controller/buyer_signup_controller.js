@@ -1,9 +1,9 @@
 // imports
-import models from '../database/models/user.js';
+import db from '../database/models/index.js';
 
 async function register(req, res) {
   try {
-    models.User.create({
+    await db.User.create({
       name: req.nm,
       email: req.eml,
       password: req.pw,
@@ -15,6 +15,7 @@ async function register(req, res) {
     });
     res.status(200).json({message: 'successfully created'});
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Inernal server error' });
   }
 }

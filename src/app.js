@@ -8,7 +8,7 @@ import middleware from 'i18next-http-middleware';
 import swaggerJSDoc from 'swagger-jsdoc';
 import dotenv from 'dotenv';
 // Sequelize set-up
-import Sequelize from 'sequelize';
+import db from './database/models/index.js';
 import swaggerOptions from '../docs/swagger.js';
 import i18next from './middleware/i18next.js';
 
@@ -17,9 +17,10 @@ import welcomeRoute from './routes/welcome.js';
 import signUpRoute from './routes/buyer_signup.js';
 
 const { urlencoded } = bodyParser;
+// const sequelize = db.sequelize;
 dotenv.config();
-const sequelize = new Sequelize(process.env.DATABASE_URL);
-sequelize.authenticate().then(() => {
+
+db.sequelize.authenticate().then(() => {
   console.log('Connection has been established successfully.');
 }).catch((err) => {
   console.error('Unable to connect to the database:', err);
@@ -50,8 +51,8 @@ const swaggerSpec = swaggerJSDoc(options);
 // Swagger UI setup
 app.use('/api-docs', serve, setup(swaggerSpec));
 
-app.use('/', welcomeRoute);
 app.use('/signup', signUpRoute);
+app.use('/', welcomeRoute);
 
 // export the app
 export default app;
