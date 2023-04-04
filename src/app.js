@@ -1,5 +1,5 @@
 // Imports
-import express, { json } from "express";
+import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { serve, setup } from "swagger-ui-express";
@@ -30,7 +30,6 @@ db.sequelize
 const app = express();
 const { urlencoded } = bodyParser;
 const corsOptions = {
-  // your options here
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
@@ -56,5 +55,5 @@ app.use("/api-docs", serve, setup(swaggerSpec));
 app.use("/signup", authRoute);
 app.use("/", welcomeRoute);
 
-// export the app
+// Export the app
 export default app;
