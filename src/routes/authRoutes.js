@@ -3,26 +3,20 @@ import passport from "passport";
 import Jwt from "../utils/jwt";
 import { googlePass } from "../utils/passport";
 const router = Router();
-
-// Google route
 import {
   googleAuthHandler,
   GetUsers,
   GetUserById,
   DeleteUserById,
   logout,
-  disableUser,
-  register,
-  UserLogin,
 } from "../controller/authController";
 
-import {
-  isAdmin,
-  isSeller,
-  isBuyer,
-  checkPermission,
-} from "../middleware/roles";
+import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles";
 import { setRole } from "../services/role.services";
+import { disableEnableUsers } from "../controller/disable.acount.controller.js";
+import db from "../database/models/index.js";
+import JwtUtility from "../utils/jwt";
+
 // Google routes
 googlePass();
 
@@ -41,22 +35,20 @@ router.get("/callback", (req, res) => {
 router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
-  );
-  router.get(
-    "/auth/google/callback",
-    passport.authenticate("google", {
-      session: false,
-      failureRedirect: "/",
-    }),
+);
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "/",
+  }),
   googleAuthHandler
-  );
+);
 router.post("/logout", logout);
-router.get("/users",isAdmin,GetUsers);
-router.get("/users/:id",isAdmin, GetUserById);
-router.delete("/users/:id",isAdmin, DeleteUserById);
-router.post("/setRole",isAdmin,setRole);
-router.post("/disableUser",isAdmin,disableUser);
-router.post('/login', UserLogin);
-router.post('/register', register);
+router.get("/users", isAdmin,checkPermission("manage users"), GetUsers);
+router.get("/users/:id",isAdmin,checkPermission("manage users"), GetUserById);
+router.delete("/users/:id", isAdmin, DeleteUserById);
+router.post("/setRole", isAdmin,setRole);
+router.post("/disableEnableUsers", disableEnableUsers);
 
 export default router;
