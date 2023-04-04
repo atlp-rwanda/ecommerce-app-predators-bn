@@ -27,6 +27,7 @@ module.exports = {
       tsx: 'always',
     }],
   },
+<<<<<<< HEAD
 =======
     browser: false,
     es6: true,
@@ -63,4 +64,6 @@ module.exports = {
     }
   ]
 >>>>>>> e9b2d56 (ch(setup-continuous-integration): Update Readme file.)
+=======
+>>>>>>> 0422683 (ch(setup-continuous-integration): Update Readme file.)
 };

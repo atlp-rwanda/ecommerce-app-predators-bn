@@ -3,9 +3,29 @@ import express, { json } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 const { urlencoded } = bodyParser;
+<<<<<<< HEAD
 import { serve, setup } from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 import morgan from "morgan";
+=======
+import { serve, setup } from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
+import morgan from 'morgan';
+import i18next from './middleware/i18next.js';
+import middleware from 'i18next-http-middleware';
+import dotenv from 'dotenv';
+dotenv.config();
+// Sequelize set-up
+import Sequelize from 'sequelize';
+const sequelize = new Sequelize(process.env.DATABASE_URL);
+sequelize.authenticate().then(() => {
+  console.log('Connection has been established successfully.');
+}).catch(err => {
+  console.error('Unable to connect to the database:', err);
+});
+
+
+>>>>>>> 0422683 (ch(setup-continuous-integration): Update Readme file.)
 
 // Routes URL definitions
 import welcomeRoute from "./routes/welcome.js";
