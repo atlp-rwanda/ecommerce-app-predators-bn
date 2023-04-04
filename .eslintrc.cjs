@@ -1,7 +1,6 @@
 module.exports = {
   env: {
-<<<<<<< HEAD
-    browser: true,
+ browser: true,
     commonjs: false,
     es2021: true,
     node: true,
@@ -27,8 +26,6 @@ module.exports = {
       tsx: 'always',
     }],
   },
-<<<<<<< HEAD
-=======
     browser: false,
     es6: true,
     jest: true,
@@ -63,7 +60,4 @@ module.exports = {
       excludedFiles: 'babel.config.js',
     }
   ]
->>>>>>> e9b2d56 (ch(setup-continuous-integration): Update Readme file.)
-=======
->>>>>>> 0422683 (ch(setup-continuous-integration): Update Readme file.)
 };

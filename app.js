@@ -3,16 +3,16 @@ import express, { json } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 const { urlencoded } = bodyParser;
-<<<<<<< HEAD
 import { serve, setup } from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 import morgan from "morgan";
-=======
 import { serve, setup } from 'swagger-ui-express';
-import swaggerJsDoc from 'swagger-jsdoc';
-import morgan from 'morgan';
-import i18next from './middleware/i18next.js';
+import i18next from './src/middleware/i18next.js';
 import middleware from 'i18next-http-middleware';
+
+import swaggerOptions from './docs/swagger.js';
+
+
 import dotenv from 'dotenv';
 dotenv.config();
 // Sequelize set-up
@@ -25,9 +25,8 @@ sequelize.authenticate().then(() => {
 });
 
 
->>>>>>> 0422683 (ch(setup-continuous-integration): Update Readme file.)
-
 // Routes URL definitions
+
 import welcomeRoute from "./routes/welcome.js";
 
 // Documentation setup
@@ -58,6 +57,8 @@ const swaggerOptions = {
 };
 
 const swaggerSpecs = swaggerJsDoc(swaggerOptions);
+import welcomeRoute from './src/routes/welcome.js';
+
 // App setup
 const app = express();
 const corsOptions = {
@@ -72,9 +73,18 @@ app.use(json());
 app.use(cors(corsOptions));
 app.use(urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use(middleware.handle(i18next));
 
-// Routes
-app.use("/api-docs", serve, setup(swaggerSpecs));
+const options = {
+  swaggerDefinition: swaggerOptions, // <-- add this line
+  apis: ['./src/routes/*.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+// Swagger UI setup
+app.use('/api-docs', serve, setup(swaggerSpec));
+
+
 app.use("/", welcomeRoute);
 
 // export the app
