@@ -16,6 +16,8 @@ const register = async (req, res) => {
       // buyer
     } else if (roleId === 1) {
       // vendor
+    
+      
     } else {
       return res.status(400).send('Invalid roleId');
     };
@@ -28,6 +30,7 @@ const register = async (req, res) => {
       password: hashedPassword,
     });
     res.status(200).json({ message: user});
+    console.log(user);
 
     // Send confirmation email
   
