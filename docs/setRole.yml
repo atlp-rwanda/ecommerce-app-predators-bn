@@ -1,0 +1,66 @@
+  /api/setRole:
+    post:
+      tags:
+        - Users
+      summary: Set user role
+      description: Set the role of a user
+      parameters:
+        - name: email
+          in: path
+          description: Email of the user to set the role for
+          required: true
+          schema:
+            type: string
+            example: 'fistonalvin@gmail.com'
+        - name: role
+          in: path
+          description: Role to set for the user
+          required: true
+          schema:
+            type: integer
+            example: '0'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: The role was successfully set
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: ''
+        '401':
+          description: Unauthorized - invalid or missing JWT token
+          content:
+            application/json:
+              schema:
+                $ref: ''
+        '403':
+          description: Forbidden - authenticated user does not have the `admin` role
+          content:
+            application/json:
+              schema:
+                $ref: ''
+        '500':
+          description: An error occurred while processing the request
+          content:
+            application/json:
+              schema:
+                $ref: ''
+    components:
+      parameters:
+        bearerAuth:
+          in: header
+          name: Authorization
+          description: JWT authorization token
+          required: true
+          schema:
+            type: string
+            format: JWT
+      schemas:
+        Error:
+          type: object
+          properties:
+            message:
+              type: string

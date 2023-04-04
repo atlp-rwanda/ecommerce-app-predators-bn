@@ -1,5 +1,5 @@
 paths:
-  /auth/buyer-signup:
+  /register:
     post:
       tags:
         - Users

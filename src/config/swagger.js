@@ -38,3 +38,8 @@ const options = {
 const Swagger = swaggerJSDoc(options);
 
 export default Swagger;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> e28c4c4 (feat(sign-in-with-google): create the Google SignIn feature)
