@@ -11,8 +11,8 @@ import { serve, setup } from "swagger-ui-express";
 import dotenv from "dotenv";
 import  db from '../src/database/models/index.js'
 import swaggerOptions from "../docs/swagger.js";
-import welcomeRoute from "./routes/welcome.js";
 import authRoute from "./routes/authRoutes.js";
+import profileRoutes from './routes/profileRoutes';
 // Configuration
 dotenv.config();
 const sequelize = db.sequelize;
@@ -68,7 +68,7 @@ passport.deserializeUser((id, done) => {
 
 // Routes
 app.use("/api", authRoute);
+app.use('/api', profileRoutes)
 
-app.use("/", welcomeRoute);
 // Export the app
 export default app;
