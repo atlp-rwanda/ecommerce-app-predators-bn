@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 name: CI
-=======
-name: My Workflow
->>>>>>> e9b2d56 (ch(setup-continuous-integration): Update Readme file.)
-=======
-name: My Workflow
->>>>>>> 0422683 (ch(setup-continuous-integration): Update Readme file.)
-=======
-name: My Workflow
->>>>>>> c6d9b06 (ch(setup-continuous-integration): Update Readme file.)
 on:
   push:
     branches: [ "*" ]
@@ -36,26 +24,4 @@ jobs:
         run: npm install
       - name: Run Tests
         run: npm test
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: [test, build]
-    steps:
-      - name: Wait for Render Deployment
-        uses: bounceapp/render-action@0.6.0
-        with:
-          render-token: ${{ secrets.RENDER_TOKEN }}
-          github-token: ${{ secrets.TOKEN }}
-          service-id: srv-cgksc9seoogkndl3t3qg
-          retries: 20
-          wait: 16000
-          sleep: 30000
-=======
->>>>>>> e9b2d56 (ch(setup-continuous-integration): Update Readme file.)
-=======
->>>>>>> 0422683 (ch(setup-continuous-integration): Update Readme file.)
-=======
->>>>>>> c6d9b06 (ch(setup-continuous-integration): Update Readme file.)
+ 
