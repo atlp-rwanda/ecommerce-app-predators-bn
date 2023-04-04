@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: CI
+=======
+name: My Workflow
+>>>>>>> e9b2d56 (ch(setup-continuous-integration): Update Readme file.)
 on:
   push:
     branches: [ "*" ]
@@ -24,6 +28,7 @@ jobs:
         run: npm install
       - name: Run Tests
         run: npm test
+<<<<<<< HEAD
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -38,3 +43,5 @@ jobs:
           retries: 20
           wait: 16000
           sleep: 30000
+=======
+>>>>>>> e9b2d56 (ch(setup-continuous-integration): Update Readme file.)
