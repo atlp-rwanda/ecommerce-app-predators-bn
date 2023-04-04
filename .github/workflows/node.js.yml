@@ -31,10 +31,3 @@ jobs:
     steps:
       - name: Wait for Render Deployment
         uses: bounceapp/render-action@0.6.0
-        with:
-          render-token: ${{ secrets.RENDER_TOKEN }}
-          github-token: ${{ secrets.TOKEN }}
-          service-id: srv-cgksc9seoogkndl3t3qg
-          retries: 20
-          wait: 16000
-          sleep: 30000

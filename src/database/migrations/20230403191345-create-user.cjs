@@ -28,7 +28,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       googleId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       gender: {
         type: Sequelize.STRING
@@ -39,14 +39,37 @@ module.exports = {
       preferred_currency: {
         type: Sequelize.UUID
       },
+      otp_enabled: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
+      otp_verified: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
+      otp_ascii: {
+        type: Sequelize.STRING,
+      },
+      otp_hex: {
+        type: Sequelize.STRING,
+      },
+      otp_base32: {
+        type: Sequelize.STRING,
+      },
+      otp_auth_url: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
-        
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       }
     });
   },
