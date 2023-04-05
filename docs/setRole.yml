@@ -1,6 +1,8 @@
 paths:
   /api/setRole:
     post:
+      tags:
+        - Users
       summary: Set the role of a user
       description: >
         This endpoint sets the role of a user. The request must be authorized with a JWT token and the authenticated user must have the `admin` role.

@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import Jwt from "../utils/jwt.js";
 import { getUserByEmail, registerGoogle } from "../services/user.services.js";
 import db from "../database/models/index.js";
+import sendEmail from "../utils/sendEmail.js"; // eslint-disable-line import/no-unresolved, import/extensions,
 
 export const googleAuthHandler = async (req, res) => {
   const { value } = req.user.emails[0];
@@ -116,11 +117,62 @@ export const logout = (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+export const disableUser = async (req, res) => {
+  const {id} = req.params;
+  const { status, reason,} = req.body;
 
+  try {
+    const user = await db.User.findOne({ where: { id:id } });
+    if (!user) {
+      return res.status(404).json({
+        message: `user with this id:${id} does not exit `,
+      });
+    } else {
+      user.status = status;
+
+      await user.save();
+
+      if (user) {
+        const to = user.email;
+        const text = `
+        Subject: Notification of account deactivation
+
+        Dear User,
+        
+        We regret to inform you that your account on our website has been ${status} due to a ${reason}. Our team has conducted a thorough investigation and found evidence of unauthorized activity on your account.
+
+As a result, we have taken the necessary steps to protect the security and integrity of our platform by deactivating your account. We take the security of our website and our users very seriously, and we will not tolerate any illegal activities or harmful behavior.
+
+Please note that you will no longer be able to access your account or any associated services. If you have any questions or concerns about this decision, please do not hesitate to contact us at predators@gmail.com.
+
+        
+Thank you for your understanding and cooperation.
+        
+        
+Best regards,
+        
+        
+The E-commerce ATLP-Predators project team
+`;
+
+        sendEmail.sendEmail(to, "account status", text);
+        
+        return res
+          .status(200)
+          .json({ message: `User account ${status} successfully  ` });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 export default {
   googleAuthHandler,
   GetUsers,
   GetUserById,
   DeleteUserById,
   logout,
+  disableUser
 };
