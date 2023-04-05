@@ -25,7 +25,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue:'active'
       },
       googleId: {
         type: Sequelize.STRING

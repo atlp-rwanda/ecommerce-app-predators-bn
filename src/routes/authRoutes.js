@@ -9,11 +9,11 @@ import {
   GetUserById,
   DeleteUserById,
   logout,
+  disableUser
 } from "../controller/authController";
 
 import { isAdmin,isSeller,isBuyer,checkPermission } from "../middleware/roles";
 import{setRole} from '../services/role.services'
-import {disableEnableUsers} from '../controller/disable.acount.controller.js'
 
 // Google routes
 googlePass();
@@ -43,10 +43,10 @@ router.get(
   googleAuthHandler
 );
 router.post("/logout", logout);
-router.get("/users",isAdmin,GetUsers);
+router.get("/users", isAdmin, GetUsers);
 router.get("/users/:id", GetUserById);
 router.delete("/users/:id", DeleteUserById);
 router.post("/setRole",setRole);
-router.post("/disableEnableUsers",disableEnableUsers);
+router.post("/disableUser/:id", disableUser);
 
 export default router;
