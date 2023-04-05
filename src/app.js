@@ -15,7 +15,6 @@ import i18next from "./middleware/i18next.js";
 import welcomeRoute from "./routes/welcome.js";
 import authRoute from "./routes/authRoutes.js";
 
-const { urlencoded } = bodyParser;
 dotenv.config();
 
 db.sequelize
@@ -29,6 +28,7 @@ db.sequelize
 
 // App setup
 const app = express();
+const { urlencoded } = bodyParser;
 const corsOptions = {
   // your options here
   origin: "*",
@@ -43,15 +43,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(middleware.handle(i18next));
-app.use(
-  session({
-    secret: "some_secret_key",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
 
 const options = {
   swaggerDefinition: swaggerOptions,
@@ -61,17 +52,6 @@ const swaggerSpec = swaggerJSDoc(options);
 
 // Swagger UI setup
 app.use("/api-docs", serve, setup(swaggerSpec));
-
-// Define user serialization and deserialization functions
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  User.findByPk(id)
-    .then((user) => done(null, user))
-    .catch((err) => done(err, null));
-});
 
 app.use("/signup", authRoute);
 app.use("/", welcomeRoute);

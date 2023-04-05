@@ -3,21 +3,37 @@
 import db from '../database/models/index.js';
 
 const register = async (req, res) => {
-  const {
-    name, email, password, gender,
-  } = req.body;
-  if (!name || !email || !password || !gender) return res.status(400).json({ message: 'Missing Data!' });
+  const { name, email, password, roleId } = req.body;
+
+  // Validate user input
+  if (!name || !email || !roleId || !password) {
+    return res.status(400).send('Invalid input');
+  }
 
   try {
-    const result = await db.User.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      gender: req.body.gender,
+    // Redirect to appropriate route based on user roleId
+    if (roleId === 0) {
+      // buyer
+    } else if (roleId === 1) {
+      // vendor
+    } else {
+      return res.status(400).send('Invalid roleId');
+    };
+
+    // Create user in the database (using Sequelize ORM)
+    const user = await db.User.create({
+      name,
+      email,
+      roleId,
+      password: hashedPassword,
     });
-    res.status(201).json(result);
+    res.status(200).json({ message: user});
+
+    // Send confirmation email
+  
   } catch (err) {
-    res.status(500).json({ message: err });
+    console.error(err);
+    return res.status(500).send('Server error');
   }
 };
 
