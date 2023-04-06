@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 // imports
+import hasher from '../utils/hashPassword.js';
 import db from '../database/models/index.js';
 
 const register = async (req, res) => {
@@ -19,6 +20,9 @@ const register = async (req, res) => {
     } else {
       return res.status(400).send('Invalid roleId');
     };
+
+    //hash password
+    const hashedPassword = await hasher(password);
 
     // Create user in the database (using Sequelize ORM)
     const user = await db.User.create({
