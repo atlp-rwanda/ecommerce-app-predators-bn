@@ -1,0 +1,87 @@
+paths:
+  /auth/buyer-signup:
+    post:
+      tags:
+        - Users
+      summary: Register User directly
+      description: register a user without using social accounts
+      requestBody:
+        description: request body
+        required: true
+        content:
+          application/json:
+            type: object
+            properties:
+              name: 
+                type: string,
+                required: true
+              email: 
+                type: string,
+                required: true
+              roleId: 
+                type: string,
+                required: true
+              password: 
+                type: string,
+                required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: 
+                    type : integer,
+                    description: db id
+                  name: 
+                    type : string,
+                    description: user name
+                  email: 
+                    type : string,
+                    description: user email
+                  roleId: 
+                    type : integer,
+                    description: user role
+                  password: 
+                    type : string,
+                    description: login password
+                  updatedAt: 
+                    type : string,
+                    description: last update date
+                  createdAt: 
+                    type : string,
+                    description: :Date user was created on
+                  status: 
+                    type : string,
+                    description: current user status
+                  googleId: 
+                    type : integer,
+                    description: google user ID
+                  gender: 
+                    type : string,
+                    description: user's gender
+                  preferred_language: 
+                    type : string,
+                    description: user's preferred language
+                  preferred_currency:
+                    type : string 
+                    description: user's currency of choice
+                example:
+                  id: 21
+                  name: monkey3
+                  email: monkeydo3@gmail.com
+                  roleId: 2
+                  password: $2b$10$zA96LVxOoUHcvZtsm47mPu2fwxQSURLQ4jQMoptZPNH0waBMxOUF6
+                  updatedAt: 2023-04-09T16:26:32.996Z
+                  createdAt: 2023-04-09T16:26:32.996Z
+                  status: null
+                  googleId: null
+                  gender: null
+                  preferred_language: null
+                  preferred_currency: null
+        400:
+          description: Invalid input
+        500:
+          description: Server error

@@ -53,7 +53,7 @@ const swaggerSpec = swaggerJSDoc(options);
 // Swagger UI setup
 app.use("/api-docs", serve, setup(swaggerSpec));
 
-app.use("/signup", authRoute);
+app.use("/auth/buyer-signup", authRoute);
 app.use("/", welcomeRoute);
 
 // export the app
