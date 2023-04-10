@@ -78,6 +78,7 @@ const checkPermission = (permission) => async (req, res, next) => {
   if (email === undefined) {
     return res.status(400).json({ message: "email parameter is missing" });
   }
+  // const { id } = req.params;
   const permissions = {
     0: ["manage users", "manage products"],
     1: ["manage products"],

@@ -1,11 +1,11 @@
 paths:
-  /api/setRole:
+  /api/disableUser:
     post:
       tags:
         - Users
-      summary: Set the role of a user
+      summary: Disabling the user account
       description: >
-        This endpoint sets the role of a user. The request must be authorized with a JWT token and the authenticated user must have the `admin` role.
+        This endpoint enables the admin to disable the account of a user. The request must be authorized with a JWT token and the authenticated user must have the `admin` role.
       security:
         - bearerAuth: []
       requestBody:
@@ -17,16 +17,24 @@ paths:
               properties:
                 email:
                   type: string
-                  description: The ID of the user to set the role for
-                role:
-                  type: integer
-                  description: The ID of the role to set
+                  description: The ID of the user to disable
+                status:
+                  type: string
+                  description: The status
+                reason:
+                  type: string
+                  description: The reason why the account is being disabled
               required:
                 - email
-                - role
+                - status
+                - reason
+              example:
+                email: "user@example.com"
+                status: "disabled"
+                reason: "violation of our policies"
       responses:
         '200':
-          description: The role was successfully set
+          description: The account was successfully disabled
         '400':
           description: Invalid request body
         '401':
