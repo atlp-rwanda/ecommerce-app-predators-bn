@@ -23,5 +23,18 @@ const getUserByEmail = async (email) => {
     throw new Error("Could not find user");
   }
 };
+const getUserByGoogleId = async (googleId) => {
+  try {
+    const user = await db.User.findOne({
+      where: {
+        googleId: googleId,
+      },
+    });
+    return user;
+  } catch (error) {
+    throw new Error("Could not find user");
+  }
+};
 
-export { registerGoogle, getUserByEmail };
+
+export { registerGoogle, getUserByEmail, getUserByGoogleId};

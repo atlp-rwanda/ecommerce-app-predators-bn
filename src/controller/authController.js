@@ -2,11 +2,13 @@ import hasher from '../utils/hashPassword.js';
 import db from '../database/models/index.js';
 import bcrypt from "bcrypt";
 import Jwt from "../utils/jwt.js";
-import { getUserByEmail, registerGoogle } from "../services/user.services.js";
-import db from "../database/models/index.js";
-import generateToken from '../utils/userToken.js';
+import {
+  getUserByGoogleId,
+  registerGoogle,
+} from "../services/user.services.js";
+import generateToken from "../utils/userToken.js";
 import sendEmail from "../utils/sendEmail";
-import jsend from 'jsend';
+import jsend from "jsend";
 
 export const UserLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -14,64 +16,66 @@ export const UserLogin = async (req, res) => {
   try {
     // Check if user with the given email exists
     const user = await db.User.findOne({ where: { email } });
+
     if (!user) {
       return res
         .status(401)
-        .json(jsend.fail({ message: 'Invalid Credentials😥' }));
-     }
-
-     else if (user.status === 'disabled') {
+        .json(jsend.fail({ message: "Invalid Credentials😥" }));
+    } else if (user.status === "disabled") {
       return res
         .status(401)
-        .json(jsend.fail({ message: 'User is disabled😥' }));
-     }
-   
+        .json(jsend.fail({ message: "User is disabled😥" }));
+    }
+
     // Compare the given password with the hashed password in the database
     const passwordMatches = await bcrypt.compare(password, user.password);
     if (!passwordMatches) {
       return res
         .status(401)
-        .json(jsend.fail({ message: 'Invalid Credentials😥' }));
+        .json(jsend.fail({ message: "Invalid Credentials😥" }));
     }
 
     // If the email and password are valid, generate a JWT token
     const token = generateToken(user);
 
     // Set the token in a cookie with HttpOnly and Secure flags
-    res.cookie('token', token, {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: "strict",
       maxAge: 3600000, // 1 hour
     });
 
-    res.status(200).json(jsend.success({ message: 'Login Successful', token }));
+    res.status(200).json(jsend.success({ message: "Login Successful", token }));
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json(jsend.error({ message: 'Opps 😰 server error' }));
+      .json(jsend.error({ message: "Opps 😰 server error" }));
   }
 };
 
+// Function to create a new user with a Google account
 export const googleAuthHandler = async (req, res) => {
   const { value } = req.user.emails[0];
   const { familyName } = req.user.name;
   const { id } = req.user;
+
+  // Create a new user object with the Google account data
   const newUser = {
     name: familyName,
     email: value,
     password: "password",
-    roleId: 0,
-    googleId:id,
+    roleId: 2,
+    googleId: id,
     status: "active",
   };
 
   // Check if user already exists
-  const user = await getUserByEmail(newUser.googleId);
+  const user = await getUserByGoogleId(newUser.googleId);
   if (user) {
     // User already exists, generate JWT and redirect
-    const { id, email, name, password, roleId } = user;
+    const { id, email, name, password, roleId ,googleId} = user;
     const userToken = Jwt.generateToken(
       {
         id: id,
@@ -80,6 +84,7 @@ export const googleAuthHandler = async (req, res) => {
         password: password,
         roleId: roleId,
         status: "active",
+        googleId: googleId,
       },
       "1h"
     );
@@ -90,7 +95,8 @@ export const googleAuthHandler = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
     newUser.password = hashedPassword;
-    const { id, email, name, password, roleId } = await registerGoogle(newUser);
+    const { id, email, name, password, roleId, googleId } =
+      await registerGoogle(newUser);
     const userToken = Jwt.generateToken(
       {
         id: id,
@@ -99,6 +105,7 @@ export const googleAuthHandler = async (req, res) => {
         password: password,
         roleId: roleId,
         status: "active",
+        googleId: googleId,
       },
       "1h"
     );
@@ -106,7 +113,6 @@ export const googleAuthHandler = async (req, res) => {
     return res.redirect(`/api/callback?key=${userToken}`);
   }
 };
-
 // get the user from the database
 
 export const GetUsers = async (req, res) => {
@@ -217,7 +223,7 @@ export const disableUser = async (req, res) => {
     });
   }
 };
-const register = async (req, res) => {
+export const register = async (req, res) => {
   const { name, email, password } = req.body;
 
   // Validate user input
@@ -251,7 +257,8 @@ export default {
   DeleteUserById,
   logout,
   disableUser,
-  register
+  register,
+  UserLogin,
 };
 /* eslint-disable consistent-return */
 // imports

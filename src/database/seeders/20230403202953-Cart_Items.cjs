@@ -8,9 +8,6 @@ module.exports = {
         cart_id: '1',
         product_id: '1',
         quantity: '1',
-        createdAt: new Date(),
-        updatedAt: new Date()
-
       }
     ], {});
   },

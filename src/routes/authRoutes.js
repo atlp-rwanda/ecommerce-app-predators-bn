@@ -2,33 +2,27 @@ import { Router } from "express";
 import passport from "passport";
 import Jwt from "../utils/jwt";
 import { googlePass } from "../utils/passport";
-<<<<<<< HEAD
-import { UserLogin}  from '../controller/authController';
 const router = Router();
 
 // Google route
-
-=======
-const router = Router();
->>>>>>> 012ffa8 (add)
 import {
   googleAuthHandler,
   GetUsers,
   GetUserById,
   DeleteUserById,
   logout,
-<<<<<<< HEAD
   disableUser,
   register,
+  UserLogin,
 } from "../controller/authController";
 
-import { isAdmin,isSeller,isBuyer,checkPermission } from "../middleware/roles";
-import{setRole} from '../services/role.services'
-<<<<<<< HEAD
-=======
-import {disableEnableUsers} from '../controller/disable.acount.controller.js'
-import disableUser from '../controller/disableFunction.js'
->>>>>>> 012ffa8 (add)
+import {
+  isAdmin,
+  isSeller,
+  isBuyer,
+  checkPermission,
+} from "../middleware/roles";
+import { setRole } from "../services/role.services";
 // Google routes
 googlePass();
 
@@ -47,7 +41,6 @@ router.get("/callback", (req, res) => {
 router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
-<<<<<<< HEAD
   );
   router.get(
     "/auth/google/callback",

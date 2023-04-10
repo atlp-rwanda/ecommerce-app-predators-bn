@@ -18,9 +18,4 @@ export default {
     dialect: 'postgres',
     logging: false,
   },
-<<<<<<< HEAD
 };
-=======
-};
-
->>>>>>> 014521a (feat(sign-in-with-google): create the Google SignIn feature)
