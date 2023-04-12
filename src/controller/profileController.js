@@ -9,7 +9,7 @@ const getUserProfile = async (req, res) => {
     const users = await db.User.findAll({
       include: []
     });
-    if (!users) {
+    if(!users){
       return res.status(404).json({
         message: req.t('user_not_found_exception')
       });
@@ -55,6 +55,7 @@ const updateUserProfile = async (req, res) => {
     email,
     roleId,
     status,
+    googleId,
     preferred_language,
     gender,
     preferred_currency,
@@ -63,10 +64,11 @@ const updateUserProfile = async (req, res) => {
 
   try {
     const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // Verify user token
-    if (decoded.id !== parseInt(id)) {// Check if authenticated user ID matches requested user ID
+   if (decoded.id !== parseInt(id)) {// Check if authenticated user ID matches requested user ID
       return res.status(403).json({ message: req.t('not_authorized_exception') });
     }
     const user = await db.User.findOne({ where: { id } });
+
     if (!user) {
       return res.status(404).json({ message: req.t('user_not_found_exception') });
     }
@@ -76,41 +78,18 @@ const updateUserProfile = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
     }
-    if (roleId == null) {
-      user.name = name || user.name;
-      user.email = email || user.email;
-      user.roleId = roleId || user.roleId;
-      user.status = status || user.status;
-      user.gender = gender || user.gender;
-      user.preferred_language = preferred_language || user.preferred_language;
-      user.preferred_currency = preferred_currency || user.preferred_currency;
-      // Save the updated user object to the database
-      await user.save();
-      // Return the updated user object as a response
-      return res.status(200).json({ message: req.t('user_updated_exception'), data: user });
-    } else if (roleId == 1) {
-      user.name = name || user.name;
-      user.email = email || user.email;
-      user.roleId = roleId || user.roleId;
-      user.gender = gender || user.gender;
-      user.preferred_language = preferred_language || user.preferred_language;
-      user.preferred_currency = preferred_currency || user.preferred_currency;
-      // Save the updated user object to the database
-      await user.save();
-      // Return the updated user object as a response
-      return res.status(200).json({ message: req.t('user_updated_exception'), data: user });
-    } else {
-      user.name = name || user.name;
-      user.email = email || user.email;
-      user.gender = gender || user.gender;
-      user.preferred_language = preferred_language || user.preferred_language;
-      user.preferred_currency = preferred_currency || user.preferred_currency;
-      // Save the updated user object to the database
-      await user.save();
-      // Return the updated user object as a response
-      return res.status(200).json({ message: req.t('user_updated_exception'), data: user });
-    }
-
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.roleId = roleId || user.roleId;
+    user.status = status || user.status;
+    user.googleId = googleId || user.googleId;
+    user.gender = gender || user.gender;
+    user.preferred_language = preferred_language || user.preferred_language;
+    user.preferred_currency = preferred_currency || user.preferred_currency;
+    // Save the updated user object to the database
+    await user.save();
+    // Return the updated user object as a response
+    return res.status(200).json({ message: req.t('user_updated_exception'), data: user });
   } catch (err) {
     console.log("error " + err);
     return res.status(500).json(err);

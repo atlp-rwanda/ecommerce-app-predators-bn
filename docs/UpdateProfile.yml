@@ -20,8 +20,8 @@ paths:
           description: ID of the user profile to retrieve
           required: true
           schema:
-            type: string
-            example: '12345'
+            type: integer
+            example: '12'
       responses:
         '200':
           description: OK
@@ -30,7 +30,7 @@ paths:
         '500':
           description: Internal Server Error
   /api/profile/{id}:
-    put:
+    patch:
       tags:
         - Users
       summary: User profile update
@@ -43,8 +43,8 @@ paths:
           description: ID of the user profile to update
           required: true
           schema:
-            type: string
-            example: '12345'
+            type: integer
+            example: '1'
       requestBody:
         required: true
         content:
@@ -93,7 +93,6 @@ paths:
                 - email
                 - password
                 - gender
-                - preferred_language
       responses:
         '200':
           description: OK
