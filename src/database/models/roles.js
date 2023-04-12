@@ -1,5 +1,5 @@
-'use strict';
 import { Model } from 'sequelize';
+
 export default (sequelize, DataTypes) => {
   class ROLES extends Model {
     /**
@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
     }
   }
   ROLES.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'ROLES',

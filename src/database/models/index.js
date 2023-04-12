@@ -1,23 +1,23 @@
-import { readdirSync } from "fs";
-import { basename as _basename, join } from "path";
-import Sequelize, { DataTypes } from "sequelize";
-import { env as _env } from "process";
+import { readdirSync } from 'fs';
+import path, { basename as _basename, join } from 'path';
+import Sequelize, { DataTypes } from 'sequelize';
+import { env as _env } from 'process';
 import { fileURLToPath } from 'url';
-import path from 'path';
+import Config from '../config/config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const basename = _basename(__filename);
-const env = _env.NODE_ENV || "development";
-import Config from "../config/config.js";
+const env = _env.NODE_ENV || 'development';
+
 const config = Config[env];
 const db = {};
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(_env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(config.url, {dialect: config.dialect, logging: config.logging});
+  sequelize = new Sequelize(config.url, { dialect: config.dialect, logging: config.logging });
 }
 
 const modelFiles = readdirSync(join(process.cwd(), 'src', 'database', 'models')).filter((file) => (
@@ -32,7 +32,7 @@ for (const file of modelFiles) {
   db[model.name] = model;
 }
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
@@ -41,4 +41,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-export default db;
+export default db;
