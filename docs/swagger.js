@@ -1,18 +1,29 @@
-const swaggerOptions = {
+import swaggerJSDoc from 'swagger-jsdoc';
+import env from 'dotenv';
+
+env.config();
+
+const swaggerServer = process.env.SWAGGER_SERVER || `http://localhost:${process.env.PORT}`;
+
+const options = {
   definition: {
     openapi: '3.0.1',
     info: {
-      title: 'Brogrammers E-COMMERCE PROJECT',
+      title: 'PREDETORS E-COMMERCE PROJECT',
       version: '1.0.0',
       description: 'ATLP Rwanda, Predetors team, E-commerce project',
     },
-    servers: [
-      {
-        url: 'http://localhost:3000',
-      },
-    ],
+    servers: [{ url: swaggerServer }],
     components: {
       securitySchemes: {
+        google_auth: {
+          type: 'oauth2',
+          flows: {
+            authorizationCode: {
+              authorizationUrl:process.env.GOOGLE_CALLBACK_URL,
+            },
+          },
+        },
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
@@ -21,7 +32,9 @@ const swaggerOptions = {
       },
     },
   },
-  apis: ['./src/routes/*.js'], // Path to the API routes files
+  apis: ['./docs/*.js', './docs/*.yml'],
 };
-export default swaggerOptions;
 
+const Swagger = swaggerJSDoc(options);
+
+export default Swagger;

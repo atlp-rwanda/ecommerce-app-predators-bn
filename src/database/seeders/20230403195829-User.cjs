@@ -11,13 +11,15 @@ module.exports = {
           roleId: 1,
           status: 'active',
           googleId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-
-        },
-      ],
-      {},
-    );
+          gender: "male",
+          otp_enabled: false,
+          otp_verified: false,
+          otp_ascii: null,
+          otp_hex: null,
+          otp_base32: null,
+          otp_auth_url: null,
+       }
+    ], {});
   },
 
   async down(queryInterface, Sequelize) {
