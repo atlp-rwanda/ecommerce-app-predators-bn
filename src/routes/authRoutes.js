@@ -2,7 +2,9 @@ import { Router } from "express";
 import passport from "passport";
 import Jwt from "../utils/jwt";
 import { googlePass } from "../utils/passport";
-const router = Router();
+import vender from '../controller/venderController.js';
+
+
 import {
   googleAuthHandler,
   GetUsers,
@@ -14,9 +16,10 @@ import {
 import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles";
 import { setRole } from "../services/role.services";
 import { disableEnableUsers } from "../controller/disable.acount.controller.js";
-import db from "../database/models/index.js";
-import JwtUtility from "../utils/jwt";
 
+
+
+const router = Router();
 // Google routes
 googlePass();
 
@@ -44,6 +47,7 @@ router.get(
   }),
   googleAuthHandler
 );
+router.post('/vender',isAdmin, vender);
 router.post("/logout", logout);
 router.get("/users", isAdmin,checkPermission("manage users"), GetUsers);
 router.get("/users/:id",isAdmin,checkPermission("manage users"), GetUserById);

@@ -1,5 +1,6 @@
 'use strict';
 import { Model } from 'sequelize';
+
 export default (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -42,7 +43,7 @@ export default (sequelize, DataTypes) => {
     googleId: DataTypes.INTEGER,
     gender: DataTypes.STRING,
     preferred_language: DataTypes.STRING,
-    preferred_currency: DataTypes.UUID
+    preferred_currency: DataTypes.UUID,
   }, {
     sequelize,
     modelName: 'User',

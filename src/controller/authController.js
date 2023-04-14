@@ -260,5 +260,3 @@ export default {
   register,
   UserLogin,
 };
-/* eslint-disable consistent-return */
-// imports
