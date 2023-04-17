@@ -1,5 +1,3 @@
-Node.js CI  
-
 Migration:
 Run migrate script to migrate db, use this command: npm run migrate
 Run seed script to add seeds into the table, use this command: npm run seed
