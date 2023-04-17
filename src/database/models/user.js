@@ -9,13 +9,13 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.HasOne(models.ROLES, {
+      User.hasOne(models.ROLES, {
         foreignKey: 'roleId',
         as: 'role',
         onDelete: 'CASCADE',
       });
 
-      User.HasOne(models.Carts, {
+      User.hasOne(models.Carts, {
         foreignKey: 'User_id',
         as: 'cart',
         onDelete: 'CASCADE',

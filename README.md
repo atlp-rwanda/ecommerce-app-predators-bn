@@ -7,9 +7,7 @@
 - Run down script to undo the most recent migrate, use this command: `npm run down`
 <p>
 
-[![Node.js CI](https://github.com/atlp-rwanda/ecommerce-app-predators-bn/actions/workflows/node.js.yml/badge.svg)](https://github.com/atlp-rwanda/ecommerce-app-predators-bn/actions/workflows/node.js.yml)
 
-<a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/maintainability"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/maintainability" /></a>
- 
- <a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/test_coverage"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/test_coverage" /></a> </p>
+
+
 

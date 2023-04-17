@@ -6,18 +6,12 @@ module.exports = {
     await queryInterface.bulkInsert('ROLEs', [
       {
         name: 'admin',
-        createdAt: new Date(),
-        updatedAt: new Date()
       },
       {
         name: 'user',
-        createdAt: new Date(),
-        updatedAt: new Date()
       },
       {
         name: 'vender',
-        createdAt: new Date(),
-        updatedAt: new Date()
       },
 
     ], {});
