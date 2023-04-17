@@ -17,13 +17,13 @@ module.exports = {
           otp_hex: null,
           otp_base32: null,
           otp_auth_url: null,
-        },
-      ],
-      {},
-    );
+       }
+    ]
+      , {});
+
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('Users', null, {});
-  },
+  }
 };

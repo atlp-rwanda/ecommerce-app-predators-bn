@@ -1,9 +1,0 @@
-name,
-      email,
-      roleId,
-      status,
-      googleId,
-      gender,
-      preferred_language,
-      preferred_currency,
-      password

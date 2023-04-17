@@ -11,13 +11,16 @@ const getUserProfile = async (req, res) => {
     });
     if (!users) {
       return res.status(404).json({
-        message: req.t('user_not_found_exception'),
+        status: 'fail', code: 404, data: { users }, message: req.t('user_not_found_exception'),
       });
     }
-    return res.status(200).json({ message: req.t('user_retrieved_exception'), data: users });
+    return res.status(200).json({
+      status: 'success', code: 200, data: { users }, message: req.t('user_retrieved_exception'),
+    });
   } catch (err) {
-    console.log(`error ${err}`);
-    return res.status(500).json(err);
+    return res.status(500).json({
+      status: 'server error', code: 500, data: { message: req.t('user_not_found_exception') },
+    });
   }
 };
 
@@ -32,17 +35,17 @@ const getUserById = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: req.t('user_not_found_exception'),
+        status: 'fail', code: 404, data: { user }, message: req.t('user_not_found_exception'),
       });
     }
 
     return res.status(200).json({
-      message: req.t('single_user_found_exception'),
-      data: user,
+      status: 'success', code: 200, data: { user }, message: req.t('user_retrieved_exception'),
     });
   } catch (err) {
-    console.log(`error ${err}`);
-    return res.status(500).json(err);
+    return res.status(500).json({
+      status: 'server error', code: 500, data: { message: req.t('user_not_found_exception') },
+    });
   }
 };
 // Updating user Profile
@@ -65,12 +68,16 @@ const updateUserProfile = async (req, res) => {
   try {
     const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // Verify user token
     if (decoded.id !== parseInt(id)) { // Check if authenticated user ID matches requested user ID
-      return res.status(403).json({ message: req.t('not_authorized_exception') });
+      return res.status(403).json({
+        status: 'fail', code: 403, message: req.t('not_authorized_exception'),
+      });
     }
     const user = await db.User.findOne({ where: { id } });
 
     if (!user) {
-      return res.status(404).json({ message: req.t('user_not_found_exception') });
+      return res.status(404).json({
+        status: 'fail', code: 404, data: { user }, message: req.t('user_not_found_exception'),
+      });
     }
 
     // Hash the password if it's included in the request body
@@ -89,11 +96,11 @@ const updateUserProfile = async (req, res) => {
     // Save the updated user object to the database
     await user.save();
     // Return the updated user object as a response
-    return res.status(200).json({ message: req.t('user_updated_exception'), data: user });
+    return res.status(200).json({
+      status: 'success', code: 200, data: { user }, message: req.t('user_updated_exception'),
+    });
   } catch (err) {
-    console.log(`error ${err}`);
-    return res.status(500).json(err);
+    return res.status(500).json({ status: 'server error', code: 500 });
   }
 };
-
 export default { getUserProfile, updateUserProfile, getUserById };
