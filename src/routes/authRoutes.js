@@ -14,6 +14,8 @@ import {
   disableUser,
   register,
   UserLogin,
+  requestResetPassword,resetPassword,
+  resetPasswordLink,
 } from "../controller/authController";
 
 import {
@@ -58,5 +60,10 @@ router.post("/setRole",isAdmin,setRole);
 router.post("/disableUser",isAdmin,disableUser);
 router.post('/login', UserLogin);
 router.post('/register', register);
+
+router.post('/reset/password',requestResetPassword);
+router.get('/user/reset-password/:token',resetPasswordLink);
+router.put('/user/reset-password/:token',resetPassword);
+
 
 export default router;

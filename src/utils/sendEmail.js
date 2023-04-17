@@ -66,29 +66,27 @@ class sendEmail {
       return success;
     });
   }
-  static sendEmail(to,subject,text) {
-    const { USER_EMAIL, USER_PASS } = process.env;
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: USER_EMAIL,
-            pass: USER_PASS,
-        },
-        tls: {
-            rejectUnauthorized: false,
-        },
-    });
 
-    const mailOptions = {
-        from: USER_EMAIL,
-        to,
-        subject,
-        text,
-    };
-    transporter.sendMail(mailOptions, (err, success) => {
-        if (err) return ('email not sent:', err);
-        return console.log('email sent', success);
-    });
-}
+  static  sendEmail ( email, subject, content ) {
+      try {
+          const transporter = nodemailer.createTransport({
+              host: process.env.NODE_MAILER_HOST,
+              port: process.env.NODE_MAILER_PORT,
+              auth: {
+                user: process.env.NODE_MAILER_USER,
+                pass:process.env.NODE_MAILER_PASS
+              }
+            });
+
+     transporter.sendMail({
+        from: process.env.NODE_MAILER_USER,
+        to: `${email}`,
+        subject: `${subject}`,
+        html: `${content}`,
+      });
+    } catch (error) {
+        return  error.message;
+      }
+  }
 }
 export default sendEmail;
