@@ -66,8 +66,10 @@ class sendEmail {
       return success;
     });
   }
-  static sendEmail(to,subject,text) {
-    const { USER_EMAIL, USER_PASS } = process.env;
+
+  static  sendEmail ( email, subject, content ) {
+      try {
+         const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -81,14 +83,17 @@ class sendEmail {
 
     const mailOptions = {
         from: USER_EMAIL,
-        to,
-        subject,
-        text,
-    };
-    transporter.sendMail(mailOptions, (err, success) => {
+        to: `${email}`,
+        subject: `${subject}`,
+        html: `${content}`,
+      };
+     transporter.sendMail(mailOptions, (err, success) => {
         if (err) return ('email not sent:', err);
-        return console.log('email sent', success);
+        return ('email sent', success);
     });
-}
+    } catch (error) {
+        return  error.message;
+      }
+  }
 }
 export default sendEmail;
