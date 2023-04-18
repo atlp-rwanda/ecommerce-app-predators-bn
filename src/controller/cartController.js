@@ -78,7 +78,7 @@ export default class cartController {
       static updateCartItem = async (req, res) => {
         try { 
                                                
-            let product_id= req.params.id;
+            let product_id= req.params.id;;
             let quantity=req.body.quantity;
               
                 const product = await productDetail.getProductById(product_id); 

@@ -8,8 +8,7 @@ export default class Cart {
       const Carts = await db.Cart_items.findOne({
         where: {
           User_id: cartData.User_id,
-          product_id: cartData.product_id,
-          product_id: cartData.product_id,
+          product_id: cartData.product_id, 
         },
       });
 
@@ -108,5 +107,31 @@ export default class Cart {
       return error;
     }
   };  
+
+
+    static getCartItems = async (user) => {
+        try {
+ 
+            const Carts = await db.Cart_items.findAll({
+                where:{
+                    User_id:user
+                },
+                include:'product'
+            });
+           
+            if (!Carts) {
+               return null;
+            } 
+            let sum = 0;
+            {total:Carts.forEach(cartPrice => { 
+                return sum = sum +cartPrice.amount;
+            })};    
+            Carts.push({total:sum});
+        return Carts 
+        } catch (error) { 
+           return false
+        }
+    };
+    
 
 }
