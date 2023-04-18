@@ -65,5 +65,4 @@ router.post('/reset/password',requestResetPassword);
 router.get('/user/reset-password/:token',resetPasswordLink);
 router.put('/user/reset-password/:token',resetPassword);
 
-
 export default router;

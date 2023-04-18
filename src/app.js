@@ -12,6 +12,7 @@ import swagger from "./config/swagger.js";
 import db from "../src/database/models/index.js";
 import welcomeRoute from "./routes/welcome.js";
 import authRoute from "./routes/authRoutes.js";
+import cartRoute from "./routes/cartRoutes.js";
 // Configuration
 dotenv.config();
 const sequelize = db.sequelize;
@@ -66,5 +67,6 @@ passport.serializeUser((user, done) => {
 
 app.use("/", welcomeRoute);
 app.use("/api", authRoute);
+app.use("/api/cart", cartRoute);
 // Export the app
 export default app;

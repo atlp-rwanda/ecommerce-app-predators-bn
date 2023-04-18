@@ -33,8 +33,7 @@ const getUserByGoogleId = async (googleId) => {
       },
     });
     return user;
-  } catch (error) {
-    throw new Error("Could not find user");
+  } catch (error) {return false;
   }
 };
 

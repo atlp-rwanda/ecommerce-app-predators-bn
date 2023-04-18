@@ -9,9 +9,9 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Cart_items.belongsTo(models.Carts, {
-        foreignKey: 'cart_id',
-        as: 'cart',
+      Cart_items.belongsTo(models.User, {
+        foreignKey: 'User_id',
+        as: 'user',
       });
       Cart_items.belongsTo(models.Product, {
         foreignKey: 'product_id',
