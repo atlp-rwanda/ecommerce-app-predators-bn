@@ -5,6 +5,7 @@ import Jwt from "../utils/jwt.js";
 import {
   getUserByGoogleId,
   registerGoogle,
+  getUserByEmail
 } from "../services/user.services.js";
 import generateToken from "../utils/userToken.js";
 import sendEmail from "../utils/sendEmail";
@@ -264,3 +265,4 @@ export default {
   register,
   UserLogin,
 };
+
