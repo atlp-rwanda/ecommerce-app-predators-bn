@@ -1,6 +1,7 @@
-/* eslint-disable no-unused-vars */
 /** @type {import('sequelize-cli').Migration} */
+  
 module.exports = {
+
 
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
@@ -8,8 +9,8 @@ module.exports = {
       [
         {
           name: 'John Doe',
-          email: 'teting@gmail.com',
-          password: '123456789',
+          email: 'yobu@gmail.com',
+          password:'$2y$10$bb.ZLaQkxDxLBvFadjr7A.MzYbGcinp68U/4svnM4JDNLJqgqhpRG',
           roleId: 1,
           status: 'active',
           googleId: 1,

@@ -8,6 +8,10 @@ import dotenv from "dotenv";
 import swaggerUI from "swagger-ui-express";
 import swagger from "../docs/swagger.js";
 import db from "../src/database/models/index.js";
+import welcomeRoute from "./routes/welcome.js";
+import authRoute from "./routes/authRoutes.js";
+import cartRoute from "./routes/cartRoutes.js";
+// Configuration
 import express from "express";
 import cors from "cors";
 
@@ -72,6 +76,7 @@ passport.deserializeUser((id, done) => {
 app.use("/auth", otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/", welcomeRoute);
-
+app.use("/api", authRoute);
+app.use("/api/cart", cartRoute);
 // Export the app
 export default app;
