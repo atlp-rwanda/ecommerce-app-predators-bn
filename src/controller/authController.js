@@ -1,14 +1,14 @@
+import bcrypt from 'bcrypt';
+import jsend from 'jsend';
 import hasher from '../utils/hashPassword.js';
 import db from '../database/models/index.js';
-import bcrypt from "bcrypt";
-import Jwt from "../utils/jwt.js";
+import Jwt from '../utils/jwt.js';
 import {
   getUserByGoogleId,
   registerGoogle,
-} from "../services/user.services.js";
-import generateToken from "../utils/userToken.js";
-import sendEmail from "../utils/sendEmail";
-import jsend from "jsend";
+} from '../services/user.services.js';
+import generateToken from '../utils/userToken.js';
+import sendEmail from '../utils/sendEmail.js';
 
 export const UserLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -20,11 +20,11 @@ export const UserLogin = async (req, res) => {
     if (!user) {
       return res
         .status(401)
-        .json(jsend.fail({ message: "Invalid Credentials😥" }));
-    } else if (user.status === "disabled") {
+        .json(jsend.fail({ message: 'Invalid Credentials😥' }));
+    } if (user.status === 'disabled') {
       return res
         .status(401)
-        .json(jsend.fail({ message: "User is disabled😥" }));
+        .json(jsend.fail({ message: 'User is disabled😥' }));
     }
 
     // Compare the given password with the hashed password in the database
@@ -32,26 +32,26 @@ export const UserLogin = async (req, res) => {
     if (!passwordMatches) {
       return res
         .status(401)
-        .json(jsend.fail({ message: "Invalid Credentials😥" }));
+        .json(jsend.fail({ message: 'Invalid Credentials😥' }));
     }
 
     // If the email and password are valid, generate a JWT token
     const token = generateToken(user);
 
     // Set the token in a cookie with HttpOnly and Secure flags
-    res.cookie("token", token, {
+    res.cookie('token', token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: 'strict',
       maxAge: 3600000, // 1 hour
     });
 
-    res.status(200).json(jsend.success({ message: "Login Successful", token }));
+    res.status(200).json(jsend.success({ message: 'Login Successful', token }));
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json(jsend.error({ message: "Opps 😰 server error" }));
+      .json(jsend.error({ message: 'Opps 😰 server error' }));
   }
 };
 
@@ -65,51 +65,54 @@ export const googleAuthHandler = async (req, res) => {
   const newUser = {
     name: familyName,
     email: value,
-    password: "password",
+    password: 'password',
     roleId: 2,
     googleId: id,
-    status: "active",
+    status: 'active',
   };
 
   // Check if user already exists
   const user = await getUserByGoogleId(newUser.googleId);
   if (user) {
     // User already exists, generate JWT and redirect
-    const { id, email, name, password, roleId ,googleId} = user;
+    const {
+      id, email, name, password, roleId, googleId,
+    } = user;
     const userToken = Jwt.generateToken(
       {
-        id: id,
-        email: email,
-        name: name,
-        password: password,
-        roleId: roleId,
-        status: "active",
-        googleId: googleId,
+        id,
+        email,
+        name,
+        password,
+        roleId,
+        status: 'active',
+        googleId,
       },
-      "1h"
+      '1h',
     );
-    res.cookie("jwt", userToken);
+    res.cookie('jwt', userToken);
     return res.redirect(`/api/callback?key=${userToken}`);
   } else {
     // User does not exist, create new user and generate JWT
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
     newUser.password = hashedPassword;
-    const { id, email, name, password, roleId, googleId } =
-      await registerGoogle(newUser);
+    const {
+      id, email, name, password, roleId, googleId,
+    } = await registerGoogle(newUser);
     const userToken = Jwt.generateToken(
       {
-        id: id,
-        email: email,
-        name: name,
-        password: password,
-        roleId: roleId,
-        status: "active",
-        googleId: googleId,
+        id,
+        email,
+        name,
+        password,
+        roleId,
+        status: 'active',
+        googleId,
       },
-      "1h"
+      '1h',
     );
-    res.cookie("jwt", userToken);
+    res.cookie('jwt', userToken);
     return res.redirect(`/api/callback?key=${userToken}`);
   }
 };
@@ -119,14 +122,14 @@ export const GetUsers = async (req, res) => {
   try {
     const users = await db.User.findAll();
     return res.status(200).json({
-      status: "success",
+      status: 'success',
       data: {
         users,
       },
     });
   } catch (error) {
     return res.status(500).json({
-      status: "error",
+      status: 'error',
       message: error.message,
     });
   }
@@ -138,62 +141,62 @@ export const GetUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await db.User.findOne({
-      where: { id: id },
+      where: { id },
     });
     if (user) {
       return res.status(200).json({ user });
     }
-    return res.status(404).send("User with the specified ID does not exists");
+    return res.status(404).send('User with the specified ID does not exists');
   } catch (error) {
     return res.status(500).send(error.message);
   }
 };
-//delete the user from the database by id
+// delete the user from the database by id
 
 export const DeleteUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await db.User.destroy({
-      where: { id: id },
+      where: { id },
     });
     if (deleted) {
-      return res.status(204).send("User deleted");
+      return res.status(204).send('User deleted');
     }
-    throw new Error("User not found");
+    throw new Error('User not found');
   } catch (error) {
     return res.status(500).send(error.message);
   }
 };
 export const logout = (req, res) => {
   try {
-    res.clearCookie("jwt");
+    res.clearCookie('jwt');
     // Send success response
-    res.status(200).json({ message: "Logout successful" });
-    res.redirect("/");
+    res.status(200).json({ message: 'Logout successful' });
+    res.redirect('/');
   } catch (error) {
     console.error(error);
     // Send error response
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 export const disableUser = async (req, res) => {
   const { status, reason, email } = req.body;
 
   try {
-    const user = await db.User.findOne({ where: { email: email } });
+    const user = await db.User.findOne({ where: { email } });
 
     if (!user) {
       return res.status(404).json({
         message: `user with email : ${email} does not exit `,
       });
-    } else {
-      user.status = status;
+    }
+    user.status = status;
 
-      await user.save();
+    await user.save();
 
-      if (user) {
-        const to = user.email;
-        const text = `
+    if (user) {
+      const to = user.email;
+      const text = `
         Subject: Notification of account deactivation
 
         Dear User,
@@ -210,12 +213,11 @@ export const disableUser = async (req, res) => {
         
         The E-commerce ATLP-Predators project team`;
 
-        sendEmail.sendEmail(to, "account status", text);
-        
-        return res
-          .status(200)
-          .json({ message: `User account ${status} successfully  ` });
-      }
+      sendEmail.sendEmail(to, 'account status', text);
+
+      return res
+        .status(200)
+        .json({ message: `User account ${status} successfully  ` });
     }
   } catch (error) {
     return res.status(500).json({
@@ -262,4 +264,3 @@ export default {
 };
 /* eslint-disable consistent-return */
 // imports
-
