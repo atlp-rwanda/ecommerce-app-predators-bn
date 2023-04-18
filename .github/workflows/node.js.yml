@@ -17,6 +17,31 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
+    env:
+      DEV_DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+      TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      RENDER_TOKEN: ${{ secrets.RENDER_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_CALLBACK_URL: ${{ secrets.GOOGLE_CALLBACK_URL }}
+      TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+      TWILIO_PHONE: ${{ secrets.TWILIO_PHONE }}
+      USERS_PRIMARY: ${{ secrets.USERS_PRIMARY }}
+      USER_ACC_EMAIL: ${{ secrets.USER_ACC_EMAIL }}
+      ADMIN_ACC_EMAIL: ${{ secrets.ADMIN_ACC_EMAIL }}
+      VENDOR_ACC_EMAIL: ${{ secrets.VENDOR_ACC_EMAIL }}
+      ACC_PASS: ${{ secrets.ACC_PASS }}
+      BILLING_INFO: ${{ secrets.BILLING_INFO }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      PORT: ${{ secrets.PORT }}
+      SWAGGER_SERVER: ${{ secrets.SWAGGER_SERVER }}
+      NODE_MAILER_USER: ${{ secrets.NODE_MAILER_USER }}
+      NODE_MAILER_PASS: ${{ secrets.NODE_MAILER_PASS }}
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      USER_PASS: ${{ secrets.USER_PASS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -24,3 +49,5 @@ jobs:
         run: npm install
       - name: Run Tests
         run: npm test
+      - name: running coverage
+        run: npm run coverage

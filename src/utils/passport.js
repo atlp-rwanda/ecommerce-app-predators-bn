@@ -9,7 +9,7 @@ export const googlePass = () => {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientID: "289308035351-nn653ftpjri9775lvjt2vjo075cpstrb.apps.googleusercontent.com",
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: process.env.GOOGLE_CALLBACK_URL,
         scope: ['profile', 'email'],

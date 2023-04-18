@@ -3,10 +3,11 @@ import db from '../database/models/index.js';
 // Route to handle the POST request to add an item to the wishlist
 export const addWishlist = async (req, res) => {
   try {
-   
     // Retrieve the product details from the database
     const product = await db.Product.findByPk(req.body.productId);
-
+    if (!product) {
+      throw Error('Product not found.');
+    }
     const duplicate = await db.wishlist.findOne({ where: {
       userId: req.user.id,
       productId: req.body.productId

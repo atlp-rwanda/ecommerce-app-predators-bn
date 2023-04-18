@@ -61,20 +61,21 @@ router.get(
 
 
 router.post('/vendor',isAdmin, vendor);
+router.post('/vendor',isAdmin, vendor);
 
 router.post('/logout', logout);
-router.get('/users',GetUsers);
-router.get('/users/:id', isAdmin,checkPermission("manage users"),GetUserById);
-router.delete('/users/:id', isAdmin,isAdmin,checkPermission("manage users"),DeleteUserById);
-router.post('/setRole/:id', isAdmin,isAdmin,checkPermission("manage users"), setRole);
-router.post('/disableUser/:id',isAdmin, disableUser);
+router.get('/users', isAdmin, GetUsers);
+router.get('/users/:id', isAdmin, checkPermission('manage users'), GetUserById);
+router.delete('/users/:id', isAdmin, isAdmin, checkPermission('manage users'), DeleteUserById);
+router.post('/setRole/:id', isAdmin, isAdmin, checkPermission('manage users'), setRole);
+router.post('/disableUser/:id', isAdmin, disableUser);
 router.post('/login', UserLogin);
 router.post('/adminLogin', AdminLogin);
 router.post('/register', register);
-router.patch('/users/profiles', profileController.updateUserProfile);
-
-router.post('/reset/password',requestResetPassword);
-router.get('/user/reset-password/:token',resetPasswordLink);
-router.put('/user/reset-password/:token',resetPassword);
+router.patch('/users/profiles/:id', profileController.updateUserProfile);
+router.get('/product/:id', getProductById);
+router.post('/reset/password', requestResetPassword);
+router.get('/user/reset-password/:token', resetPasswordLink);
+router.put('/user/reset-password/:token', resetPassword);
 
 export default router;

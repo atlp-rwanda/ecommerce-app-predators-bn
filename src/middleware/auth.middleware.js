@@ -1,4 +1,4 @@
-import Jwt from "../utils/jwt";
+import Jwt from "../utils/jwt.js";
 import jsend from "jsend";
 export default class authenticated{
     static auth = async(req, res, next)=> {

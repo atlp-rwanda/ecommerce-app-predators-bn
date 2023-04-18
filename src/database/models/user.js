@@ -15,9 +15,13 @@ export default (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       User.hasMany(models.wishlist, {
-        foreignKey: "userId",
+        foreignKey: "id",
         as: "wishlist",
         onDelete: "CASCADE",
+      });
+      User.hasMany(models.Chat, {
+        foreignKey: "userId", // the "userId" is the name of the foreign key in Chat and User models.
+        as: 'Chat', // the "chats" is the name of the association in the current model and the one in the associated model.  This should probably be
       });
       User.hasMany(models.Product, {
         foreignKey: "vendor_id",
@@ -25,7 +29,7 @@ export default (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       User.hasMany(models.Cart_items, {
-        foreignKey: "cart_id",
+        foreignKey: "id",
         as: "cart_items",
         onDelete: "CASCADE",
       });

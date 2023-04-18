@@ -1,8 +1,5 @@
-/* eslint-disable no-undef */
-/* eslint-disable import/no-named-as-default */
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable radix */
-/* eslint-disable camelcase */
+/* eslint-disable */
+
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import db from '../database/models/index.js';
@@ -16,14 +13,14 @@ const getUserProfile = async (req, res) => {
     });
     if (!users) {
       return res.status(404).json({
-        status: 'fail',
+        status: req.t('status_message_fail'),
         code: 404,
         data: { users },
         message: req.t('user_not_found_exception'),
       });
     }
     return res.status(200).json({
-      status: 'success',
+      status: req.t('status_message_success'),
       code: 200,
       data: { users },
       message: req.t('user_retrieved_exception'),
@@ -48,7 +45,7 @@ const getUserById = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        status: 'fail',
+        status: req.t('status_message_fail'),
         code: 404,
         data: { user },
         message: req.t('user_not_found_exception'),
@@ -56,7 +53,7 @@ const getUserById = async (req, res) => {
     }
 
     return res.status(200).json({
-      status: 'success',
+      status: req.t('status_message_success'),
       code: 200,
       data: { user },
       message: req.t('user_retrieved_exception'),
@@ -77,9 +74,7 @@ const updateUserProfile = async (req, res) => {
   const {
     name,
     email,
-    roleId,
     status,
-    googleId,
     gender,
     phone_number,
     country,
@@ -96,7 +91,7 @@ const updateUserProfile = async (req, res) => {
     const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // Verify user token
     if (decoded.id !== parseInt(id)) { // Check if authenticated user ID matches requested user ID
       return res.status(403).json({
-        status: 'fail',
+        status: req.t('status_message_fail'),
         code: 403,
         message: req.t('not_authorized_exception'),
       });
@@ -105,7 +100,7 @@ const updateUserProfile = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        status: 'fail',
+        status: req.t('status_message_fail'),
         code: 404,
         data: { user },
         message: req.t('user_not_found_exception'),
@@ -119,9 +114,7 @@ const updateUserProfile = async (req, res) => {
     }
     user.name = name || user.name;
     user.email = email || user.email;
-    user.roleId = roleId || user.roleId;
     user.status = status || user.status;
-    user.googleId = googleId || user.googleId;
     user.gender = gender || user.gender;
     user.phone_number = phone_number || user.phone_number;
     user.country = country || user.country;
@@ -135,7 +128,7 @@ const updateUserProfile = async (req, res) => {
     await user.save();
     // Return the updated user object as a response
     return res.status(200).json({
-      status: 'success',
+      status: req.t('status_message_success'),
       code: 200,
       data: { user },
       message: req.t('user_updated_exception'),

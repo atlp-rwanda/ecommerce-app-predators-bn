@@ -21,7 +21,9 @@ module.exports = {
       type: Sequelize.INTEGER,
       references: {
         model: 'Products',
-        key: 'id'
+        key: 'id',
+        onDelete: 'CASCADE' // Remove the item from the cart on deletion of the user. This is the default on delete.
+
       }
     },
     createdAt: {
