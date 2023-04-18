@@ -20,7 +20,7 @@ export default (sequelize, DataTypes) => {
       });
     }
   }
-  Cart_items.init({ 
+  Cart_items.init({  
     User_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,

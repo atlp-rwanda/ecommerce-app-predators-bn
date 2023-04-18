@@ -107,5 +107,6 @@ export default class Cart {
     } catch (error) {
       return error;
     }
-  };
+  };  
+
 }
