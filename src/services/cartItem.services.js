@@ -3,30 +3,29 @@ import db from "../database/models/index.js";
 //create new cart
 export default class Cart {
 
-    static cartItem = async (cartData,product_id) => {
-         
-        try { 
+    static cartItem = async (cartData) => {
+        try {
+ 
             const Carts = await db.Cart_items.findOne({
                 where:{
-                    User_id:cartData.user_id,
-                    product_id:product_id
+                    User_id:cartData.User_id,
+                    product_id:cartData.product
                 }
-            }); 
- 
-             let Data = {price:cartData.price*cartData.quantity,quantity:cartData.quantity,product_id:product_id,User_id:cartData.user_id}
-               
-            if (!Carts) {  
-                let CartsItem = await db.Cart_items.create(Data);
+            });
+            
+            if (!Carts) {
+                let CartsItem = await db.Cart_items.create(cartData);
                 return CartsItem;
-            }else{   
-               Carts.quantity=Carts.quantity+Data.quantity;
-                Carts.price= Carts.quantity*cartData.price;
-                let CartsItem = await Carts.save();
-                return true;
+            }else{ 
+                Carts.quantity=cartData.quantity;
+                let CartsItem = await Carts.save().then((result) =>{ 
+                    return result;
+              
+                });
             }
            
-        } catch (error) {  
-           return false;
+        } catch (error) {
+           return false
         }
     };
 

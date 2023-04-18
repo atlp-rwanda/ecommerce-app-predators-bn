@@ -1,16 +1,15 @@
+// import { hasher } from '../../utils/hashPassword';
+
 /** @type {import('sequelize-cli').Migration} */
-  
 module.exports = {
-
-
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
       'Users',
       [
         {
           name: 'John Doe',
-          email: 'yobuys@gmail.com',
-          password:'$2y$10$bb.ZLaQkxDxLBvFadjr7A.MzYbGcinp68U/4svnM4JDNLJqgqhpRG',
+          email: 'alvin@gmail.com',
+          password: '123456789',
           roleId: 1,
           status: 'active',
           googleId: 1,
