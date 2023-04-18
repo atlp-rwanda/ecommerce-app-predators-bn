@@ -25,13 +25,14 @@ paths:
                   type: string
                   description: The reason why the account is being disabled
               required:
+
                 - id
                 - status
                 - reason
               example:
                 id: 1
-                status: "disabled"
-                reason: "violation of our policies"
+                - status
+                - reason
       responses:
         '200':
           description: The account was successfully disabled
