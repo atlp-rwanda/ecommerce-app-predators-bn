@@ -13,14 +13,14 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'User_id',
         as: 'user',
       });
+      
       Cart_items.belongsTo(models.Product, {
         foreignKey: 'product_id',
         as: 'product',
       });
     }
   }
-  Cart_items.init({
-
+  Cart_items.init({ 
     User_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
