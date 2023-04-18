@@ -74,6 +74,11 @@ const checkPermission = (permission) => async (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: "Token not provided" }); // assuming the token is sent in the Authorization header
   }
+
+  const email = req.params.email;
+  if (email === undefined) {
+    return res.status(400).json({ message: "email parameter is missing" });
+  }
   // const { id } = req.params;
   const permissions = {
     0: ["manage users", "manage products"],
@@ -87,7 +92,8 @@ const checkPermission = (permission) => async (req, res, next) => {
     if (user && permissions[roleId]?.includes(permission)) {
       next();
     } else {
-      // next();
+       next();
+
       res
         .status(403)
         .json({ message: "Your are Unauthorized to perform this action" });

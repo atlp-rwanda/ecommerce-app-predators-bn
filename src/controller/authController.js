@@ -1,26 +1,81 @@
+import hasher from '../utils/hashPassword.js';
+import db from '../database/models/index.js';
 import bcrypt from "bcrypt";
 import Jwt from "../utils/jwt.js";
-import { getUserByEmail, registerGoogle } from "../services/user.services.js";
-import db from "../database/models/index.js";
-import sendEmail from "../utils/sendEmail.js"; // eslint-disable-line import/no-unresolved, import/extensions,
+import {
+  getUserByGoogleId,
+  registerGoogle,
+} from "../services/user.services.js";
+import generateToken from "../utils/userToken.js";
+import sendEmail from "../utils/sendEmail";
+import jsend from "jsend";
 
+export const UserLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if user with the given email exists
+    const user = await db.User.findOne({ where: { email } });
+
+    if (!user) {
+      return res
+        .status(401)
+        .json(jsend.fail({ message: "Invalid Credentials😥" }));
+    } else if (user.status === "disabled") {
+      return res
+        .status(401)
+        .json(jsend.fail({ message: "User is disabled😥" }));
+    }
+
+    // Compare the given password with the hashed password in the database
+    const passwordMatches = await bcrypt.compare(password, user.password);
+    if (!passwordMatches) {
+      return res
+        .status(401)
+        .json(jsend.fail({ message: "Invalid Credentials😥" }));
+    }
+
+    // If the email and password are valid, generate a JWT token
+    const token = generateToken(user);
+
+    // Set the token in a cookie with HttpOnly and Secure flags
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 3600000, // 1 hour
+    });
+
+    res.status(200).json(jsend.success({ message: "Login Successful", token }));
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json(jsend.error({ message: "Opps 😰 server error" }));
+  }
+};
+
+// Function to create a new user with a Google account
 export const googleAuthHandler = async (req, res) => {
   const { value } = req.user.emails[0];
   const { familyName } = req.user.name;
   const { id } = req.user;
+
+  // Create a new user object with the Google account data
   const newUser = {
     name: familyName,
     email: value,
     password: "password",
-    roleId: 0,
-    googleId:id,
+    roleId: 2,
+    googleId: id,
+    status: "active",
   };
 
   // Check if user already exists
-  const user = await getUserByEmail(newUser.googleId);
+  const user = await getUserByGoogleId(newUser.googleId);
   if (user) {
     // User already exists, generate JWT and redirect
-    const { id, email, name, password, roleId } = user;
+    const { id, email, name, password, roleId ,googleId} = user;
     const userToken = Jwt.generateToken(
       {
         id: id,
@@ -28,6 +83,8 @@ export const googleAuthHandler = async (req, res) => {
         name: name,
         password: password,
         roleId: roleId,
+        status: "active",
+        googleId: googleId,
       },
       "1h"
     );
@@ -38,7 +95,8 @@ export const googleAuthHandler = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
     newUser.password = hashedPassword;
-    const { id, email, name, password, roleId } = await registerGoogle(newUser);
+    const { id, email, name, password, roleId, googleId } =
+      await registerGoogle(newUser);
     const userToken = Jwt.generateToken(
       {
         id: id,
@@ -46,6 +104,8 @@ export const googleAuthHandler = async (req, res) => {
         name: name,
         password: password,
         roleId: roleId,
+        status: "active",
+        googleId: googleId,
       },
       "1h"
     );
@@ -53,7 +113,6 @@ export const googleAuthHandler = async (req, res) => {
     return res.redirect(`/api/callback?key=${userToken}`);
   }
 };
-
 // get the user from the database
 
 export const GetUsers = async (req, res) => {
@@ -118,14 +177,14 @@ export const logout = (req, res) => {
   }
 };
 export const disableUser = async (req, res) => {
-  const {id} = req.params;
-  const { status, reason,} = req.body;
+  const { status, reason, email } = req.body;
 
   try {
-    const user = await db.User.findOne({ where: { id:id } });
+    const user = await db.User.findOne({ where: { email: email } });
+
     if (!user) {
       return res.status(404).json({
-        message: `user with this id:${id} does not exit `,
+        message: `user with email : ${email} does not exit `,
       });
     } else {
       user.status = status;
@@ -168,11 +227,40 @@ The E-commerce ATLP-Predators project team
     });
   }
 };
+export const register = async (req, res) => {
+  const { name, email, password } = req.body;
+
+  // Validate user input
+  if (!name || !email || !password) {
+    return res.status(400).send('Invalid input');
+  }
+
+  try {
+    // hash password
+    const hashedPassword = await hasher(password);
+
+    // Create user in the database (using Sequelize ORM)
+    const user = await db.User.create({
+      name,
+      email,
+      roleId: 2,
+      password: hashedPassword,
+    });
+    res.status(200).json({ message: user }); // /!\use jsend
+
+    // Send confirmation email
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Server error');
+  }
+};
 export default {
   googleAuthHandler,
   GetUsers,
   GetUserById,
   DeleteUserById,
   logout,
-  disableUser
+  disableUser,
+  register,
+  UserLogin,
 };
