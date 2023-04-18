@@ -11,22 +11,15 @@ module.exports = {
           roleId: 1,
           status: 'active',
           googleId: 1,
-          streetAddressOne: 'Nyakabanda',
-          streetAddressTwo: 'Nyamirambo',
-          city: 'Kigali',
-          region: 'Nyarugenge',
-          country: 'Rwanda',
-          postalOrZIPCode: null,
+          gender: "male",
           otp_enabled: false,
           otp_verified: false,
           otp_ascii: null,
           otp_hex: null,
           otp_base32: null,
           otp_auth_url: null,
-        },
-      ],
-      {},
-    );
+       }
+    ], {});
   },
 
   async down(queryInterface, Sequelize) {

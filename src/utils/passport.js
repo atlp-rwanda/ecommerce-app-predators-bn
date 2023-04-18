@@ -24,4 +24,8 @@ export const googlePass = () => {
   passport.deserializeUser((user, done) => {
     done(null, user);
   });
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> f03ff16665eecd01c3cf81adcf4f59892dc7b297

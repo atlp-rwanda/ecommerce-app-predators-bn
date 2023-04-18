@@ -1,21 +1,18 @@
+'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('ROLEs', [
+   await queryInterface.bulkInsert('Cart_items', [
       {
-        name: 'admin',
-      },
-      {
-        name: 'user',
-      },
-      {
-        name: 'vender',
-      },
-
+        cart_id: '1',
+        product_id: '1',
+        quantity: '1',
+      }
     ], {});
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('ROLEs', null, {});
+    await queryInterface.bulkDelete('Cart_items', null, {});
   }
 };

@@ -1,0 +1,45 @@
+paths:
+  /api/setRole:
+    post:
+      tags:
+        - Users
+      summary: Set the role of a user
+      description: >
+        This endpoint sets the role of a user. The request must be authorized with a JWT token and the authenticated user must have the `admin` role.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The ID of the user to set the role for
+                role:
+                  type: integer
+                  description: The ID of the role to set
+              required:
+                - email
+                - role
+      responses:
+        '200':
+          description: The role was successfully set
+        '400':
+          description: Invalid request body
+        '401':
+          description: Unauthorized - invalid or missing JWT token
+        '403':
+          description: Forbidden - authenticated user does not have the `admin` role
+        '500':
+          description: An error occurred while processing the request
+  security:
+    - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
