@@ -9,7 +9,7 @@ paths:
         description: User registration details
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
@@ -43,19 +43,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ''
+
+                $ref: '#/components/schemas/User'
         '400':
           description: Invalid input provided
           content:
             application/json:
               schema:
-                $ref: ''
+                $ref: '#/components/schemas/Error'
         '500':
           description: Server error
           content:
             application/json:
               schema:
-                $ref: ''
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:

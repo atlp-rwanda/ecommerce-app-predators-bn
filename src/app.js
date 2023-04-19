@@ -1,4 +1,5 @@
 // Imports
+
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -25,6 +26,7 @@ sequelize
   });
 // App setup
 const app = express();
+const { urlencoded } = bodyParser;
 const corsOptions = {
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -77,4 +79,3 @@ app.use("/api", authRoute);
 app.use("/", welcomeRoute);
 // Export the app
 export default app;
-

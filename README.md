@@ -107,10 +107,5 @@ Create a pull request.
 - Run unseed script to remove seeds, use this command: `npm run unseed`
 - Run down script to undo the most recent migrate, use this command: `npm run down`
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
-<p>
-
-## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 <p>
