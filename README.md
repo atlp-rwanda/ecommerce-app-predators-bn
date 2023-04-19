@@ -30,6 +30,12 @@ Create a PostgreSQL database and update the config/config.js file with your data
 Run the database migrations using Sequelize by running the following command: npm run migrate:up
 Start the application by running: npm run dev 
 
+## Docker
+Docker is a software platform that allows you to build, test, and deploy applications quickly
+running Docker: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+
+
+
 ## Technologies Used
 To successfully navigate the codebase of the project, you will need an understanding of the following technologies that are being used to develop this application
 
