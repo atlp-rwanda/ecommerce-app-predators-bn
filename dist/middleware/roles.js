@@ -8,13 +8,15 @@ var _index = _interopRequireDefault(require("../database/models/index.js"));
 var _jwt = _interopRequireDefault(require("../utils/jwt"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const isAdmin = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1]; // assuming the token is sent in the Authorization header
-  if (!token) {
+  const authheader = req.headers.authorization;
+  // assuming the token is sent in the Authorization header
+  if (!authheader) {
     return res.status(401).json({
       message: "Token not provided"
     }); // assuming the token is sent in the Authorization header
   }
 
+  const token = authheader.split(" ")[1];
   try {
     const decodedToken = _jwt.default.verifyToken(token);
     const user = await _index.default.User.findOne({
@@ -38,13 +40,15 @@ const isAdmin = async (req, res, next) => {
 };
 exports.isAdmin = isAdmin;
 const isSeller = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1]; // assuming the token is sent in the Authorization header
-  if (!token) {
+  const authheader = req.headers.authorization;
+  // assuming the token is sent in the Authorization header
+  if (!authheader) {
     return res.status(401).json({
       message: "Token not provided"
     }); // assuming the token is sent in the Authorization header
   }
 
+  const token = authheader.split(" ")[1];
   const {
     id
   } = req.params;
@@ -52,7 +56,7 @@ const isSeller = async (req, res, next) => {
     const decodedToken = _jwt.default.verifyToken(token);
     const user = await _index.default.User.findOne({
       where: {
-        id: decodedToken.id
+        id: decodedToken.va.id
       }
     });
     if (user && decodedToken && decodedToken.roleId === 1) {
@@ -71,13 +75,15 @@ const isSeller = async (req, res, next) => {
 };
 exports.isSeller = isSeller;
 const isBuyer = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1]; // assuming the token is sent in the Authorization header
-  if (!token) {
+  const authheader = req.headers.authorization;
+  // assuming the token is sent in the Authorization header
+  if (!authheader) {
     return res.status(401).json({
       message: "Token not provided"
     }); // assuming the token is sent in the Authorization header
   }
 
+  const token = authheader.split(" ")[1];
   const {
     id
   } = req.params;
@@ -85,7 +91,7 @@ const isBuyer = async (req, res, next) => {
     const decodedToken = _jwt.default.verifyToken(token);
     const user = await _index.default.User.findOne({
       where: {
-        id: decodedToken.id
+        id: decodedToken.value.id
       }
     });
     if (user && decodedToken && decodedToken.roleId === 2) {
@@ -104,19 +110,15 @@ const isBuyer = async (req, res, next) => {
 };
 exports.isBuyer = isBuyer;
 const checkPermission = permission => async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1]; // assuming the token is sent in the Authorization header
-  if (!token) {
+  const authheader = req.headers.authorization;
+  // assuming the token is sent in the Authorization header
+  if (!authheader) {
     return res.status(401).json({
       message: "Token not provided"
     }); // assuming the token is sent in the Authorization header
   }
 
-  const email = req.params.email;
-  if (email === undefined) {
-    return res.status(400).json({
-      message: "email parameter is missing"
-    });
-  }
+  const token = authheader.split(" ")[1];
   // const { id } = req.params;
   const permissions = {
     0: ["manage users", "manage products"],
@@ -127,14 +129,14 @@ const checkPermission = permission => async (req, res, next) => {
     const decodedToken = _jwt.default.verifyToken(token);
     const user = await _index.default.User.findOne({
       where: {
-        email: decodedToken.email
+        id: decodedToken.value.id
       }
     });
-    const roleId = decodedToken.roleId;
+    const roleId = decodedToken.value.roleId;
     if (user && permissions[roleId]?.includes(permission)) {
       next();
     } else {
-      next();
+      // next();
       res.status(403).json({
         message: "Your are Unauthorized to perform this action"
       });

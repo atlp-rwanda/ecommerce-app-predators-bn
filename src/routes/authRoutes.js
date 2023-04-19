@@ -50,15 +50,13 @@ router.get(
   }),
   googleAuthHandler
 );
-router.post('/vendor',isAdmin, vendor);
-router.post("/logout", logout);
-router.get("/users", isAdmin,checkPermission("manage users"), GetUsers);
-router.get("/users/:id",isAdmin,checkPermission("manage users"), GetUserById);
-router.delete("/users/:id", isAdmin, DeleteUserById);
-router.post("/setRole", isAdmin,setRole);
 
-router.post("/disableUser",isAdmin,disableUser);
-
+router.post('/logout', logout);
+router.get('/users', isAdmin,checkPermission("manage users"),GetUsers);
+router.get('/users/:id', isAdmin,checkPermission("manage users"),GetUserById);
+router.delete('/users/:id', isAdmin,isAdmin,checkPermission("manage users"),DeleteUserById);
+router.post('/setRole/:id', isAdmin,isAdmin,checkPermission("manage users"), setRole);
+router.post('/disableUser', isAdmin, disableUser);
 router.post('/login', UserLogin);
 router.post('/register', register);
 router.patch('/users/profiles', profileController.updateUserProfile);

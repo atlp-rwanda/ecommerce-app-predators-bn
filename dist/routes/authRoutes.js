@@ -39,10 +39,10 @@ router.get('/auth/google/callback', _passport.default.authenticate('google', {
   failureRedirect: '/'
 }), _authController.googleAuthHandler);
 router.post('/logout', _authController.logout);
-router.get('/users', _roles.isAdmin, _authController.GetUsers);
-router.get('/users/:id', _roles.isAdmin, _authController.GetUserById);
-router.delete('/users/:id', _roles.isAdmin, _authController.DeleteUserById);
-router.post('/setRole', _roles.isAdmin, _role.setRole);
+router.get('/users', _roles.isAdmin, (0, _roles.checkPermission)("manage users"), _authController.GetUsers);
+router.get('/users/:id', _roles.isAdmin, (0, _roles.checkPermission)("manage users"), _authController.GetUserById);
+router.delete('/users/:id', _roles.isAdmin, _roles.isAdmin, (0, _roles.checkPermission)("manage users"), _authController.DeleteUserById);
+router.post('/setRole/:id', _roles.isAdmin, _roles.isAdmin, (0, _roles.checkPermission)("manage users"), _role.setRole);
 router.post('/disableUser', _roles.isAdmin, _authController.disableUser);
 router.post('/login', _authController.UserLogin);
 router.post('/register', _authController.register);
