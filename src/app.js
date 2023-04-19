@@ -23,8 +23,8 @@ sequelize.authenticate().then(() => {
 // App setup
 const app = express();
 const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
@@ -38,14 +38,14 @@ import otpAuthRouter from "./routes/otpAuthRoute.js";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 app.use(middleware.handle(i18next));
 app.use(
   session({
-    secret: "some_secret_key",
+    secret: 'some_secret_key',
     resave: false,
     saveUninitialized: false,
-  })
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -63,7 +63,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger, false, options));
 
 // Routes
 app.use("/auth", otpAuthRouter);
-app.use('/register', authRoute);
+app.use('/api', authRoute);
 app.use("/", welcomeRoute);
 
 // Export the app

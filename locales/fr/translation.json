@@ -1,4 +1,7 @@
 {
     "welcome_message":"Bienvenue sur l'API RESTful de commerce électronique !",
-    "user_retrieved_exception":"Utilisateurs récupérés avec succès"
+    "user_retrieved_exception":"Utilisateurs récupérés avec succès",
+    "not_authorized_exception":"Vous n'êtes pas autorisé(e) à mettre à jour ces informations",
+    "user_not_found_exception":"Utilisateur non trouvé",
+    "user_updated_exception":"Le profil a été mis à jour avec succès.!"
 }
