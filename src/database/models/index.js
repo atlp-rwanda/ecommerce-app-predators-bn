@@ -20,7 +20,6 @@ if (config.use_env_variable) {
 } else {
   sequelize = new Sequelize(config.url, { dialect: config.dialect, logging: config.logging });
 }
-
 const modelFiles = readdirSync(join(process.cwd(), 'src', 'database', 'models')).filter((file) => (
   file.indexOf('.') !== 0
   && file !== basename
@@ -39,8 +38,8 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
 
 export default db;

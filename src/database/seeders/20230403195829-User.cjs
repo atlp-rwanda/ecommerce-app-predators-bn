@@ -8,7 +8,7 @@ module.exports = {
       [
         {
           name: 'John Doe',
-          email: 'alvin@gmail.com',
+          email: 'teting@gmail.com',
           password: '123456789',
           roleId: 1,
           status: 'active',

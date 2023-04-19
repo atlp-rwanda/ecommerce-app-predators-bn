@@ -1,17 +1,19 @@
 // Imports
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import session from 'express-session';
-import passport from 'passport';
-import middleware from 'i18next-http-middleware';
-import dotenv from 'dotenv';
-import swaggerUI from 'swagger-ui-express';
-import i18next from './middleware/i18next.js';
-import swagger from './config/swagger.js';
-import db from './database/models/index.js';
-import welcomeRoute from './routes/welcome.js';
-import authRoute from './routes/authRoutes.js';
+
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import session from "express-session";
+import passport from "passport";
+import i18next from "./middleware/i18next.js";
+import middleware from "i18next-http-middleware";
+import dotenv from "dotenv";
+import swaggerUI from "swagger-ui-express";
+import swagger from "./config/swagger.js";
+import db from "../src/database/models/index.js";
+import welcomeRoute from "./routes/welcome.js";
+import authRoute from "./routes/authRoutes.js";
+
 // Configuration
 dotenv.config();
 const { sequelize } = db;
@@ -76,8 +78,5 @@ app.use("/api", authRoute);
 
 app.use("/", welcomeRoute);
 
-app.use('/', welcomeRoute);
-app.use('/api', authRoute);
 
-// Export the app
 export default app;
