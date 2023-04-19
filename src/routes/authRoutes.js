@@ -15,6 +15,7 @@ import {
   disableUser,
   register,
   UserLogin,
+  AdminLogin
 } from '../controller/authController';
 import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles";
 import { setRole } from "../services/role.services";
@@ -58,6 +59,7 @@ router.delete('/users/:id', isAdmin,isAdmin,checkPermission("manage users"),Dele
 router.post('/setRole/:id', isAdmin,isAdmin,checkPermission("manage users"), setRole);
 router.post('/disableUser', isAdmin, disableUser);
 router.post('/login', UserLogin);
+router.post("/adminLogin", AdminLogin)
 router.post('/register', register);
 router.patch('/users/profiles', profileController.updateUserProfile);
 export default router;

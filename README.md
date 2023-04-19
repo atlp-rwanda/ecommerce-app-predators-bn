@@ -8,3 +8,6 @@
 - Run unseed script to remove seeds, use this command: `npm run unseed`
 - Run down script to undo the most recent migrate, use this command: `npm run down`
 
+
+
+
