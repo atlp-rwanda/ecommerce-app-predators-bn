@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -35,18 +36,11 @@ module.exports = {
       },
       gender: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
-      preferred_language: {
+      streetAddressOne: {
         type: Sequelize.STRING,
       },
-      preferred_currency: {
-        type: Sequelize.UUID,
-      },
-      phone_number: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
+     
       country: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -99,34 +93,35 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
         type: Sequelize.BOOLEAN,
+
       },
-      otp_verified: {
-        allowNull: false,
-        defaultValue: false,
-        type: Sequelize.BOOLEAN,
-      },
-      otp_ascii: {
+      city: {
         type: Sequelize.STRING,
       },
-      otp_hex: {
+      region: {
         type: Sequelize.STRING,
       },
-      otp_base32: {
+      country: {
         type: Sequelize.STRING,
       },
-      otp_auth_url: {
+      postalOrZIPCode: {
         type: Sequelize.STRING,
+      },
+      preferred_language: {
+        type: Sequelize.STRING,
+      },
+      preferred_currency: {
+        type: Sequelize.UUID,
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      }
+      },
     });
   },
   async down(queryInterface, Sequelize) {

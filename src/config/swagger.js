@@ -20,7 +20,7 @@ const options = {
           type: 'oauth2',
           flows: {
             authorizationCode: {
-              authorizationUrl:process.env.GOOGLE_CALLBACK_URL,
+              authorizationUrl: process.env.GOOGLE_CALLBACK_URL,
             },
           },
         },
@@ -38,6 +38,3 @@ const options = {
 const Swagger = swaggerJSDoc(options);
 
 export default Swagger;
-
-
-
