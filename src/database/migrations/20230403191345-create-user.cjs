@@ -58,8 +58,32 @@ module.exports = {
       preferred_language: {
         type: Sequelize.STRING,
       },
+
+      otp_enabled: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
+      otp_verified: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
+      otp_ascii: {
+        type: Sequelize.STRING,
+      },
+      otp_hex: {
+        type: Sequelize.STRING,
+      },
+      otp_base32: {
+        type: Sequelize.STRING,
+      },
+      otp_auth_url: {
+        type: Sequelize.STRING,
+
       preferred_currency: {
         type: Sequelize.UUID,
+
       },
       createdAt: {
         allowNull: false,
