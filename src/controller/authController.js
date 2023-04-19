@@ -247,6 +247,7 @@ export const register = async (req, res) => {
 
     // Send confirmation email
   } catch (err) {
+    console.error(err);
     return res.status(500).send('Server error');
   }
 };

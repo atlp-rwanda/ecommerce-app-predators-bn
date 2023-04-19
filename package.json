@@ -15,7 +15,7 @@
     "unseed": "npx sequelize-cli db:seed:undo:all",
     "down": "npx sequelize-cli db:migrate:undo:all",
     "test": "cross-env NODE_ENV=test jest",
-    "start": "cross-env NODE_ENV=development nodemon --exec babel-node src/server.js",
+    "start": "cross-env NODE_ENV=production node src/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --experimental-modules --es-module-specifier-resolution=node src/server.js",
     "build": "babel src -d dist",
     "deploy": "cross-env NODE_ENV=production babel-node src/server.js",
