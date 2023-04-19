@@ -1,15 +1,21 @@
-import jsend from 'jsend';
 import bcrypt from 'bcrypt';
+import jsend from 'jsend';
 import hasher from '../utils/hashPassword.js';
 import db from '../database/models/index.js';
 import Jwt from '../utils/jwt.js';
 import {
   getUserByGoogleId,
   registerGoogle,
+
   getUserByEmail,updateUserPassword
 } from "../services/user.services.js";
 import generateToken from "../utils/userToken.js";
 import sendEmail from "../utils/sendEmail";
+
+} from '../services/user.services.js';
+import generateToken from '../utils/userToken.js';
+import sendEmail from '../utils/sendEmail';
+
 export const UserLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -198,7 +204,6 @@ export const disableUser = async (req, res) => {
       const to = user.email;
       const text = `
         Subject: Notification of account deactivation
-
         Dear User,
         
         We regret to inform you that your account on our website has been ${status} due to a ${reason}. Our team has conducted a thorough investigation and found evidence of unauthorized activity on your account.
@@ -248,128 +253,14 @@ export const register = async (req, res) => {
       roleId: 2,
       password: hashedPassword,
     });
-    res.status(200).json(jsend.success({ message: 'User created', usr: user })); // /!\use jsend
+    res.status(200).json({ message: user }); // /!\use jsend
 
     // Send confirmation email
   } catch (err) {
     console.error(err);
-    return res.status(500).json(jsend.fail({ message: 'failed to register user' }));
+    return res.status(500).send('Server error');
   }
 };
-
-// requesting reset password 
-export const requestResetPassword = async (req, res) => {
-  const { email } = req.body;
-  try {
-    const user = await getUserByEmail(email);
-
-    if (!user) {
-      return res.status(400).jsend.error({
-        code: 400,
-        message: 'User with email does not exist!',
-        data: false,
-      });
-    }
-
-    const userEmail = { email, id: user.id };
-
-    const token = Jwt.generateToken(userEmail, '15m');
-
-    sendEmail.sendEmail({
-      email,
-      subject: 'Predators E-commerce Reset Password',
-      text: `
-                    <p>Reset your password.</p>
-                    <p>Please click the link below to reset your password.</p> 
-                    
-                    <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>
-                    
-                    `,
-    });
-    res.cookie('reset-token', token, { httponly: true, expiresIn: '15m' });
-
-    res.status(200).send(jsend.success({
-      code: 200,
-      message: 'Password reset link was sent to your email',
-      data: { token },
-    }));
-  } catch (error) {
-    return res.status(500).send(jsend.fail({
-      code: 500,
-      message: error.message,
-      data: false,
-    }));
-  }
-};
-
-// validate reset link
-export const resetPasswordLink = async (req, res) => {
-  try {
-    const { token } = req.params;
-    const payload = Jwt.verifyToken(token);
-    const userEmail = { email: payload.email };
-
-    const user = await getUserByEmail(userEmail.email);
-
-    if (!payload) {
-      return res.status(401).send(jsend.fail({
-        code: 401,
-        message: 'Token is invalid',
-        data: false,
-      }));
-    }
-    if (!user) {
-      return res.status(401).send(jsend.fail({
-        code: 401,
-        message: 'User does not exist',
-        data: false,
-      }));
-    }
-    return res.status(200).send(jsend.fail({
-      code: 200,
-      message: 'User exists',
-      data: user,
-    }));
-  } catch (error) {
-    return res.status(401).send(jsend.fail({
-      code: 401,
-      message: error.message,
-      data: false,
-    }));
-  }
-};
-
-// reset password
-export const resetPassword = async (req, res) => {
-  try {
-    const { token } = req.params;
-    const payload = Jwt.verifyToken(token);
-    const userPass = req.body;
-
-    await updateUserPassword(payload, userPass).then((result) => {
-      if (result == 0) {
-        return res.status(400).send(jsend.fail({
-          code: 400,
-          message: 'Password reset failed',
-          data: false,
-        }));
-      }
-      res.cookie('reset-token', '', { maxAge: 1 });
-      return res.status(200).send(jsend.success({
-        code: 200,
-        message: 'You have reset successful your password',
-        data: result,
-      }));
-    });
-  } catch (error) {
-    return res.status(401).send(jsend.fail({
-      code: 401,
-      message: error.message,
-      data: false,
-    }));
-  }
-};
-
 export default {
   googleAuthHandler,
   GetUsers,

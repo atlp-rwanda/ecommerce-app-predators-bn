@@ -12,7 +12,6 @@ paths:
           description: OK
           content:
             application/json: {}
-
   /api/logout:
     post:
       tags:

@@ -13,7 +13,6 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'vendor_id',
         as: 'vendor',
       });
-
     }
   }
   Product.init({
