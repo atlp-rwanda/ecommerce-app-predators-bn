@@ -21,7 +21,7 @@ export const disableEnableUsers= async (req, res)=> {
       if (user) {
         
         const to = user.email;
-        const text=`Dear User, Your account has been ${status}  bacause of ${reason}.Please contact us if
+        const text=`Dear Vendor, Your account has been ${status}  due to the following reason(s) of ${reason}.Please contact us if
          you have any questions.Best regards,The Admin Team`;
         
         sendEmail.sendEmail(to,'account status',text)

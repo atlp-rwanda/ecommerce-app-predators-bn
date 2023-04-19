@@ -47,6 +47,32 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
+      country: {
+        type: Sequelize.STRING,
+        allowNull: true,
+
+      },
+      province: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      sector: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      streetAddress: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+
       otp_enabled: {
         allowNull: false,
         defaultValue: false,

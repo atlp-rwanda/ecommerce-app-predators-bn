@@ -5,21 +5,21 @@ import { createTransport } from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-// Create a new Vender
-const vender = async (req, res) => {
-  const { name, email, gender, preferred_language } = req.body;
+// Create a new vendor
+const vendor = async (req, res) => {
+  const { name, email, gender, preferred_language, preferred_corrency } = req.body;
 
   // Validate user input
-  if (!name || !email || !gender || !preferred_language) {
-    return res.status(400).send("Invalid input, all fields are required");
+  if (!name || !email || !gender || !preferred_language, !preferred_corrency) {
+    return res.status(400).json({status:"fail\n",message:"Please provide all required fields" });
   }
 
   try {
     // Create user in the database (using Sequelize ORM)
-    const vender = await db.User.findOne({
+    const vendor = await db.User.findOne({
       where: { email },
     });
-    if (vender) {
+    if (vendor) {
       return res.status(400).send("User already exist");
     }
     // generate password randomly
@@ -46,7 +46,8 @@ const vender = async (req, res) => {
       password: await bcrypt.hash(Password, 10),
       status: "active",
       gender,
-      preferred_language
+      preferred_language,
+      preferred_corrency,
     });
     res.status(200).json({ message: "Vendor created successfully" });
 
@@ -85,4 +86,4 @@ const vender = async (req, res) => {
 };
 
 // export the post controller
-export default vender;
+export default vendor;

@@ -57,6 +57,7 @@ const options = {
     appName: 'Predetors E-commerce',
   },
 };
+
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger, false, options));
 // Define user serialization and deserialization functions
 passport.serializeUser((user, done) => {
@@ -70,7 +71,6 @@ passport.deserializeUser((id, done) => {
 });
 
 // Routes
-app.use("/api", authRoute);
 
 app.use("/", welcomeRoute);
 app.use("/api", authRoute);

@@ -2,7 +2,7 @@ import { Router } from "express";
 import passport from "passport";
 import Jwt from "../utils/jwt";
 import { googlePass } from "../utils/passport";
-import vender from '../controller/venderController.js';
+import vendor from '../controller/vendorController.js';
 
 
 import {
@@ -11,6 +11,11 @@ import {
   GetUserById,
   DeleteUserById,
   logout,
+  disableUser,
+  register,
+  UserLogin,
+  requestResetPassword,resetPassword,
+  resetPasswordLink,
 } from "../controller/authController";
 
 import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles";
@@ -47,12 +52,21 @@ router.get(
   }),
   googleAuthHandler
 );
-router.post('/vender',isAdmin, vender);
+router.post('/vendor',isAdmin, vendor);
 router.post("/logout", logout);
 router.get("/users", isAdmin,checkPermission("manage users"), GetUsers);
 router.get("/users/:id",isAdmin,checkPermission("manage users"), GetUserById);
 router.delete("/users/:id", isAdmin, DeleteUserById);
 router.post("/setRole", isAdmin,setRole);
-router.post("/disableEnableUsers", disableEnableUsers);
+
+router.post("/disableUser",isAdmin,disableUser);
+router.post('/login', UserLogin);
+router.post('/register', register);
+
+router.post('/reset/password',requestResetPassword);
+router.get('/user/reset-password/:token',resetPasswordLink);
+router.put('/user/reset-password/:token',resetPassword);
+
 
 export default router;
+

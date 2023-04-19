@@ -2,41 +2,66 @@ paths:
   /api/vender:
     post:
       tags:
-        - Venders
+        - Users
       summary: Admin can register a vender
       description: email and password will be sent to a vender authomatically
       requestBody:
         description: Vender registration details
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
                 name: 
                   type: string
                   description: Vender's full name
-                  example: Predators@1
+                  
                 email: 
                   type: string
                   format: email
                   description: Vender's email address
-                  example: niyiyandika99@gmail.com
-                role_id: 
-                  type: integer
-                  description: Vender's role ID
-                  example: 1
-                password: 
+
+                gender:
                   type: string
-                  format: password
-                  description: User's password
-                  minLength: 8
-                  example: Predators@1
+                  description: Gender of Vender
+
+                preferred_language:
+                  type: string
+                  description: Language of preference
+
+                preferred_currency:
+                  type: UUID
+                  description: Currency of preferrence
+   
+                country:
+                  type: string
+                  description: Country of residence
+
+                province:
+                  type: string
+                  description: Province
+                
+                district:
+                  type: string
+                  description: District
+
+                sector:
+                  type: string
+                  description: Sector
+                
+                streetAddress:
+                  type: string
+                  description: Street address
+                
+                  
+                
               required:
                 - name
                 - email
-                - role_id
-                - password
+                - gender
+                - preferred_language
+                
       responses:
         '200':
           description: Vender registration successful
@@ -122,8 +147,6 @@ components:
         - id
         - name
         - email
-        - role_id
-        - password
         - updated_at
         - created
     Error:
