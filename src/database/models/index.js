@@ -3,24 +3,18 @@ import path, { basename as _basename, join } from 'path';
 import Sequelize, { DataTypes } from 'sequelize';
 import { env as _env } from 'process';
 import { fileURLToPath } from 'url';
-<<<<<<< HEAD
-=======
 
->>>>>>> f03ff16665eecd01c3cf81adcf4f59892dc7b297
 import Config from '../config/config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-<<<<<<< HEAD
-
-=======
->>>>>>> f03ff16665eecd01c3cf81adcf4f59892dc7b297
 const basename = _basename(__filename);
 const env = _env.NODE_ENV || 'development';
 
 const config = Config[env];
 const db = {};
 let sequelize;
+
 if (config.use_env_variable) {
   sequelize = new Sequelize(_env[config.use_env_variable], config);
 } else {

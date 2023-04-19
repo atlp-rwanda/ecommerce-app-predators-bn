@@ -1,6 +1,8 @@
-import passport from "passport";
-import dotenv from "dotenv";
-import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+/* eslint-disable import/prefer-default-export */
+import passport from 'passport';
+import dotenv from 'dotenv';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+
 dotenv.config();
 
 export const googlePass = () => {
@@ -10,13 +12,11 @@ export const googlePass = () => {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: process.env.GOOGLE_CALLBACK_URL,
-        scope: ["profile", "email"],
+        scope: ['profile', 'email'],
         passReqToCallback: true,
       },
-      (request, accessToken, refreshToken, profile, done) => {
-        return done(null, profile);
-      }
-    )
+      (request, accessToken, refreshToken, profile, done) => done(null, profile),
+    ),
   );
   passport.serializeUser((user, done) => {
     done(null, user);
@@ -24,8 +24,4 @@ export const googlePass = () => {
   passport.deserializeUser((user, done) => {
     done(null, user);
   });
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> f03ff16665eecd01c3cf81adcf4f59892dc7b297
