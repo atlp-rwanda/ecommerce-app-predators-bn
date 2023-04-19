@@ -1,5 +1,5 @@
 paths:
-  /auth/buyer-signup:
+  /register:
     post:
       tags:
         - Users
@@ -43,6 +43,7 @@ paths:
           content:
             application/json:
               schema:
+
                 $ref: '#/components/schemas/User'
         '400':
           description: Invalid input provided
