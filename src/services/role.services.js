@@ -16,3 +16,4 @@ export const setRole = async (req, res) => {
 };
 
 export default setRole;
+
