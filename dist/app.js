@@ -22,17 +22,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Configuration
 _dotenv.default.config();
-const sequelize = _index.default.sequelize;
+const {
+  sequelize
+} = _index.default;
 sequelize.authenticate().then(() => {
-  console.log("Connection has been established successfully.");
+  console.log('Connection has been established successfully.');
 }).catch(err => {
-  console.error("Unable to connect to the database:", err);
+  console.error('Unable to connect to the database:', err);
 });
 // App setup
 const app = (0, _express.default)();
 const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   optionsSuccessStatus: 204
 };
@@ -43,10 +45,10 @@ app.use(_express.default.urlencoded({
   extended: true
 }));
 app.use((0, _cors.default)(corsOptions));
-app.use((0, _morgan.default)("dev"));
+app.use((0, _morgan.default)('dev'));
 app.use(_i18nextHttpMiddleware.default.handle(_i18next.default));
 app.use((0, _expressSession.default)({
-  secret: "some_secret_key",
+  secret: 'some_secret_key',
   resave: false,
   saveUninitialized: false
 }));
@@ -67,8 +69,8 @@ app.use('/api-docs', _swaggerUiExpress.default.serve, _swaggerUiExpress.default.
 _passport.default.serializeUser((user, done) => {
   done(null, user.id);
 });
-app.use("/", _welcome.default);
-app.use("/api", _authRoutes.default);
+app.use('/', _welcome.default);
+app.use('/api', _authRoutes.default);
 // Export the app
 var _default = app;
 exports.default = _default;

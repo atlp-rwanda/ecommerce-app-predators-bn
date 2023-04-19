@@ -5,10 +5,52 @@ import db from '../database/models/index.js';
 import Jwt from '../utils/jwt.js';
 import {
   getUserByGoogleId,
-  registerGoogle,
-} from '../services/user.services.js';
-import generateToken from '../utils/userToken.js';
-import sendEmail from '../utils/sendEmail';
+  registerGoogle
+} from "../services/user.services.js";
+import generateToken from "../utils/userToken.js";
+import sendEmail from "../utils/sendEmail";
+import dotenv from 'dotenv'
+dotenv.config();
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+export const AdminLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if user with the given email is the admin
+    if (email !== ADMIN_EMAIL) {
+      return res
+        .status(401)
+        .json(jsend.fail({ message: 'Invalid Credentials😥' }));
+     }
+   
+    // Compare the given password with the admin's hashed password
+    const passwordMatches = await bcrypt.compare(password, await bcrypt.hash(ADMIN_PASSWORD, 10));
+    if (!passwordMatches) {
+      return res
+        .status(401)
+        .json(jsend.fail({ message: 'Invalid Credentials😥' }));
+    }
+
+    // If the email and password are valid, generate a JWT token
+    const token = generateToken({ email });
+
+    // Set the token in a cookie with HttpOnly and Secure flags
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 3600000, // 1 hour
+    });
+
+    res.status(200).json(jsend.success({ message: 'Login Successful', token }));
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json(jsend.error({ message: 'Opps 😰 server error' }));
+  }
+};
 
 export const UserLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -21,7 +63,9 @@ export const UserLogin = async (req, res) => {
       return res
         .status(401)
         .json(jsend.fail({ message: 'Invalid Credentials😥' }));
-    } if (user.status === 'disabled') {
+     }
+
+     else if (user.status === 'disabled' || user.status === 'inactive') {
       return res
         .status(401)
         .json(jsend.fail({ message: 'User is disabled😥' }));
@@ -69,8 +113,10 @@ export const googleAuthHandler = async (req, res) => {
     password: "password",
     roleId: 0,
 
+
     password: 'password',
     roleId: 2,
+
 
     googleId: id,
     status: 'active',
@@ -263,8 +309,9 @@ export default {
   DeleteUserById,
   logout,
   disableUser,
-  register,
   UserLogin,
+  AdminLogin
+,
 };
 
 /* eslint-disable consistent-return */

@@ -84,8 +84,8 @@ const googleAuthHandler = async (req, res) => {
   const newUser = {
     name: familyName,
     email: value,
-    password: 'password',
-    roleId: 2,
+    password: "password",
+    roleId: 0,
     googleId: id,
     status: 'active'
   };
@@ -285,7 +285,7 @@ const register = async (req, res) => {
     const user = await _index.default.User.create({
       name,
       email,
-      roleId: 2,
+      roleId: 0,
       password: hashedPassword
     });
     res.status(200).json({
@@ -294,6 +294,7 @@ const register = async (req, res) => {
 
     // Send confirmation email
   } catch (err) {
+    console.error(err);
     return res.status(500).send('Server error');
   }
 };

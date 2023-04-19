@@ -8,7 +8,7 @@ var _sequelize = require("sequelize");
 var _default = (sequelize, DataTypes) => {
   class User extends _sequelize.Model {
     /**
-     * Helper method for defining associations.
+     * helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
