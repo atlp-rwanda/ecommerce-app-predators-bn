@@ -231,27 +231,26 @@ export const logout = (req, res) => {
   }
 };
 export const disableUser = async (req, res) => {
-  const { status, reason, email } = req.body;
-
+  
   try {
-    const user = await db.User.findOne({ where: { email } });
-
+    const { id } = req.params;
+    const { status, reason } = req.body;
+    const user = await db.User.findOne({ where: { id } });
     if (!user) {
       return res.status(404).json({
-        message: `user with email : ${email} does not exit `,
+        message: `user with this id:${id} does not exit `,
       });
-    }
-    user.status = status;
+    } else {
+      user.status = status;
 
-    await user.save();
+      await user.save();
 
-    if (user) {
-      const to = user.email;
-      const text = `
-        Subject: Notification of account deactivation
-        Dear User,
-        
-        We regret to inform you that your account on our website has been ${status} due to a ${reason}. Our team has conducted a thorough investigation and found evidence of unauthorized activity on your account.
+      if (user) {
+        const to = user.email;
+        const text = `
+        Notification of Account Deactivation
+	Dear User,
+	We regret to inform you that your account on our website has been ${status} due to a ${reason}. Our team has conducted a thorough investigation and found evidence of unauthorized activity on your account.
 
 As a result, we have taken the necessary steps to protect the security and integrity of our platform by deactivating your account. We take the security of our website and our users very seriously, and we will not tolerate any illegal activities or harmful behavior.
 
@@ -267,11 +266,12 @@ Best regards,
 The E-commerce ATLP-Predators project team
 `;
 
-      sendEmail.sendEmail(to, 'account status', text);
+        sendEmail.sendEmail(to, "account status", text);
 
-      return res
-        .status(200)
-        .json({ message: `User account ${status} successfully  ` });
+        return res
+          .status(200)
+          .json({ message: `User account ${status} successfully  ` });
+      }
     }
   } catch (error) {
     return res.status(500).json({

@@ -1,3 +1,6 @@
+[![Node.js CI](https://github.com/atlp-rwanda/ecommerce-app-predators-bn/actions/workflows/node.js.yml/badge.svg)](https://github.com/atlp-rwanda/ecommerce-app-predators-bn/actions/workflows/node.js.yml)
+<a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/maintainability"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/maintainability" /></a>
+ <a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/test_coverage"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/test_coverage" /></a>
 # ecommerce-app-predators-bn
 
 This is a full-stack ecommerce website built using Node.js, Express,Postgres
@@ -23,16 +26,16 @@ Confirm your order and view your order history.
 Make sure you have Node.js and Postgres installed on your computer, If you don't have Postgres installed locally,
 you can use cloud database service such as https://www.elephantsql.com/ to create the databases
 
-Clone this repository using the command : git clone
-Navigate to the project directory using the command: cd ecommerce-app-predators-bn
-Install dependencies by running : npm install
+Clone this repository using the command : `git clone`
+Navigate to the project directory using the command: `cd ecommerce-app-predators-bn`
+Install dependencies by running : `npm install`
 Create a PostgreSQL database and update the config/config.js file with your database credentials.
-Run the database migrations using Sequelize by running the following command: npm run migrate:up
-Start the application by running: npm run dev 
+Run the database migrations using Sequelize by running the following command: `npm run migrate:up`
+Start the application by running: `npm run dev` 
 
 ## Docker
 Docker is a software platform that allows you to build, test, and deploy applications quickly
-running Docker: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+run Docker: `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build`
 
 
 
@@ -49,13 +52,11 @@ Postgres
 
 Contributions are welcome! If you have any suggestions or find any bugs, please create an issue or follow these steps:
 Fork the repository,
-Create a new branch: git checkout -b feature-name.
-Make your changes and commit them: git commit -m "Your commit message".
-Push your changes to the branch: git push origin feature-name.
+Create a new branch: `git checkout -b feature-name`
+Make your changes and commit them: `git commit -m "Your commit message"`
+Push your changes to the branch: `git push origin feature-name`
 Create a pull request.
-[![Node.js CI](https://github.com/atlp-rwanda/ecommerce-app-predators-bn/actions/workflows/node.js.yml/badge.svg)](https://github.com/atlp-rwanda/ecommerce-app-predators-bn/actions/workflows/node.js.yml)
-<a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/maintainability"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/maintainability" /></a>
- <a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/test_coverage"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/test_coverage" /></a>
+
 ### Migration:
 - Run migrate script to migrate db, use this command: `npm run migrate`
 - Run seed script to add seeds into the table, use this command: `npm run seed`
