@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -29,16 +30,30 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue:'active'
       },
       googleId: {
         type: Sequelize.INTEGER,
-
       },
       gender: {
         type: Sequelize.STRING,
-        allowNull: false,
+      },
+      streetAddressOne: {
+        type: Sequelize.STRING,
+      },
+      streetAddressTwo: {
+        type: Sequelize.STRING,
+      },
+      city: {
+        type: Sequelize.STRING,
+      },
+      region: {
+        type: Sequelize.STRING,
+      },
+      country: {
+        type: Sequelize.STRING,
+      },
+      postalOrZIPCode: {
+        type: Sequelize.STRING,
       },
       preferred_language: {
         type: Sequelize.STRING,
@@ -46,64 +61,15 @@ module.exports = {
       preferred_currency: {
         type: Sequelize.UUID,
       },
-      phone_number: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      otp_enabled: {
-        allowNull: false,
-        defaultValue: false,
-        type: Sequelize.BOOLEAN,
-      },
-      otp_verified: {
-        allowNull: false,
-        defaultValue: false,
-        type: Sequelize.BOOLEAN,
-      },
-      otp_ascii: {
-        type: Sequelize.STRING,
-      },
-      otp_hex: {
-        type: Sequelize.STRING,
-      },
-      otp_base32: {
-        type: Sequelize.STRING,
-      },
-      otp_auth_url: {
-        type: Sequelize.STRING,
-      },
-      otp_enabled: {
-        allowNull: false,
-        defaultValue: false,
-        type: Sequelize.BOOLEAN,
-      },
-      otp_verified: {
-        allowNull: false,
-        defaultValue: false,
-        type: Sequelize.BOOLEAN,
-      },
-      otp_ascii: {
-        type: Sequelize.STRING,
-      },
-      otp_hex: {
-        type: Sequelize.STRING,
-      },
-      otp_base32: {
-        type: Sequelize.STRING,
-      },
-      otp_auth_url: {
-        type: Sequelize.STRING,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      }
+      },
     });
   },
   async down(queryInterface, Sequelize) {
