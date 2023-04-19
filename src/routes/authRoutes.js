@@ -1,9 +1,11 @@
-import { Router } from 'express';
-import passport from 'passport';
-import Jwt from '../utils/jwt';
-import { googlePass } from '../utils/passport';
+import { Router } from "express";
+import passport from "passport";
+import Jwt from "../utils/jwt";
+import { googlePass } from "../utils/passport";
+import vendor from '../controller/vendorController.js';
 import profileController from '../controller/profileController';
 // Google route
+
 import {
   googleAuthHandler,
   GetUsers,
@@ -14,14 +16,11 @@ import {
   register,
   UserLogin,
 } from '../controller/authController';
+import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles";
+import { setRole } from "../services/role.services";
+import { disableEnableUsers } from "../controller/disable.acount.controller.js";
 
-import {
-  isAdmin,
-  isSeller,
-  isBuyer,
-  checkPermission,
-} from '../middleware/roles';
-import { setRole } from '../services/role.services';
+
 
 const router = Router();
 // Google routes
@@ -39,17 +38,19 @@ router.get('/callback', (req, res) => {
   return res.status(401).json({ error: 'Unauthorized' });
 });
 router.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['email', 'profile'] }),
+
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
 );
 router.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
+  "/auth/google/callback",
+  passport.authenticate("google", {
     session: false,
-    failureRedirect: '/',
+    failureRedirect: "/",
   }),
-  googleAuthHandler,
+  googleAuthHandler
 );
+
 router.post('/logout', logout);
 router.get('/users', isAdmin,checkPermission("manage users"),GetUsers);
 router.get('/users/:id', isAdmin,checkPermission("manage users"),GetUserById);
@@ -60,3 +61,4 @@ router.post('/login', UserLogin);
 router.post('/register', register);
 router.patch('/users/profiles', profileController.updateUserProfile);
 export default router;
+

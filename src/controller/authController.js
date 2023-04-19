@@ -69,6 +69,11 @@ export const googleAuthHandler = async (req, res) => {
     password: "password",
     roleId: 0,
 
+
+    password: 'password',
+    roleId: 2,
+
+
     googleId: id,
     status: 'active',
   };
@@ -263,5 +268,6 @@ export default {
   register,
   UserLogin,
 };
+
 /* eslint-disable consistent-return */
 // imports
