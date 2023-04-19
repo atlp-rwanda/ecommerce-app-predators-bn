@@ -66,6 +66,7 @@ passport.serializeUser((user, done) => {
 });
 
 
+
 passport.deserializeUser((id, done) => {
   User.findByPk(id)
     .then((user) => done(null, user))
@@ -73,10 +74,9 @@ passport.deserializeUser((id, done) => {
 });
 
 // Routes
+app.use("/api", authRoute);
+
+app.use("/", welcomeRoute);
 
 
-app.use('/', welcomeRoute);
-app.use('/api', authRoute);
-
-// Export the app
 export default app;

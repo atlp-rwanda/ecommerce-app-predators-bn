@@ -18,4 +18,4 @@ export default {
     dialect: 'postgres',
     logging: false,
   },
-};
+}
