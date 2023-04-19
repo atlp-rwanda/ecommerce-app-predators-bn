@@ -38,6 +38,7 @@ export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
+    phone_number: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
     status: DataTypes.STRING,
     googleId: DataTypes.INTEGER,
@@ -51,6 +52,13 @@ export default (sequelize, DataTypes) => {
     otp_auth_url: DataTypes.STRING,
     preferred_language: DataTypes.STRING,
     preferred_currency: DataTypes.UUID,
+
+    country: DataTypes.STRING,
+    province: DataTypes.STRING,
+    district: DataTypes.STRING,
+    sector: DataTypes.STRING,
+    streetAddress: DataTypes.STRING,
+
   }, {
     sequelize,
     modelName: 'User',

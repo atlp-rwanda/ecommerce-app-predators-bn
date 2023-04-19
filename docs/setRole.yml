@@ -1,5 +1,5 @@
 paths:
-  /api/setRole:
+  /api/setRole/{id}:
     post:
       tags:
         - Users
@@ -15,15 +15,11 @@ paths:
             schema:
               type: object
               properties:
-                email:
-                  type: string
-                  description: The ID of the user to set the role for
-                role:
+                setRole:
                   type: integer
                   description: The ID of the role to set
               required:
-                - email
-                - role
+                - setRole
       responses:
         '200':
           description: The role was successfully set

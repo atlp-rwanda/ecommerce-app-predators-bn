@@ -40,8 +40,60 @@ module.exports = {
       streetAddressOne: {
         type: Sequelize.STRING,
       },
-      streetAddressTwo: {
+     
+      country: {
         type: Sequelize.STRING,
+        allowNull: true,
+
+      },
+      province: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      sector: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      streetAddress: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+
+      otp_enabled: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
+      otp_verified: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
+      otp_ascii: {
+        type: Sequelize.STRING,
+      },
+      otp_hex: {
+        type: Sequelize.STRING,
+      },
+      otp_base32: {
+        type: Sequelize.STRING,
+      },
+      otp_auth_url: {
+        type: Sequelize.STRING,
+      },
+      otp_enabled: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+
       },
       city: {
         type: Sequelize.STRING,

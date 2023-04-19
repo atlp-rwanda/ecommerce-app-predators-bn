@@ -65,8 +65,15 @@ export const googleAuthHandler = async (req, res) => {
   const newUser = {
     name: familyName,
     email: value,
+
+    password: "password",
+    roleId: 0,
+
+
     password: 'password',
     roleId: 2,
+
+
     googleId: id,
     status: 'active',
   };
@@ -240,7 +247,7 @@ export const register = async (req, res) => {
     const user = await db.User.create({
       name,
       email,
-      roleId: 2,
+      roleId: 0,
       password: hashedPassword,
     });
     res.status(200).json({ message: user }); // /!\use jsend
@@ -261,5 +268,6 @@ export default {
   register,
   UserLogin,
 };
+
 /* eslint-disable consistent-return */
 // imports
