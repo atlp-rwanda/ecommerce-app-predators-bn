@@ -5,6 +5,7 @@ const registerGoogle = async (data) => {
     const user = await db.User.create(data);
     return user;
   } catch (error) {
+    console.log(error.message);
     throw new Error('Could not create user');
   }
 };
