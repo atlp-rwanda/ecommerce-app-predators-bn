@@ -1,12 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/extensions */
-/* eslint-disable import/first */
 import { Router } from 'express';
 import passport from 'passport';
 import Jwt from '../utils/jwt';
 import { googlePass } from '../utils/passport';
-
-const router = Router();
 
 // Google route
 import {
@@ -27,8 +22,9 @@ import {
   checkPermission,
 } from '../middleware/roles';
 import { setRole } from '../services/role.services';
-
 import profileController from '../controller/profileController';
+
+const router = Router();
 // Google routes
 googlePass();
 
@@ -63,5 +59,5 @@ router.post('/setRole', isAdmin, setRole);
 router.post('/disableUser', isAdmin, disableUser);
 router.post('/login', UserLogin);
 router.post('/register', register);
-router.patch('/users/profiles', profileController.getUserProfile);
+router.patch('/users/profiles', profileController.updateUserProfile);
 export default router;
