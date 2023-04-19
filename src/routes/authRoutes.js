@@ -9,6 +9,13 @@ import {
   GetUserById,
   DeleteUserById,
   logout,
+
+  disableUser,
+  register,
+  UserLogin,
+  requestResetPassword,resetPassword,
+  resetPasswordLink,
+
 } from "../controller/authController";
 
 import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles";
@@ -45,10 +52,15 @@ router.get(
   googleAuthHandler
 );
 router.post("/logout", logout);
-router.get("/users", isAdmin,checkPermission("manage users"), GetUsers);
-router.get("/users/:id",isAdmin,checkPermission("manage users"), GetUserById);
+router.get("/users", GetUsers);
+router.get("/users/:id",checkPermission("manage users"), GetUserById);
 router.delete("/users/:id", isAdmin, DeleteUserById);
-router.post("/setRole", isAdmin,setRole);
+router.post("/setRole/:id", setRole);
 router.post("/disableEnableUsers", disableEnableUsers);
+
+router.post('/reset/password',requestResetPassword);
+router.get('/user/reset-password/:token',resetPasswordLink);
+router.put('/user/reset-password/:token',resetPassword);
+
 
 export default router;
