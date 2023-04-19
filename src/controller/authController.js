@@ -253,7 +253,7 @@ export const register = async (req, res) => {
   }
 };
 
-// requesting reset password
+// requesting reset password 
 export const requestResetPassword = async (req, res) => {
   const { email } = req.body;
   try {
