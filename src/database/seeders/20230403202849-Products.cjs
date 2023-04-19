@@ -9,8 +9,6 @@ module.exports = {
         description: 'Product 1 description',
         price: '100',
         vendor_id: '1',
-        createdAt: new Date(),
-        updatedAt: new Date()
       } 
     ], {});
   },
