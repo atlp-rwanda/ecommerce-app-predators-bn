@@ -11,7 +11,7 @@ paths:
       requestBody:
         required: true
         content:
-           application/x-www-form-urlencoded:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
@@ -25,14 +25,13 @@ paths:
                   type: string
                   description: The reason why the account is being disabled
               required:
-
                 - id
                 - status
                 - reason
               example:
                 id: 1
-                - status
-                - reason
+                status: "DISABLING" # or "DISABLED" or "REMOVED"
+                reason: "The user's account is being disabled" # or "The user's account has been disabled." or "The user's account is being removed."
       responses:
         '200':
           description: The account was successfully disabled
