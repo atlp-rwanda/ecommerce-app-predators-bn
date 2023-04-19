@@ -3,7 +3,7 @@ import env from 'dotenv';
 
 env.config();
 
-const swaggerServer = process.env.SWAGGER_SERVER || `http://localhost:${process.env.PORT}`;
+const swaggerServer = process.env.SWAGGER_SERVER;
 
 const options = {
   definition: {
