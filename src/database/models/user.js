@@ -45,6 +45,7 @@ export default (sequelize, DataTypes) => {
     gender: DataTypes.STRING,
     preferred_language: DataTypes.STRING,
     preferred_currency: DataTypes.UUID,
+
     country: DataTypes.STRING,
     province: DataTypes.STRING,
     district: DataTypes.STRING,
