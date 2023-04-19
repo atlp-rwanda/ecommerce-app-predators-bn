@@ -10,7 +10,6 @@ import {
 } from "../services/user.services.js";
 import generateToken from "../utils/userToken.js";
 import sendEmail from "../utils/sendEmail";
-import jsend from "jsend";
 export const UserLogin = async (req, res) => {
   const { email, password } = req.body;
 
