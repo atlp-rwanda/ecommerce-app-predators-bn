@@ -3,6 +3,7 @@ import passport from 'passport';
 import Jwt from '../utils/jwt.js';
 import { googlePass } from '../utils/passport.js';
 import profileController from '../controller/profileController.js';
+import vendor from '../controller/vendorController.js';
 
 // Google route
 
@@ -17,11 +18,9 @@ import {
   UserLogin,
   AdminLogin,
   requestResetPassword,
-  resetPassword,
   resetPasswordLink,
-
+  resetPassword,
 } from '../controller/authController.js';
-import vendor from '../controller/vendorController.js';
 import {
   isAdmin, isSeller, isBuyer, checkPermission,
 } from '../middleware/roles.js';
@@ -57,8 +56,9 @@ router.get(
   googleAuthHandler,
 );
 
+router.post('/vendor', isAdmin, vendor);
 router.post('/logout', logout);
-router.get('/users', isAdmin, checkPermission('manage users'), GetUsers);
+router.get('/users', GetUsers);
 router.get('/users/:id', isAdmin, checkPermission('manage users'), GetUserById);
 router.delete('/users/:id', isAdmin, isAdmin, checkPermission('manage users'), DeleteUserById);
 router.post('/setRole/:id', isAdmin, isAdmin, checkPermission('manage users'), setRole);

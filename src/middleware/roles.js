@@ -1,5 +1,6 @@
-import db from '../database/models/index.js';
-import JwtUtility from '../utils/jwt';
+import db from "../database/models/index.js";
+import JwtUtility from "../utils/jwt";
+
 
 const isAdmin = async (req, res, next) => {
   const authheader = req.headers.authorization;
@@ -69,6 +70,7 @@ const isBuyer = async (req, res, next) => {
     const decodedToken = JwtUtility.verifyToken(token);
     const user = await db.User.findOne({ where: { id: decodedToken.value.id } });
     if (user && decodedToken && decodedToken.value.roleId === 2) {
+      req.user = user;
       next();
     } else {
       res

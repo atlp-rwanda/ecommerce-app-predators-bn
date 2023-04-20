@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      Name: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      Instock: {
+      instock: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },

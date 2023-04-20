@@ -12,10 +12,10 @@ import express from "express";
 import cors from "cors";
 // Sequelize configuration
 dotenv.config();
-const sequelize = db.sequelize;
+const { sequelize } = db;
 sequelize.authenticate().then(() => {
   console.log('Connection has been established successfully.');
-}).catch(err => {
+}).catch((err) => {
   console.error('Unable to connect to the database:', err);
 });
 
@@ -33,7 +33,7 @@ import welcomeRoute from "./routes/welcome.js";
 import authRoute from "./routes/authRoutes.js";
 import otpAuthRouter from "./routes/otpAuthRoute.js";
 import product from "./routes/ProductRoutes.js";
-
+import prodRoute from "./routes/prodRoute.js";
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -61,7 +61,6 @@ const options = {
 };
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger, false, options));
 
-
 passport.deserializeUser((id, done) => {
   User.findByPk(id)
     .then((user) => done(null, user))
@@ -69,7 +68,8 @@ passport.deserializeUser((id, done) => {
 });
 
 // Routes
-app.use("/auth", otpAuthRouter);
+app.use('/api/products', prodRoute);
+app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/api", product);
 app.use("/", welcomeRoute);
