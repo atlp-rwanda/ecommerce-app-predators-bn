@@ -113,14 +113,44 @@ module.exports = {
       preferred_currency: {
         type: Sequelize.UUID,
       },
+      otp_enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      },
+      otp_verified: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      },
+      otp_ascii: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_hex: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_base32: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_auth_url: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      phone_number: { //phone number is a string, but we need an object for the database to handle it.  So we use a string.  It's a
+        type: Sequelize.STRING,
+        allowNull:true
+      }, //we can't null out this field.  So we say it can't be null.  It's a required field.  So we say it
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
   },

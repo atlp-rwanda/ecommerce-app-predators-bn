@@ -1,9 +1,10 @@
 import { Router } from "express";
 import passport from "passport";
-import Jwt from "../utils/jwt";
-import { googlePass } from "../utils/passport";
-import vendor from '../controller/vendorController.js';
-import profileController from '../controller/profileController';
+import Jwt from "../utils/jwt.js";
+import { googlePass } from "../utils/passport.js";
+import profileController from '../controller/profileController.js';
+const router = Router();
+
 // Google route
 
 import {
@@ -16,14 +17,10 @@ import {
   register,
   UserLogin,
   AdminLogin
-} from '../controller/authController';
-import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles";
-import { setRole } from "../services/role.services";
-import { disableEnableUsers } from "../controller/disable.acount.controller.js";
+} from '../controller/authController.js';
+import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles.js";
+import { setRole } from "../services/role.services.js";
 
-
-
-const router = Router();
 // Google routes
 googlePass();
 
@@ -62,4 +59,5 @@ router.post('/login', UserLogin);
 router.post("/adminLogin", AdminLogin)
 router.post('/register', register);
 router.patch('/users/profiles', profileController.updateUserProfile);
+
 export default router;

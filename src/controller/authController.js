@@ -8,11 +8,12 @@ import {
   registerGoogle
 } from "../services/user.services.js";
 import generateToken from "../utils/userToken.js";
-import sendEmail from "../utils/sendEmail";
+import sendEmail from "../utils/sendEmail.js";
 import dotenv from 'dotenv'
 dotenv.config();
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
 export const AdminLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -103,67 +104,56 @@ export const UserLogin = async (req, res) => {
 export const googleAuthHandler = async (req, res) => {
   const { value } = req.user.emails[0];
   const { familyName } = req.user.name;
-  const { id } = req.user;
+  const id = req.user.id.substring(0, 5);
 
   // Create a new user object with the Google account data
   const newUser = {
     name: familyName,
     email: value,
-
     password: "password",
-    roleId: 0,
-
-
-    password: 'password',
     roleId: 2,
-
-
     googleId: id,
-    status: 'active',
+    status: "active",
   };
-
   // Check if user already exists
   const user = await getUserByGoogleId(newUser.googleId);
   if (user) {
     // User already exists, generate JWT and redirect
-    const {
-      id, email, name, password, roleId, googleId,
-    } = user;
+    const { id, email, name, password, roleId ,googleId} = user;
     const userToken = Jwt.generateToken(
       {
-        id,
-        email,
-        name,
-        password,
-        roleId,
-        status: 'active',
-        googleId,
+        id: id,
+        email: email,
+        name: name,
+        password: password,
+        roleId: roleId,
+        status: "active",
+        googleId: googleId,
       },
-      '1h',
+      "1h"
     );
-    res.cookie('jwt', userToken);
+    res.cookie("jwt", userToken);
     return res.redirect(`/api/callback?key=${userToken}`);
   } else {
     // User does not exist, create new user and generate JWT
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
     newUser.password = hashedPassword;
-    const {
-      id, email, name, password, roleId, googleId,
-    } = await registerGoogle(newUser);
+    const { id, email, name, password, roleId, googleId } =
+      await registerGoogle(newUser);
     const userToken = Jwt.generateToken(
       {
-        id,
-        email,
-        name,
-        password,
-        roleId,
-        status: 'active',
-        googleId,
+        id: id,
+        email: email,
+        name: name,
+        password: password,
+        roleId: roleId,
+        status: "active",
+        googleId: googleId,
       },
-      '1h',
+      "1h"
     );
-    res.cookie('jwt', userToken);
+    res.cookie("jwt", userToken);
     return res.redirect(`/api/callback?key=${userToken}`);
   }
 };
@@ -295,7 +285,7 @@ export const register = async (req, res) => {
     const user = await db.User.create({
       name,
       email,
-      roleId: 0,
+      roleId: 1,
       password: hashedPassword,
     });
     res.status(200).json({ message: user }); // /!\use jsend
