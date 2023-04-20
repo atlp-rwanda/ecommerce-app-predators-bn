@@ -1,5 +1,5 @@
-import bcrypt from "bcryptjs";
-import crypto from "crypto";
+/* eslint-disable consistent-return */
+// imports
 import db from "../database/models/index.js";
 import { createTransport } from "nodemailer";
 import dotenv from "dotenv";
