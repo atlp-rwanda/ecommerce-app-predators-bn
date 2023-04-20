@@ -1,25 +1,29 @@
 // Imports
-import morgan from "morgan";
-import session from "express-session";
-import passport from "passport";
-import i18next from "./middleware/i18next.js";
-import middleware from "i18next-http-middleware";
-import dotenv from "dotenv";
-import swaggerUI from "swagger-ui-express";
-import swagger from "../docs/swagger.js";
-import db from "../src/database/models/index.js";
-import express from "express";
-import cors from "cors";
-
-// Sequelize configuration
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import session from 'express-session';
+import passport from 'passport';
+import middleware from 'i18next-http-middleware';
+import dotenv from 'dotenv';
+import swaggerUI from 'swagger-ui-express';
+import i18next from './middleware/i18next.js';
+import swagger from './config/swagger.js';
+import db from './database/models/index.js';
+import welcomeRoute from './routes/welcome.js';
+import authRoute from './routes/authRoutes.js';
+import prodRoute from './routes/prodRoute.js';
+// Configuration
 dotenv.config();
-const sequelize = db.sequelize;
-sequelize.authenticate().then(() => {
-  console.log('Connection has been established successfully.');
-}).catch(err => {
-  console.error('Unable to connect to the database:', err);
-});
-
+const { sequelize } = db;
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
 // App setup
 const app = express();
 const corsOptions = {
@@ -68,10 +72,8 @@ passport.deserializeUser((id, done) => {
     .catch((err) => done(err, null));
 });
 
-// Routes
-app.use("/auth", otpAuthRouter);
+app.use('/', welcomeRoute);
 app.use('/api', authRoute);
-app.use("/", welcomeRoute);
-
+app.use('/prod', prodRoute);
 // Export the app
 export default app;
