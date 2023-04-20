@@ -25,7 +25,7 @@ module.exports = {
       available: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: false,,
       },
       vendor_id: {
         type: Sequelize.INTEGER,

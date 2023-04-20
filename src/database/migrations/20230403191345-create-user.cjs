@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -35,18 +36,37 @@ module.exports = {
       },
       gender: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
-      preferred_language: {
+      streetAddressOne: {
         type: Sequelize.STRING,
       },
-      preferred_currency: {
-        type: Sequelize.UUID,
+     
+      country: {
+        type: Sequelize.STRING,
+        allowNull: true,
+
       },
-      phone_number: {
+      province: {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      sector: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      streetAddress: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+
       otp_enabled: {
         allowNull: false,
         defaultValue: false,
@@ -68,6 +88,54 @@ module.exports = {
       },
       otp_auth_url: {
         type: Sequelize.STRING,
+      },
+      otp_enabled: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+
+      },
+      city: {
+        type: Sequelize.STRING,
+      },
+      region: {
+        type: Sequelize.STRING,
+      },
+      country: {
+        type: Sequelize.STRING,
+      },
+      postalOrZIPCode: {
+        type: Sequelize.STRING,
+      },
+      preferred_language: {
+        type: Sequelize.STRING,
+      },
+      preferred_currency: {
+        type: Sequelize.UUID,
+      },
+      otp_enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      },
+      otp_verified: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      },
+      otp_ascii: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_hex: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_base32: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_auth_url: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       createdAt: {
         allowNull: false,

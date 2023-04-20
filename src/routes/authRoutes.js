@@ -1,9 +1,12 @@
-import { Router } from 'express';
-import passport from 'passport';
-import Jwt from '../utils/jwt.js';
-import { googlePass } from '../utils/passport.js';
+import { Router } from "express";
+import passport from "passport";
+import Jwt from "../utils/jwt.js";
+import { googlePass } from "../utils/passport.js";
+import profileController from '../controller/profileController.js';
+const router = Router();
 
 // Google route
+
 import {
   googleAuthHandler,
   GetUsers,
@@ -13,17 +16,11 @@ import {
   disableUser,
   register,
   UserLogin,
+  AdminLogin
 } from '../controller/authController.js';
+import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles.js";
+import { setRole } from "../services/role.services.js";
 
-import {
-  isAdmin,
-  isSeller,
-  isBuyer,
-  checkPermission,
-} from '../middleware/roles.js';
-import { setRole } from '../services/role.services.js';
-
-const router = Router();
 // Google routes
 googlePass();
 
@@ -39,24 +36,27 @@ router.get('/callback', (req, res) => {
   return res.status(401).json({ error: 'Unauthorized' });
 });
 router.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['email', 'profile'] }),
+
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
 );
 router.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
+  "/auth/google/callback",
+  passport.authenticate("google", {
     session: false,
-    failureRedirect: '/',
+    failureRedirect: "/",
   }),
-  googleAuthHandler,
+  googleAuthHandler
 );
-router.post('/logout', logout);
-router.get('/users', isAdmin, GetUsers);
-router.get('/users/:id', isAdmin, GetUserById);
-router.delete('/users/:id', isAdmin, DeleteUserById);
-router.post('/setRole', isAdmin, setRole);
-router.post('/disableUser', isAdmin, disableUser);
-router.post('/login', UserLogin);
-router.post('/register', register);
 
+router.post('/logout', logout);
+router.get('/users', isAdmin,checkPermission("manage users"),GetUsers);
+router.get('/users/:id', isAdmin,checkPermission("manage users"),GetUserById);
+router.delete('/users/:id', isAdmin,isAdmin,checkPermission("manage users"),DeleteUserById);
+router.post('/setRole/:id', isAdmin,isAdmin,checkPermission("manage users"), setRole);
+router.post('/disableUser/:id', disableUser);
+router.post('/login', UserLogin);
+router.post("/adminLogin", AdminLogin)
+router.post('/register', register);
+router.patch('/users/profiles', profileController.updateUserProfile);
 export default router;

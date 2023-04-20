@@ -1,10 +1,10 @@
-import JWT from "jsonwebtoken";
-import dotenv from "dotenv";
+import JWT from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 export default class Jwt {
-  static generateToken(data, exp = "1d") {
+  static generateToken(data, exp = '1d') {
     return JWT.sign(data, process.env.JWT_SECRET, { expiresIn: exp });
   }
 

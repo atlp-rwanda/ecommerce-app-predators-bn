@@ -1,9 +1,10 @@
 'use strict';
 import { Model } from 'sequelize';
+
 export default (sequelize, DataTypes) => {
   class User extends Model {
     /**
-     * Helper method for defining associations.
+     * helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
@@ -37,12 +38,27 @@ export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
+    phone_number: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
     status: DataTypes.STRING,
     googleId: DataTypes.INTEGER,
     gender: DataTypes.STRING,
+    phone_number: DataTypes.STRING,
+    otp_enabled: DataTypes.BOOLEAN,
+    otp_verified: DataTypes.BOOLEAN,
+    otp_ascii: DataTypes.STRING,
+    otp_hex: DataTypes.STRING,
+    otp_base32: DataTypes.STRING,
+    otp_auth_url: DataTypes.STRING,
     preferred_language: DataTypes.STRING,
-    preferred_currency: DataTypes.UUID
+    preferred_currency: DataTypes.UUID,
+
+    country: DataTypes.STRING,
+    province: DataTypes.STRING,
+    district: DataTypes.STRING,
+    sector: DataTypes.STRING,
+    streetAddress: DataTypes.STRING,
+
   }, {
     sequelize,
     modelName: 'User',
