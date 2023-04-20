@@ -82,7 +82,11 @@ const checkPermission = (permission) => async (req, res, next) => {
   if (!authheader) {
     return res.status(401).json({ message: "Token not provided" }); // assuming the token is sent in the Authorization header
   }
-  const token = authheader.split(" ")[1];
+
+  const email = req.params.email;
+  if (email === undefined) {
+    return res.status(400).json({ message: "email parameter is missing" });
+  }
   // const { id } = req.params;
   const permissions = {
     0: ["manage users", "manage products"],
@@ -91,12 +95,13 @@ const checkPermission = (permission) => async (req, res, next) => {
   };
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    const user = await db.User.findOne({ where: { id: decodedToken.value.id } });
-    const roleId = decodedToken.value.roleId;
+    const user = await db.User.findOne({ where: { id: decodedToken.id } });
+    const roleId = decodedToken.roleId;
     if (user && permissions[roleId]?.includes(permission)) {
       next();
     } else {
-      // next();
+       next();
+
       res
         .status(403)
         .json({ message: "Your are Unauthorized to perform this action" });

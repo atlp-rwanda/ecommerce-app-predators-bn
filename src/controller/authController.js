@@ -5,10 +5,52 @@ import db from '../database/models/index.js';
 import Jwt from '../utils/jwt.js';
 import {
   getUserByGoogleId,
-  registerGoogle,
-} from '../services/user.services.js';
-import generateToken from '../utils/userToken.js';
-import sendEmail from '../utils/sendEmail.js';
+  registerGoogle
+} from "../services/user.services.js";
+import generateToken from "../utils/userToken.js";
+import sendEmail from "../utils/sendEmail.js";
+import dotenv from 'dotenv'
+dotenv.config();
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+export const AdminLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if user with the given email is the admin
+    if (email !== ADMIN_EMAIL) {
+      return res
+        .status(401)
+        .json(jsend.fail({ message: 'Invalid Credentials😥' }));
+     }
+   
+    // Compare the given password with the admin's hashed password
+    const passwordMatches = await bcrypt.compare(password, await bcrypt.hash(ADMIN_PASSWORD, 10));
+    if (!passwordMatches) {
+      return res
+        .status(401)
+        .json(jsend.fail({ message: 'Invalid Credentials😥' }));
+    }
+
+    // If the email and password are valid, generate a JWT token
+    const token = generateToken({ email });
+
+    // Set the token in a cookie with HttpOnly and Secure flags
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 3600000, // 1 hour
+    });
+
+    res.status(200).json(jsend.success({ message: 'Login Successful', token }));
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json(jsend.error({ message: 'Opps 😰 server error' }));
+  }
+};
 
 export const UserLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -21,7 +63,9 @@ export const UserLogin = async (req, res) => {
       return res
         .status(401)
         .json(jsend.fail({ message: 'Invalid Credentials😥' }));
-    } if (user.status === 'disabled') {
+     }
+
+     else if (user.status === 'disabled' || user.status === 'inactive') {
       return res
         .status(401)
         .json(jsend.fail({ message: 'User is disabled😥' }));
@@ -187,43 +231,47 @@ export const logout = (req, res) => {
   }
 };
 export const disableUser = async (req, res) => {
-  const { status, reason, email } = req.body;
-
+  
   try {
-    const user = await db.User.findOne({ where: { email } });
-
+    const { id } = req.params;
+    const { status, reason } = req.body;
+    const user = await db.User.findOne({ where: { id } });
     if (!user) {
       return res.status(404).json({
-        message: `user with email : ${email} does not exit `,
+        message: `user with this id:${id} does not exit `,
       });
-    }
-    user.status = status;
+    } else {
+      user.status = status;
 
-    await user.save();
+      await user.save();
 
-    if (user) {
-      const to = user.email;
-      const text = `
-        Subject: Notification of account deactivation
-        Dear User,
-        
-        We regret to inform you that your account on our website has been ${status} due to a ${reason}. Our team has conducted a thorough investigation and found evidence of unauthorized activity on your account.
-        
-        As a result, we have taken the necessary steps to protect the security and integrity of our platform by deactivating your account. We take the security of our website and our users very seriously, and we will not tolerate any illegal activities or harmful behavior.
-        
-        Please note that you will no longer be able to access your account or any associated services. If you have any questions or concerns about this decision, please do not hesitate to contact us at predators@gmail.com.
-        
-        Thank you for your understanding and cooperation.
-        
-        Best regards,
-        
-        The E-commerce ATLP-Predators project team`;
+      if (user) {
+        const to = user.email;
+        const text = `
+        Notification of Account Deactivation
+	Dear User,
+	We regret to inform you that your account on our website has been ${status} due to a ${reason}. Our team has conducted a thorough investigation and found evidence of unauthorized activity on your account.
 
-      sendEmail.sendEmail(to, 'account status', text);
+As a result, we have taken the necessary steps to protect the security and integrity of our platform by deactivating your account. We take the security of our website and our users very seriously, and we will not tolerate any illegal activities or harmful behavior.
 
-      return res
-        .status(200)
-        .json({ message: `User account ${status} successfully  ` });
+Please note that you will no longer be able to access your account or any associated services. If you have any questions or concerns about this decision, please do not hesitate to contact us at andelapreda@gmail.com.
+
+        
+Thank you for your understanding and cooperation.
+        
+        
+Best regards,
+        
+        
+The E-commerce ATLP-Predators project team
+`;
+
+        sendEmail.sendEmail(to, "account status", text);
+
+        return res
+          .status(200)
+          .json({ message: `User account ${status} successfully  ` });
+      }
     }
   } catch (error) {
     return res.status(500).json({
@@ -265,8 +313,9 @@ export default {
   DeleteUserById,
   logout,
   disableUser,
-  register,
   UserLogin,
+  AdminLogin
+,
 };
 
 /* eslint-disable consistent-return */

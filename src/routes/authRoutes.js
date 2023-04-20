@@ -16,10 +16,10 @@ import {
   disableUser,
   register,
   UserLogin,
+  AdminLogin
 } from '../controller/authController.js';
 import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles.js";
 import { setRole } from "../services/role.services.js";
-import { disableEnableUsers } from "../controller/disable.acount.controller.js";
 
 // Google routes
 googlePass();
@@ -54,9 +54,9 @@ router.get('/users', isAdmin,checkPermission("manage users"),GetUsers);
 router.get('/users/:id', isAdmin,checkPermission("manage users"),GetUserById);
 router.delete('/users/:id', isAdmin,isAdmin,checkPermission("manage users"),DeleteUserById);
 router.post('/setRole/:id', isAdmin,isAdmin,checkPermission("manage users"), setRole);
-router.post('/disableUser', isAdmin, disableUser);
+router.post('/disableUser/:id', disableUser);
 router.post('/login', UserLogin);
+router.post("/adminLogin", AdminLogin)
 router.post('/register', register);
 router.patch('/users/profiles', profileController.updateUserProfile);
 export default router;
-

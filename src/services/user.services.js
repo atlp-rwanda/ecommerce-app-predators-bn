@@ -22,6 +22,7 @@ const getUserByEmail = async (email) => {
     throw new Error('Could not find user');
   }
 };
+
 const getUserByGoogleId = async (googleId) => {
   try {
     const user = await db.User.findOne({

@@ -61,6 +61,7 @@ const options = {
 };
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger, false, options));
 
+
 passport.deserializeUser((id, done) => {
   User.findByPk(id)
     .then((user) => done(null, user))

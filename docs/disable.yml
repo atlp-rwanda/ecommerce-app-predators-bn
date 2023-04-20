@@ -1,5 +1,5 @@
 paths:
-  /api/disableUser:
+  /api/disableUser/{id}:
     post:
       tags:
         - Users
@@ -11,12 +11,12 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
-                email:
-                  type: string
+                id:
+                  type: number
                   description: The ID of the user to disable
                 status:
                   type: string
@@ -25,13 +25,13 @@ paths:
                   type: string
                   description: The reason why the account is being disabled
               required:
-                - email
+                - id
                 - status
                 - reason
               example:
-                email: "user@example.com"
-                status: "disabled"
-                reason: "violation of our policies"
+                id: 1
+                status: "DISABLING" # or "DISABLED" or "REMOVED"
+                reason: "The user's account is being disabled" # or "The user's account has been disabled." or "The user's account is being removed."
       responses:
         '200':
           description: The account was successfully disabled
