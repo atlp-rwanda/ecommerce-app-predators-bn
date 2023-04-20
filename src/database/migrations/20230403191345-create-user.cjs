@@ -32,25 +32,23 @@ module.exports = {
         type: Sequelize.STRING,
       },
       googleId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
       },
       gender: {
+        type: Sequelize.STRING,
+      },
+      phone_number: {
         type: Sequelize.STRING,
       },
       streetAddressOne: {
         type: Sequelize.STRING,
       },
-     
       country: {
         type: Sequelize.STRING,
         allowNull: true,
 
       },
       province: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      district: {
         type: Sequelize.STRING,
         allowNull: true,
       },
@@ -89,19 +87,10 @@ module.exports = {
       otp_auth_url: {
         type: Sequelize.STRING,
       },
-      otp_enabled: {
-        allowNull: false,
-        defaultValue: false,
-        type: Sequelize.BOOLEAN,
-
-      },
       city: {
         type: Sequelize.STRING,
       },
       region: {
-        type: Sequelize.STRING,
-      },
-      country: {
         type: Sequelize.STRING,
       },
       postalOrZIPCode: {
@@ -112,30 +101,6 @@ module.exports = {
       },
       preferred_currency: {
         type: Sequelize.UUID,
-      },
-      otp_enabled: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true
-      },
-      otp_verified: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true
-      },
-      otp_ascii: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      otp_hex: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      otp_base32: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      otp_auth_url: {
-        type: Sequelize.STRING,
-        allowNull: true
       },
       createdAt: {
         allowNull: false,
