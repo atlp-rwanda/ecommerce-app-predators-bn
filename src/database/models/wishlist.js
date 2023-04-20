@@ -1,7 +1,7 @@
 'use strict';
 import { Model } from 'sequelize';
 export default (sequelize, DataTypes) => {
-  class ROLES extends Model {
+  class wishlist extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,18 +9,22 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
-      ROLES.hasMany(models.User, {
-        foreignKey: 'roleId',
-        as: 'users',
+      wishlist.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+      });
+      wishlist.belongsTo(models.Product, {
+        foreignKey: 'productId',
+        onDelete: 'CASCADE',
       });
     }
   }
-  ROLES.init({
-    name: DataTypes.STRING
+  wishlist.init({
+    userId: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'ROLES',
+    modelName: 'wishlist',
   });
-  return ROLES;
+  return wishlist;
 };

@@ -10,11 +10,6 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasOne(models.ROLES, {
-        foreignKey: 'roleId',
-        as: 'role',
-        onDelete: 'CASCADE',
-      });
 
       User.hasOne(models.Carts, {
         foreignKey: 'User_id',
@@ -43,6 +38,13 @@ export default (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     googleId: DataTypes.INTEGER,
     gender: DataTypes.STRING,
+    phone_number: DataTypes.STRING,
+    otp_enabled: DataTypes.BOOLEAN,
+    otp_verified: DataTypes.BOOLEAN,
+    otp_ascii: DataTypes.STRING,
+    otp_hex: DataTypes.STRING,
+    otp_base32: DataTypes.STRING,
+    otp_auth_url: DataTypes.STRING,
     preferred_language: DataTypes.STRING,
     preferred_currency: DataTypes.UUID,
 

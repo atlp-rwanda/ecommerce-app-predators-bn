@@ -32,6 +32,7 @@ const getUserByGoogleId = async (googleId) => {
     });
     return user;
   } catch (error) {
+    console.log(error.message); // eslint-disable-line no-console 		throw new Error('Could not find user';
     throw new Error('Could not find user');
   }
 };
