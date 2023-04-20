@@ -113,14 +113,39 @@ module.exports = {
       preferred_currency: {
         type: Sequelize.UUID,
       },
+      otp_enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      },
+      otp_verified: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
+      },
+      otp_ascii: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_hex: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_base32: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      otp_auth_url: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
   },
