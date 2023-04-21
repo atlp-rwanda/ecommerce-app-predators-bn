@@ -1,8 +1,8 @@
 import db from '../database/models/index.js';
-
+import Joi from 'joi';
 // getting all products
 
-const getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
   try {
     const products = await db.Product.findAll({
       include: [],
@@ -33,7 +33,7 @@ const getAllProducts = async (req, res) => {
 
 // Getting Product by Id
 
-const getProductById = async (req, res) => {
+export const getProductById = async (req, res) => {
   const { id } = req.params;
   try {
     const product = await db.Product.findOne({
@@ -64,4 +64,32 @@ const getProductById = async (req, res) => {
     });
   }
 };
-export default { getAllProducts, getProductById };
+export const updateProduct = async (req, res) => {
+  const { itemId } = req.params;
+  const inputData = req.body;
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    price: Joi.number().positive().required(),
+    expiryDate: Joi.date().iso().required(),
+    images: Joi.array().items(Joi.string()),
+    quantity: Joi.number().integer().positive().required(),
+  });
+  const { error } = schema.validate(inputData);
+  if (error) return res.status(400).json({ error: error.details[0].message });
+
+  const item = await db.Product.findOne({ where: { id: itemId, vendor_id: req.user.id } });
+  if (!item) return res.status(404).json({ error: 'Item not found in seller\'s collection' });
+
+  Object.assign(item, inputData);
+  await item.save();
+
+  const { id, name, description, price, images, quantity, expiryDate } = item;
+  return res.json({
+    status: 200,
+    message: 'Item updated successfully',
+    item: { id, name, description, price, images, quantity, expiryDate },
+  });
+};
+
+export default { getAllProducts, getProductById, updateProduct };

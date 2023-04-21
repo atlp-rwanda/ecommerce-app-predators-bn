@@ -19,7 +19,11 @@ export default (sequelize, DataTypes) => {
     Name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.STRING,
-    vendor_id: DataTypes.INTEGER
+    vendor_id: DataTypes.INTEGER,
+    images: DataTypes.ARRAY(DataTypes.STRING),
+    quantity: DataTypes.INTEGER,
+    expiryDate: DataTypes.DATE,
+    
   }, {
     sequelize,
     modelName: 'Product',

@@ -10,7 +10,6 @@ import swagger from "../docs/swagger.js";
 import db from "../src/database/models/index.js";
 import express from "express";
 import cors from "cors";
-
 // Sequelize configuration
 dotenv.config();
 const sequelize = db.sequelize;
@@ -33,6 +32,7 @@ const corsOptions = {
 import welcomeRoute from "./routes/welcome.js";
 import authRoute from "./routes/authRoutes.js";
 import otpAuthRouter from "./routes/otpAuthRoute.js";
+import product from "./routes/ProductRoutes.js";
 
 // Middleware
 app.use(express.json());
@@ -71,6 +71,7 @@ passport.deserializeUser((id, done) => {
 // Routes
 app.use("/auth", otpAuthRouter);
 app.use('/api', authRoute);
+app.use("/api", product);
 app.use("/", welcomeRoute);
 
 // Export the app
