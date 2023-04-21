@@ -24,7 +24,7 @@ export default (sequelize, DataTypes) => {
     User_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
-    price:DataTypes.FLOAT,
+    amount:DataTypes.FLOAT,
 
   }, {
     sequelize,
