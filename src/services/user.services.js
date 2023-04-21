@@ -5,7 +5,7 @@ const registerGoogle = async (data) => {
     const user = await db.User.create(data);
     return user;
   } catch (error) { 
-    throw new Error("Could not create user");
+    return false
     
   }
 };
@@ -18,11 +18,11 @@ const getUserByEmail = async (email) => {
       },
     });
     if (!user) {
-       throw new Error("Could not find user");
+       return false
     }
     return user;
   } catch (error) {
-    throw new Error("Could not find user");
+    return false
   }
 };
 const getUserByGoogleId = async (googleId) => {

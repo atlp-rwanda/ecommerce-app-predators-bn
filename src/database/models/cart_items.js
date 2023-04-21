@@ -20,9 +20,12 @@ export default (sequelize, DataTypes) => {
     }
   }
   Cart_items.init({
-    cart_id: DataTypes.INTEGER,
+
+    User_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
-    quantity: DataTypes.INTEGER
+    quantity: DataTypes.INTEGER,
+    amount:DataTypes.FLOAT,
+
   }, {
     sequelize,
     modelName: 'Cart_items',

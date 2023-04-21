@@ -17,7 +17,7 @@ export default class Cart {
                 let CartsItem = await db.Cart_items.create(cartData);
                 return CartsItem;
             }else{ 
-                Carts.quantity=cartData.quantity;
+                Carts.quantity=Carts.quantity+cartData.quantity;
                 let CartsItem = await Carts.save().then((result) =>{ 
                     return result;
               
