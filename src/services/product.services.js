@@ -9,9 +9,10 @@ export default class productDetail {
                             id: id
                         },
                     });
-            if (!Product) {
+            if (!Product) {  
                return false
             }
+          
         return Product; 
         } catch (error) {
            return false

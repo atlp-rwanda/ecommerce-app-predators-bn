@@ -9,7 +9,7 @@ module.exports = {
       [
         {
           name: 'John Doe',
-          email: 'yobu@gmail.com',
+          email: 'yobuys@gmail.com',
           password:'$2y$10$bb.ZLaQkxDxLBvFadjr7A.MzYbGcinp68U/4svnM4JDNLJqgqhpRG',
           roleId: 1,
           status: 'active',
