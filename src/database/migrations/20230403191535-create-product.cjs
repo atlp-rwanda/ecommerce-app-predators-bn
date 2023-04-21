@@ -39,16 +39,6 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
       },
-      images: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        allowNull: true
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-      },
-      expiryDate: {
-        type: Sequelize.DATE,
-      },
       vendor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

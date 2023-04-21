@@ -116,50 +116,47 @@ export const googleAuthHandler = async (req, res) => {
     password: 'password',
     roleId: 2,
     googleId: id,
-    status: 'active',
+    status: "active",
   };
   // Check if user already exists
   const user = await getUserByGoogleId(newUser.googleId);
   if (user) {
     // User already exists, generate JWT and redirect
-    const {
-      id, email, name, password, roleId, googleId,
-    } = user;
+    const { id, email, name, password, roleId ,googleId} = user;
     const userToken = Jwt.generateToken(
       {
-        id,
-        email,
-        name,
-        password,
-        roleId,
-        status: 'active',
-        googleId,
+        id: id,
+        email: email,
+        name: name,
+        password: password,
+        roleId: roleId,
+        status: "active",
+        googleId: googleId,
       },
-      '1h',
+      "1h"
     );
-    res.cookie('jwt', userToken);
+    res.cookie("jwt", userToken);
     return res.redirect(`/api/callback?key=${userToken}`);
   } else {
     // User does not exist, create new user and generate JWT
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
     newUser.password = hashedPassword;
-    const {
-      id, email, name, password, roleId, googleId,
-    } = await registerGoogle(newUser);
+    const { id, email, name, password, roleId, googleId } =
+      await registerGoogle(newUser);
     const userToken = Jwt.generateToken(
       {
-        id,
-        email,
-        name,
-        password,
-        roleId,
-        status: 'active',
-        googleId,
+        id: id,
+        email: email,
+        name: name,
+        password: password,
+        roleId: roleId,
+        status: "active",
+        googleId: googleId,
       },
-      '1h',
+      "1h"
     );
-    res.cookie('jwt', userToken);
+    res.cookie("jwt", userToken);
     return res.redirect(`/api/callback?key=${userToken}`);
   }
 };

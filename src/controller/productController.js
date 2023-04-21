@@ -10,24 +10,24 @@ export const getAllProducts = async (req, res) => {
 
     if (!products) {
       return res.status(404).json({
-        status: 'fail',
+        status: "fail",
         code: 404,
         data: { products },
-        message: 'No product found',
+        message: "No product found",
       });
     }
     return res.status(200).json({
-      status: 'success',
+      status: "success",
       code: 200,
       data: { products },
-      message: 'Products retreived successfully',
+      message: "Products retreived successfully",
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      status: 'server error',
+      status: "server error",
       code: 500,
-      data: { message: 'Server error!!' },
+      data: { message: "Server error!!" },
     });
   }
 };
@@ -43,22 +43,22 @@ export const getProductById = async (req, res) => {
 
     if (!product) {
       return res.status(404).json({
-        status: 'fail',
+        status: "fail",
         code: 404,
         data: { product },
-        message: 'There is no item found',
+        message: "There is no item found",
       });
     }
 
     return res.status(200).json({
-      status: 'success',
+      status: "success",
       code: 200,
       data: { product },
-      message: 'Product retrieved Successfully',
+      message: "Product retrieved Successfully",
     });
   } catch (err) {
     return res.status(500).json({
-      status: 'server error',
+      status: "server error",
       code: 500,
       data: { message: 'Server error . Try again later' },
     });
