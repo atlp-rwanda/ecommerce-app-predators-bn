@@ -17,7 +17,9 @@ import {
   register,
   UserLogin,
   AdminLogin
+
 } from '../controller/authController.js';
+import vendor from "../controller/vendorController.js";
 import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles.js";
 import { setRole } from "../services/role.services.js";
 
@@ -58,5 +60,6 @@ router.post('/disableUser/:id', disableUser);
 router.post('/login', UserLogin);
 router.post("/adminLogin", AdminLogin)
 router.post('/register', register);
+router.post('/vendor',vendor);
 router.patch('/users/profiles', profileController.updateUserProfile);
 export default router;
