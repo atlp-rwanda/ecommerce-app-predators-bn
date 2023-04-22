@@ -1,13 +1,7 @@
 import jsend from "jsend";
 import Cart from "../services/cartItem.services";
 import productDetail from "../services/product.services";
-import Jwt from "../utils/jwt";
-
-import jsend from "jsend";
-import Cart from "../services/cartItem.services";
-import productDetail from "../services/product.services";
-import Jwt from "../utils/jwt";
-
+import Jwt from "../utils/jwt"; 
 export default class cartController {
     static addCartItem = async (req, res) => {
         try { 

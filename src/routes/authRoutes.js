@@ -16,7 +16,10 @@ import {
   disableUser,
   register,
   UserLogin,
-  AdminLogin
+  AdminLogin,
+  requestResetPassword,
+  resetPasswordLink,
+  resetPassword, 
 } from '../controller/authController.js';
 import { isAdmin, isSeller,isBuyer, checkPermission } from "../middleware/roles.js";
 import { setRole } from "../services/role.services.js";
