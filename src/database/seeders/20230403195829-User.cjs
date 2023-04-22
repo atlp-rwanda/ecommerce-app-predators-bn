@@ -1,4 +1,7 @@
+// import { hasher } from '../../utils/hashPassword';
+
 /** @type {import('sequelize-cli').Migration} */
+  
   
 module.exports = {
 
@@ -9,6 +12,8 @@ module.exports = {
       [
         {
           name: 'John Doe',
+          email: 'yobuys@gmail.com',
+          password:'$2y$10$bb.ZLaQkxDxLBvFadjr7A.MzYbGcinp68U/4svnM4JDNLJqgqhpRG',
           email: 'yobuys@gmail.com',
           password:'$2y$10$bb.ZLaQkxDxLBvFadjr7A.MzYbGcinp68U/4svnM4JDNLJqgqhpRG',
           roleId: 1,
