@@ -10,7 +10,9 @@ import swagger from "../docs/swagger.js";
 import db from "../src/database/models/index.js";
 import welcomeRoute from "./routes/welcome.js";
 import authRoute from "./routes/authRoutes.js";
-import cartRoute from "./routes/cartRoutes.js";
+import cartRoute from "./routes/cartRoutes.js"; 
+import otpAuthRouter from "./routes/otpAuthRoute.js";
+
 // Configuration
 import express from "express";
 import cors from "cors";
@@ -32,11 +34,6 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
-
-// Routes URL definitions
-import welcomeRoute from "./routes/welcome.js";
-import authRoute from "./routes/authRoutes.js";
-import otpAuthRouter from "./routes/otpAuthRoute.js";
 
 // Middleware
 app.use(express.json());
