@@ -8,6 +8,7 @@ module.exports = {
         User_id: '1',
         product_id: '1',
         quantity: '3',
+        price:100
       }
     ], {});
   },

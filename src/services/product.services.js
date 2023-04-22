@@ -4,16 +4,15 @@ import db from "../database/models/index.js";
 export default class productDetail {
     static getProductById = async (id) => {
         try { 
-             const Product = await db.Product.findOne({
+             const product = await db.Product.findOne({
                         where: {
                             id: id
                         },
                     });
-            if (!Product) {  
+            if (!product) {  
                return false
-            }
-          
-        return Product; 
+            } 
+        return product; 
         } catch (error) {
            return false
         }

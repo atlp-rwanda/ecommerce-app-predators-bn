@@ -16,36 +16,33 @@ export default class cartController {
                     .status(401)
                     .json(jsend.fail({ message: "You need to be logged" }));
                 const token = await authHeader.split(" ")[1];
-                const {id,name,email,roleId}= await Jwt.verifyToken(token); 
-                
+                const user= await Jwt.verifyToken(token);  
                 const product = await productDetail.getProductById(product_id); 
+                 
                 if (!product) { 
                     return res.status(404).send(jsend.fail({
                             code: 404,
                             message:  "Product not found",
                             data: false
                         })); 
-                    }
-                const cartData = {product_id:product.id,quantity:quantity,User_id:id}
-                
-                const cartItem = await Cart.cartItem(cartData); 
+                    } 
+                    
+                let cartData = {...product,quantity:quantity,price:product.price,user_id:user.id};  
+                const cartItem = await Cart.cartItem(cartData,product_id); 
                 if (!cartItem) {
                     return res.status(500)
                         .send(jsend.fail({
                             code: 500,
-                            message:  "unexpected error",
-                            data: error
+                            message:  "unexpected error 1",
+                            data: cartItem
                         }));   
                 }
                 return res.status(200).send(jsend.success({
                     code: 200,
                     message:  "Product added ",
                     data: cartItem
-                })); 
-                
-
-        } catch (error) {
-             
+                }));  
+        } catch (error) { 
             return res.status(500)
                     .send(jsend.fail({
                         code: 500,
