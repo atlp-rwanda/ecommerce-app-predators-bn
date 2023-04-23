@@ -1,3 +1,5 @@
+/* eslint-disable no-else-return */
+/* eslint-disable no-shadow */
 import bcrypt from 'bcrypt';
 import jsend from 'jsend';
 import dotenv from 'dotenv';
@@ -14,6 +16,7 @@ import sendEmail from '../utils/sendEmail.js';
 dotenv.config();
 const { ADMIN_EMAIL } = process.env;
 const { ADMIN_PASSWORD } = process.env;
+
 export const AdminLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -104,19 +107,14 @@ export const UserLogin = async (req, res) => {
 export const googleAuthHandler = async (req, res) => {
   const { value } = req.user.emails[0];
   const { familyName } = req.user.name;
-  const { id } = req.user;
+  const id = req.user.id.substring(0, 5);
 
   // Create a new user object with the Google account data
   const newUser = {
     name: familyName,
     email: value,
-
-    password: 'password',
-    roleId: 0,
-
     password: 'password',
     roleId: 2,
-
     googleId: id,
     status: 'active',
   };

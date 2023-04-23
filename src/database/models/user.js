@@ -13,8 +13,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'roleId',
         as: 'role',
         onDelete: 'CASCADE',
-      });
-      User.hasOne(models.Carts, {
+      }); User.hasOne(models.Carts, {
         foreignKey: 'User_id',
         as: 'cart',
         onDelete: 'CASCADE',
@@ -23,8 +22,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'vendor_id',
         as: 'products',
         onDelete: 'CASCADE',
-      });
-      User.hasMany(models.Cart_items, {
+      }); User.hasMany(models.Cart_items, {
         foreignKey: 'cart_id',
         as: 'cart_items',
         onDelete: 'CASCADE',
