@@ -118,7 +118,6 @@ export const googleAuthHandler = async (req, res) => {
     googleId: id,
     status: 'active',
   };
-
   // Check if user already exists
   const user = await getUserByGoogleId(newUser.googleId);
   if (user) {
@@ -290,7 +289,7 @@ export const register = async (req, res) => {
     const user = await db.User.create({
       name,
       email,
-      roleId: 0,
+      roleId: 1,
       password: hashedPassword,
     });
     res.status(200).json({ message: user }); // /!\use jsend
