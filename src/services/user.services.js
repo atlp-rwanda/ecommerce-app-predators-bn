@@ -37,4 +37,28 @@ const getUserByGoogleId = async (googleId) => {
   }
 };
 
-export { registerGoogle, getUserByEmail, getUserByGoogleId};
+const updateUserPassword = async (payload,userPass) => {
+  try{ 
+        const email = payload.email; 
+        const pass = userPass.password; 
+        const password = await hashPassword(pass);  
+        const findData = await db.User.findOne({
+              where: { email },
+            });
+        
+        if (userPass.password === userPass.confirm_password) {
+            findData.password = password;
+
+            await findData.save().then((result) =>{ 
+              return result;
+              
+            });
+        }else{
+          return false
+        }
+      }catch(error){
+        return false
+      }
+};
+
+export { registerGoogle, getUserByEmail, getUserByGoogleId,updateUserPassword};

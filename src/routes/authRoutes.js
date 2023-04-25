@@ -16,6 +16,9 @@ import {
   register,
   UserLogin,
   AdminLogin,
+  requestResetPassword,
+  resetPassword,
+  resetPasswordLink,
 
 } from '../controller/authController.js';
 import vendor from '../controller/vendorController.js';
@@ -65,4 +68,8 @@ router.post('/adminLogin', AdminLogin);
 router.post('/register', register);
 router.post('/vendor', isAdmin, vendor);
 router.patch('/users/profiles', profileController.updateUserProfile);
+
+router.post('/reset/password',requestResetPassword);
+router.get('/user/reset-password/:token',resetPasswordLink);
+router.put('/user/reset-password/:token',resetPassword);
 export default router;
