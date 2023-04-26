@@ -1,5 +1,5 @@
-'use strict';
 import { Model } from 'sequelize';
+
 export default (sequelize, DataTypes) => {
   class Cart_items extends Model {
     /**
@@ -19,10 +19,12 @@ export default (sequelize, DataTypes) => {
       });
     }
   }
-  Cart_items.init({    User_id: DataTypes.INTEGER,
+  Cart_items.init({
+    User_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
-    amount:DataTypes.FLOAT,  }, {
+    amount: DataTypes.FLOAT,
+  }, {
     sequelize,
     modelName: 'Cart_items',
   });

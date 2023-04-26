@@ -45,7 +45,8 @@ module.exports = {
       },
       country: {
         type: Sequelize.STRING,
-        allowNull: true,      },
+        allowNull: true,
+      },
       province: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -61,7 +62,8 @@ module.exports = {
       streetAddress: {
         type: Sequelize.STRING,
         allowNull: true,
-      }, otp_enabled: {
+      },
+      otp_enabled: {
         allowNull: false,
         defaultValue: false,
         type: Sequelize.BOOLEAN,

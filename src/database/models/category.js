@@ -1,7 +1,7 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class Product extends Model {
+  class Category extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,29 +9,19 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Product.belongsTo(models.User, {
-        foreignKey: 'vendor_id',
-        as: 'vendor',
-      });
-      Product.belongsTo(models.Category, {
+      Category.belongsTo(models.Product, {
         foreignKey: 'category_id',
         as: 'category',
+        onDelete: 'CASCADE',
       });
     }
   }
-  Product.init({
+  Category.init({
     name: DataTypes.STRING,
-    description: DataTypes.STRING,
     category_id: DataTypes.INTEGER,
-    price: DataTypes.STRING,
-    picture_urls: DataTypes.ARRAY(DataTypes.STRING),
-    instock: DataTypes.INTEGER,
-    expiryDate: DataTypes.DATE,
-    available: DataTypes.BOOLEAN,
-    vendor_id: DataTypes.INTEGER,
   }, {
     sequelize,
-    modelName: 'Product',
+    modelName: 'Category',
   });
-  return Product;
+  return Category;
 };
