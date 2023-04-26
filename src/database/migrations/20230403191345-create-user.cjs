@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       googleId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
       },
       gender: {
         type: Sequelize.STRING,

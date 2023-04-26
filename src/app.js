@@ -1,21 +1,28 @@
 // Imports
-import morgan from "morgan";
-import session from "express-session";
-import passport from "passport";
-import i18next from "./middleware/i18next.js";
-import middleware from "i18next-http-middleware";
-import dotenv from "dotenv";
-import swaggerUI from "swagger-ui-express";
-import swagger from "../docs/swagger.js";
-import db from "../src/database/models/index.js";
-import express from "express";
-import cors from "cors";
+import morgan from 'morgan';
+import session from 'express-session';
+import passport from 'passport';
+import middleware from 'i18next-http-middleware';
+import dotenv from 'dotenv';
+import swaggerUI from 'swagger-ui-express';
+import express from 'express';
+import cors from 'cors';
+import swagger from '../docs/swagger.js';
+import db from './database/models/index.js';
+import i18next from './middleware/i18next.js';
+
+// Routes URL definitions
+import prodRoute from './routes/prodRoute.js';
+import welcomeRoute from './routes/welcome.js';
+import authRoute from './routes/authRoutes.js';
+import otpAuthRouter from './routes/otpAuthRoute.js';
+
 // Sequelize configuration
 dotenv.config();
-const sequelize = db.sequelize;
+const { sequelize } = db;
 sequelize.authenticate().then(() => {
   console.log('Connection has been established successfully.');
-}).catch(err => {
+}).catch((err) => {
   console.error('Unable to connect to the database:', err);
 });
 
@@ -28,10 +35,6 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
-// Routes URL definitions
-import welcomeRoute from "./routes/welcome.js";
-import authRoute from "./routes/authRoutes.js";
-import otpAuthRouter from "./routes/otpAuthRoute.js";
 import product from "./routes/ProductRoutes.js";
 
 // Middleware
@@ -61,7 +64,6 @@ const options = {
 };
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger, false, options));
 
-
 passport.deserializeUser((id, done) => {
   User.findByPk(id)
     .then((user) => done(null, user))
@@ -69,10 +71,12 @@ passport.deserializeUser((id, done) => {
 });
 
 // Routes
-app.use("/auth", otpAuthRouter);
+app.use('/api/products', prodRoute);
+app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/api", product);
 app.use("/", welcomeRoute);
+
 
 // Export the app
 export default app;

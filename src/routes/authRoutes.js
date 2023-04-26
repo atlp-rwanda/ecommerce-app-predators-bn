@@ -3,6 +3,7 @@ import passport from 'passport';
 import Jwt from '../utils/jwt.js';
 import { googlePass } from '../utils/passport.js';
 import profileController from '../controller/profileController.js';
+import vendor from '../controller/vendorController.js';
 
 // Google route
 
@@ -57,6 +58,7 @@ router.get(
   googleAuthHandler,
 );
 
+router.post('/vendor', isAdmin, vendor);
 router.post('/logout', logout);
 router.get('/users', isAdmin, checkPermission('manage users'), GetUsers);
 router.get('/users/:id', isAdmin, checkPermission('manage users'), GetUserById);

@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      Name: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      Instock: {
+      instock: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
@@ -38,16 +38,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
-      },
-      images: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        allowNull: true
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-      },
-      expiryDate: {
-        type: Sequelize.DATE,
       },
       vendor_id: {
         type: Sequelize.INTEGER,

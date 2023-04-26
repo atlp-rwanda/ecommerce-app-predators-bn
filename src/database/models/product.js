@@ -16,12 +16,12 @@ export default (sequelize, DataTypes) => {
     }
   }
   Product.init({
-    Name: DataTypes.STRING,
+    name: DataTypes.STRING,
     description: DataTypes.STRING,
     category_id: DataTypes.INTEGER,
     price: DataTypes.STRING,
     picture_urls: DataTypes.ARRAY(DataTypes.STRING),
-    Instock: DataTypes.INTEGER,
+    instock: DataTypes.INTEGER,
     expiryDate: DataTypes.DATE,
     available: DataTypes.BOOLEAN,
     vendor_id: DataTypes.INTEGER,

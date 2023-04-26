@@ -39,6 +39,7 @@ const isSeller = async (req, res, next) => {
     const decodedToken = JwtUtility.verifyToken(token);
     const user = await db.User.findOne({ where: { id: decodedToken.value.id } });
     if (user && decodedToken && decodedToken.value.roleId === 1) {
+      req.user = user;
       next();
     } else {
       res

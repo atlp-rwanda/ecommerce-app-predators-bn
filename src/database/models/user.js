@@ -36,7 +36,7 @@ export default (sequelize, DataTypes) => {
     phone_number: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
     status: DataTypes.STRING,
-    googleId: DataTypes.INTEGER,
+    googleId: DataTypes.BIGINT,
     gender: DataTypes.STRING,
     otp_enabled: DataTypes.BOOLEAN,
     otp_verified: DataTypes.BOOLEAN,
