@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable radix */
@@ -80,6 +81,12 @@ const updateUserProfile = async (req, res) => {
     status,
     googleId,
     gender,
+    phone_number,
+    country,
+    province,
+    district,
+    sector,
+    streetAddress,
     preferred_language,
     preferred_currency,
     password,
@@ -116,6 +123,12 @@ const updateUserProfile = async (req, res) => {
     user.status = status || user.status;
     user.googleId = googleId || user.googleId;
     user.gender = gender || user.gender;
+    user.phone_number = phone_number || user.phone_number;
+    user.country = country || user.country;
+    user.province = province || user.province;
+    user.district = district || user.district;
+    user.sector = sector || user.sector;
+    user.streetAddress = streetAddress || user.streetAddress;
     user.preferred_language = preferred_language || user.preferred_language;
     user.preferred_currency = preferred_currency || user.preferred_currency;
     // Save the updated user object to the database

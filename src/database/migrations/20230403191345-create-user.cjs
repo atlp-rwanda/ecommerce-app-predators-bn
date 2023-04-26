@@ -61,7 +61,7 @@ module.exports = {
       streetAddress: {
         type: Sequelize.STRING,
         allowNull: true,
-      },      otp_enabled: {
+      }, otp_enabled: {
         allowNull: false,
         defaultValue: false,
         type: Sequelize.BOOLEAN,

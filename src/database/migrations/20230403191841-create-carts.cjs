@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -8,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      User_id: {
+      user_id: {
         type: Sequelize.STRING,
       },
       createdAt: {

@@ -57,6 +57,7 @@ export const getProductById = async (req, res) => {
       message: "Product retrieved Successfully",
     });
   } catch (err) {
+    console.log(err.message);
     return res.status(500).json({
       status: "server error",
       code: 500,
@@ -73,12 +74,12 @@ export const updateProduct = async (req, res) => {
   }
   const inputData = req.body;
   const schema = Joi.object({
-    Name: Joi.string().required(),
+    name: Joi.string().required(),
     description: Joi.string().required(),
     price: Joi.number().positive().required(),
     expiryDate: Joi.date().iso().required(),
     picture_urls: Joi.array().items(Joi.string()),
-    Instock: Joi.number().integer().positive().required(),
+    instock: Joi.number().integer().positive().required(),
     available: Joi.string().valid("yes", "no").required(),
   });
   const { error } = schema.validate(inputData);
@@ -86,7 +87,7 @@ export const updateProduct = async (req, res) => {
   const item = await db.Product.findOne({
     where: { id: id, vendor_id: req.user.id },
   });
-
+  
   if (!item)
     return res
       .status(404)
