@@ -1,5 +1,5 @@
-'use strict';
 import { Model } from 'sequelize';
+
 export default (sequelize, DataTypes) => {
   class Carts extends Model {
     /**
@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
     }
   }
   Carts.init({
-    User_id: DataTypes.STRING
+    User_id: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Carts',

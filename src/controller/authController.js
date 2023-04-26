@@ -1,3 +1,5 @@
+/* eslint-disable no-else-return */
+/* eslint-disable no-shadow */
 import bcrypt from 'bcrypt';
 import jsend from 'jsend';
 import dotenv from 'dotenv';
@@ -6,7 +8,7 @@ import db from '../database/models/index.js';
 import Jwt from '../utils/jwt.js';
 import {
   getUserByGoogleId,
-  registerGoogle,
+  registerGoogle,updateUserPassword
 } from '../services/user.services.js';
 import generateToken from '../utils/userToken.js';
 import sendEmail from '../utils/sendEmail.js';
@@ -14,6 +16,7 @@ import sendEmail from '../utils/sendEmail.js';
 dotenv.config();
 const { ADMIN_EMAIL } = process.env;
 const { ADMIN_PASSWORD } = process.env;
+
 export const AdminLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -104,23 +107,17 @@ export const UserLogin = async (req, res) => {
 export const googleAuthHandler = async (req, res) => {
   const { value } = req.user.emails[0];
   const { familyName } = req.user.name;
-  const { id } = req.user;
+  const id = req.user.id.substring(0, 5);
 
   // Create a new user object with the Google account data
   const newUser = {
     name: familyName,
     email: value,
-
-    password: 'password',
-    roleId: 0,
-
     password: 'password',
     roleId: 2,
-
     googleId: id,
     status: 'active',
   };
-
   // Check if user already exists
   const user = await getUserByGoogleId(newUser.googleId);
   if (user) {
@@ -313,6 +310,131 @@ export const register = async (req, res) => {
     return res.status(500).send('Server error');
   }
 };
+
+// requesting reset password 
+export const requestResetPassword = async (req, res) => {
+  const email=req.body.email; 
+  try {
+     const user=await getUserByEmail(email);
+   
+      if (!user) { 
+        return res.status(400).jsend.error({
+            code: 400,
+            message: 'User with email does not exist!',
+            data: false
+        });
+
+      }
+
+    const userEmail = { email, id: user.id }; 
+   
+    const token = Jwt.generateToken(userEmail,'15m');
+ 
+      sendEmail.sendEmail({
+            email,
+            subject: 'Predators E-commerce Reset Password',
+            text: `
+                    <p>Reset your password.</p>
+                    <p>Please click the link below to reset your password.</p> 
+                    
+                    <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>
+                    
+                    `
+          });   
+        res.cookie('reset-token', token,{httponly:true,expiresIn:'15m'});
+
+        res.status(200).send(jsend.success({ 
+                code:200, 
+                message: 'Password reset link was sent to your email', 
+                data:{ token }
+              }));
+
+  } catch (error) {
+     return res.status(500).send(jsend.fail({
+            code: 500,
+            message: error.message,
+            data: false
+          })); 
+  }
+   
+ 
+};
+ 
+
+// validate reset link
+export const resetPasswordLink = async (req, res) => {
+  try { 
+    const { token } = req.params;
+    const payload = Jwt.verifyToken(token); 
+    const userEmail = { email:payload.email};
+
+    const user=await getUserByEmail(userEmail.email); 
+    
+    if(!payload){
+      return res.status(401).send(jsend.fail({
+        code: 401,
+        message: 'Token is invalid',
+        data: false
+      }));
+    }else{
+      if (!user) {
+            return res.status(401).send(jsend.fail({
+              code: 401,
+              message: "User does not exist",
+              data:false
+            }));
+        }
+        return res.status(200).send(jsend.fail({
+          code: 200,
+          message: 'User exists',
+          data:user
+        }));
+
+    }    
+  } catch (error) {
+      return res.status(401).send(jsend.fail({
+          code: 401,
+          message:  error.message,
+          data: false
+        })); 
+  }
+};
+
+// reset password
+export const resetPassword = async (req, res) => {
+  try { 
+    const { token } = req.params;
+    const payload = Jwt.verifyToken(token); 
+    const userPass=req.body 
+
+      await updateUserPassword(payload,userPass).then((result) =>
+      { 
+        if(result ==0) {
+          return res.status(400).send(jsend.fail({
+            code: 400,
+            message: 'Password reset failed',
+            data: false
+          }));
+        }
+        res.cookie('reset-token','',{maxAge:1});
+        return res.status(200).send(jsend.success({
+          code: 200,
+          message: 'You have reset successful your password',
+          data:result
+        }));
+       
+      }
+       
+      ); 
+  } catch (error) {
+     return res.status(401).send(jsend.fail({
+      code: 401,
+      message: error.message,
+      data:false
+    }));
+  }
+};
+ 
 export default {
   googleAuthHandler,
   GetUsers,
@@ -321,8 +443,8 @@ export default {
   logout,
   disableUser,
   UserLogin,
-  AdminLogin
-  ,
+  AdminLogin,
+
 };
 
 /* eslint-disable consistent-return */

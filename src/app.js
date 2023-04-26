@@ -35,6 +35,8 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
+import product from "./routes/ProductRoutes.js";
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -72,7 +74,9 @@ passport.deserializeUser((id, done) => {
 app.use('/api/products', prodRoute);
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
-app.use('/', welcomeRoute);
+app.use("/api", product);
+app.use("/", welcomeRoute);
+
 
 // Export the app
 export default app;
