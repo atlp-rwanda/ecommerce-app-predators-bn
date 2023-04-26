@@ -1,5 +1,5 @@
-import { Model } from 'sequelize';
-
+"use strict";
+import { Model } from "sequelize";
 export default (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -10,22 +10,24 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasOne(models.ROLES, {
-        foreignKey: 'roleId',
-        as: 'role',
-        onDelete: 'CASCADE',
-      }); User.hasOne(models.Carts, {
-        foreignKey: 'User_id',
-        as: 'cart',
-        onDelete: 'CASCADE',
+        foreignKey: "roleId",
+        as: "role",
+        onDelete: "CASCADE",
+      });
+      User.hasOne(models.Carts, {
+        foreignKey: "User_id",
+        as: "cart",
+        onDelete: "CASCADE",
       });
       User.hasMany(models.Product, {
-        foreignKey: 'vendor_id',
-        as: 'products',
-        onDelete: 'CASCADE',
-      }); User.hasMany(models.Cart_items, {
-        foreignKey: 'cart_id',
-        as: 'cart_items',
-        onDelete: 'CASCADE',
+        foreignKey: "vendor_id",
+        as: "products",
+        onDelete: "CASCADE",
+      });
+      User.hasMany(models.Cart_items, {
+        foreignKey: "cart_id",
+        as: "cart_items",
+        onDelete: "CASCADE",
       });
     }
   }
