@@ -2,15 +2,17 @@
 // imports
 import db from "../database/models/index.js";
 import { createTransport } from "nodemailer";
+import crypto from "crypto";
+import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
 
 // Create a new vendor
 const vendor = async (req, res) => {
-  const { name, email, gender, preferred_language, preferred_corrency } = req.body;
+  const { name, email, gender, preferred_language, preferred_currency } = req.body;
 
   // Validate user input
-  if (!name || !email || !gender || !preferred_language, !preferred_corrency) {
+  if (!name || !email || !gender || !preferred_language, !preferred_currency) {
     return res.status(400).json({status:"fail\n",message:"Please provide all required fields" });
   }
 
@@ -47,7 +49,7 @@ const vendor = async (req, res) => {
       status: "active",
       gender,
       preferred_language,
-      preferred_corrency,
+      preferred_currency,
     });
     res.status(200).json({ message: "Vendor created successfully" });
 
@@ -81,6 +83,7 @@ const vendor = async (req, res) => {
       }
     });
   } catch (err) {
+    console.error(err);
     return res.status(500).send("Server error");
   }
 };

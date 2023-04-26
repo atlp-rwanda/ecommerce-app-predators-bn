@@ -1,16 +1,20 @@
-import speakeasy from "speakeasy";
-import db from "../database/models/index.js";
-import config from "config";
-import qr from "qrcode";
-import twilio from "twilio";
+/* eslint-disable no-unused-vars */
+/* eslint-disable consistent-return */
+/* eslint-disable camelcase */
+import speakeasy from 'speakeasy';
+import config from 'config';
+import qr from 'qrcode';
+import twilio from 'twilio';
+import db from '../database/models/index.js';
 
 const twilioClient = twilio(config.twilio.accountSid, config.twilio.authToken);
-
 // [...] Generate OTP
 const GenerateOTP = async (req, res) => {
   try {
     const { user_id } = req.body;
-    const { ascii, hex, base32, otpauth_url } = speakeasy.generateSecret({
+    const {
+      ascii, hex, base32, otpauth_url,
+    } = speakeasy.generateSecret({
       issuer: config.otp_issuer,
       name: config.otp_name,
       length: config.otp_length,
@@ -27,7 +31,7 @@ const GenerateOTP = async (req, res) => {
       },
       {
         where: { id: user_id },
-      }
+      },
     );
 
     res.status(200).json({
@@ -37,7 +41,7 @@ const GenerateOTP = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      status: "fail",
+      status: 'fail',
       message: error.message,
     });
   }
@@ -52,7 +56,7 @@ const GetOTP = async (req, res) => {
     const message = "User doesn't exist";
     if (!user) {
       return res.status(404).json({
-        status: "fail",
+        status: 'fail',
         message,
       });
     }
@@ -60,7 +64,7 @@ const GetOTP = async (req, res) => {
     // Generate and send the verification code via SMS
     const verificationCode = speakeasy.totp({
       secret: user.otp_base32,
-      encoding: "base32",
+      encoding: 'base32',
       digits: config.otp_length_sms,
       window: 1,
     });
@@ -72,168 +76,165 @@ const GetOTP = async (req, res) => {
     });
 
     res.status(200).json({
-      status: "success",
-      message: "verification code sent"
-    })
-  }
-  catch(error) {
+      status: 'success',
+      message: 'verification code sent',
+    });
+  } catch (error) {
     res.status(500).json({
       status: 'fail',
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
-
+};
 
 // [...] Verify OTP
 const VerifyOTP = async (req, res) => {
-    const { user_id, token } = req.body;
-  
-    try {
-      const user = await db.User.findByPk(user_id);
-      const message = "Token is invalid or user doesn't exist";
-      if (!user) {
-        return res.status(401).json({
-          status: "fail",
-          message,
-        });
-      }
+  const { user_id, token } = req.body;
 
-      const verified = speakeasy.totp.verify({
-        secret: user.otp_base32,
-        encoding: "base32",
-        token,
-      });
-  
-      if (!verified) {
-        return res.status(401).json({
-          status: "fail",
-          message,
-        });
-      }
-  
-      const updatedUser = await db.User.update({
-        otp_enabled: true,
-        otp_verified: true,
-      }, {
-        where: { id: user_id }
-      });
-  
-      const userWithUpdatedData = await db.User.findByPk(user_id);
-  
-      res.status(200).json({
-        otp_verified: true,
-        user: {
-          id: userWithUpdatedData.id,
-          name: userWithUpdatedData.name,
-          email: userWithUpdatedData.email,
-          otp_enabled: userWithUpdatedData.otp_enabled,
-        },
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: "error",
-        message: error.message,
+  try {
+    const user = await db.User.findByPk(user_id);
+    const message = "Token is invalid or user doesn't exist";
+    if (!user) {
+      return res.status(401).json({
+        status: 'fail',
+        message,
       });
     }
-};
 
+    const verified = speakeasy.totp.verify({
+      secret: user.otp_base32,
+      encoding: 'base32',
+      token,
+    });
+
+    if (!verified) {
+      return res.status(401).json({
+        status: 'fail',
+        message,
+      });
+    }
+
+    const updatedUser = await db.User.update({
+      otp_enabled: true,
+      otp_verified: true,
+    }, {
+      where: { id: user_id },
+    });
+
+    const userWithUpdatedData = await db.User.findByPk(user_id);
+
+    res.status(200).json({
+      otp_verified: true,
+      user: {
+        id: userWithUpdatedData.id,
+        name: userWithUpdatedData.name,
+        email: userWithUpdatedData.email,
+        otp_enabled: userWithUpdatedData.otp_enabled,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
 
 // [...] Validate OTP
 const ValidateOTP = async (req, res) => {
-    try {
-      const { user_id, token } = req.body;
-      const user = await db.User.findOne({ where: { id: user_id } });
-  
-      const message = "Token is invalid or user doesn't exist";
-      if (!user) {
-        return res.status(401).json({
-          status: "fail",
-          message,
-        });
-      }
+  try {
+    const { user_id, token } = req.body;
+    const user = await db.User.findOne({ where: { id: user_id } });
 
-      if (!user.otp_enabled){
-        return res.status(401).json({
-          status: "fail",
-          message: "2-factor auth not enabled on this account",
-        });
-      }
-  
-      const validToken = speakeasy.totp.verify({
-        secret: user.otp_base32,
-        encoding: "base32",
-        token,
-        window: 1,
-      });
-  
-      if (!validToken) {
-        return res.status(401).json({
-          status: "fail",
-          message,
-        });
-      }
-  
-      res.status(200).json({
-        otp_valid: true,
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: "error",
-        message: error.message,
+    const message = "Token is invalid or user doesn't exist";
+    if (!user) {
+      return res.status(401).json({
+        status: 'fail',
+        message,
       });
     }
-  };
 
-  // [...] Disable OTP
-  const DisableOTP = async (req, res) => {
-    try {
-      const { user_id } = req.body;
-  
-      const user = await db.User.findByPk(user_id);
-      if (!user) {
-        return res.status(401).json({
-          status: "fail",
-          message: "User doesn't exist",
-        });
-      }
-
-      if (!user.otp_enabled){
-        return res.status(401).json({
-          status: "fail",
-          message: "2-factor auth not enabled on this account",
-        });
-      }
-  
-      const updatedUser = await db.User.update({
-        otp_enabled: false,
-        otp_verified: false,
-        otp_ascii: null,
-        otp_auth_url: null,
-        otp_base32: null,
-        otp_hex: null,
-      }, {
-        where: { id: user_id },
-        returning: true,
-      });
-  
-      res.status(200).json({
-        otp_disabled: true,
-        user: {
-          id: updatedUser[1][0].id,
-          name: updatedUser[1][0].name,
-          email: updatedUser[1][0].email,
-          otp_enabled: updatedUser[1][0].otp_enabled,
-        },
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: "error",
-        message: error.message,
+    if (!user.otp_enabled) {
+      return res.status(401).json({
+        status: 'fail',
+        message: '2-factor auth not enabled on this account',
       });
     }
-  };
 
-  export default {
-    GenerateOTP, VerifyOTP, ValidateOTP, DisableOTP, GetOTP
+    const validToken = speakeasy.totp.verify({
+      secret: user.otp_base32,
+      encoding: 'base32',
+      token,
+      window: 1,
+    });
+
+    if (!validToken) {
+      return res.status(401).json({
+        status: 'fail',
+        message,
+      });
+    }
+
+    res.status(200).json({
+      otp_valid: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
   }
+};
+
+// [...] Disable OTP
+const DisableOTP = async (req, res) => {
+  try {
+    const { user_id } = req.body;
+
+    const user = await db.User.findByPk(user_id);
+    if (!user) {
+      return res.status(401).json({
+        status: 'fail',
+        message: "User doesn't exist",
+      });
+    }
+
+    if (!user.otp_enabled) {
+      return res.status(401).json({
+        status: 'fail',
+        message: '2-factor auth not enabled on this account',
+      });
+    }
+
+    const updatedUser = await db.User.update({
+      otp_enabled: false,
+      otp_verified: false,
+      otp_ascii: null,
+      otp_auth_url: null,
+      otp_base32: null,
+      otp_hex: null,
+    }, {
+      where: { id: user_id },
+      returning: true,
+    });
+
+    res.status(200).json({
+      otp_disabled: true,
+      user: {
+        id: updatedUser[1][0].id,
+        name: updatedUser[1][0].name,
+        email: updatedUser[1][0].email,
+        otp_enabled: updatedUser[1][0].otp_enabled,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
+export default {
+  GenerateOTP, VerifyOTP, ValidateOTP, DisableOTP, GetOTP,
+};

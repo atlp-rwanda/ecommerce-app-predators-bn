@@ -1,4 +1,3 @@
-'use strict';
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
@@ -14,9 +13,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'roleId',
         as: 'role',
         onDelete: 'CASCADE',
-      });
-
-      User.hasOne(models.Carts, {
+      }); User.hasOne(models.Carts, {
         foreignKey: 'User_id',
         as: 'cart',
         onDelete: 'CASCADE',
@@ -25,9 +22,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'vendor_id',
         as: 'products',
         onDelete: 'CASCADE',
-      });
-
-      User.hasMany(models.Cart_items, {
+      }); User.hasMany(models.Cart_items, {
         foreignKey: 'cart_id',
         as: 'cart_items',
         onDelete: 'CASCADE',
@@ -43,7 +38,6 @@ export default (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     googleId: DataTypes.INTEGER,
     gender: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
     otp_enabled: DataTypes.BOOLEAN,
     otp_verified: DataTypes.BOOLEAN,
     otp_ascii: DataTypes.STRING,
@@ -52,13 +46,11 @@ export default (sequelize, DataTypes) => {
     otp_auth_url: DataTypes.STRING,
     preferred_language: DataTypes.STRING,
     preferred_currency: DataTypes.UUID,
-
     country: DataTypes.STRING,
     province: DataTypes.STRING,
     district: DataTypes.STRING,
     sector: DataTypes.STRING,
     streetAddress: DataTypes.STRING,
-
   }, {
     sequelize,
     modelName: 'User',
