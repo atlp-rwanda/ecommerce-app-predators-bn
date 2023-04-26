@@ -229,9 +229,7 @@ export const disableUser = async (req, res) => {
     const { status, reason } = req.body;
     const user = await db.User.findOne({ where: { id } });
     if (!user) {
-      return res.status(404).json({
-        message: `user with this id:${id} does not exit `,
-      });
+      return res.status(400).json(jsend.fail({ message: `user with this id:${id} does not exit` }));
     }
     user.status = status;
 
@@ -241,8 +239,8 @@ export const disableUser = async (req, res) => {
       const to = user.email;
       const text = `
         Notification of Account Deactivation
-	Dear User,
-	We regret to inform you that your account on our website has been ${status} due to a ${reason}. Our team has conducted a thorough investigation and found evidence of unauthorized activity on your account.
+Dear User,
+We regret to inform you that your account on our website has been ${status} due to a ${reason}. Our team has conducted a thorough investigation and found evidence of unauthorized activity on your account.
 
 As a result, we have taken the necessary steps to protect the security and integrity of our platform by deactivating your account. We take the security of our website and our users very seriously, and we will not tolerate any illegal activities or harmful behavior.
 
@@ -271,13 +269,21 @@ The E-commerce ATLP-Predators project team
   }
 };
 export const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const {
+    name, email, password, gender, preferredCurrency, preferredLanguage,
+  } = req.body;
 
   // Validate user input
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !gender || !preferredCurrency || !preferredLanguage) {
     return res.status(400).send('Invalid input');
   }
 
+  const userExists = await db.User.findOne({ where: { email } });
+  if (userExists) {
+    return res
+      .status(401)
+      .json(jsend.fail({ message: 'User exists!😥' }));
+  }
   try {
     // hash password
     const hashedPassword = await hasher(password);
@@ -286,8 +292,12 @@ export const register = async (req, res) => {
     const user = await db.User.create({
       name,
       email,
-      roleId: 1,
+      gender,
+      roleId: 2,
       password: hashedPassword,
+      status: 'active',
+      preferred_currency: preferredCurrency,
+      preferred_language: preferredLanguage,
     });
     res.status(200).json({ message: user }); // /!\use jsend
 
