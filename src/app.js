@@ -1,15 +1,23 @@
 // Imports
-import morgan from "morgan";
-import session from "express-session";
-import passport from "passport";
-import i18next from "./middleware/i18next.js";
-import middleware from "i18next-http-middleware";
-import dotenv from "dotenv";
-import swaggerUI from "swagger-ui-express";
-import swagger from "../docs/swagger.js";
-import db from "../src/database/models/index.js";
-import express from "express";
-import cors from "cors";
+import morgan from 'morgan';
+import session from 'express-session';
+import passport from 'passport';
+import middleware from 'i18next-http-middleware';
+import dotenv from 'dotenv';
+import swaggerUI from 'swagger-ui-express';
+import express from 'express';
+import cors from 'cors';
+import swagger from '../docs/swagger.js';
+import db from './database/models/index.js';
+import i18next from './middleware/i18next.js';
+
+// Routes URL definitions
+import prodRoute from './routes/prodRoute.js';
+import welcomeRoute from './routes/welcome.js';
+import product from "./routes/ProductRoutes.js";
+import authRoute from './routes/authRoutes.js';
+import otpAuthRouter from './routes/otpAuthRoute.js';
+
 // Sequelize configuration
 dotenv.config();
 const { sequelize } = db;
@@ -28,12 +36,6 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
-// Routes URL definitions
-import welcomeRoute from "./routes/welcome.js";
-import authRoute from "./routes/authRoutes.js";
-import otpAuthRouter from "./routes/otpAuthRoute.js";
-import product from "./routes/ProductRoutes.js";
-import prodRoute from "./routes/prodRoute.js";
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -73,6 +75,7 @@ app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/api", product);
 app.use("/", welcomeRoute);
+
 
 // Export the app
 export default app;

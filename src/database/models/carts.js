@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
     }
   }
   Carts.init({
-    User_id: DataTypes.STRING,
+    user_id: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Carts',

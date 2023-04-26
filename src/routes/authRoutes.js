@@ -4,9 +4,9 @@ import Jwt from '../utils/jwt.js';
 import { googlePass } from '../utils/passport.js';
 import profileController from '../controller/profileController.js';
 import vendor from '../controller/vendorController.js';
+const router = Router();
 
 // Google route
-
 import {
   googleAuthHandler,
   GetUsers,
@@ -22,38 +22,38 @@ import {
   resetPassword,
 } from '../controller/authController.js';
 import {
-  isAdmin, isSeller, isBuyer, checkPermission,
-} from '../middleware/roles.js';
-import { setRole } from '../services/role.services.js';
-
-const router = Router();
+  isAdmin,
+  isSeller,
+  isBuyer,
+  checkPermission,
+} from "../middleware/roles.js";
+import { setRole } from "../services/role.services.js";
 
 // Google routes
 googlePass();
 
-router.get('/callback', (req, res) => {
+router.get("/callback", (req, res) => {
   if (req.query.key) {
     const user = Jwt.verifyToken(req.query.key);
     return res.status(200).json({
-      message: 'Thanks for logging in',
+      message: "Thanks for logging in",
       user,
       token: req.query.key,
     });
   }
-  return res.status(401).json({ error: 'Unauthorized' });
+  return res.status(401).json({ error: "Unauthorized" });
 });
 router.get(
-
-  '/auth/google',
-  passport.authenticate('google', { scope: ['email', 'profile'] }),
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
 );
 router.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
+  "/auth/google/callback",
+  passport.authenticate("google", {
     session: false,
-    failureRedirect: '/',
+    failureRedirect: "/",
   }),
-  googleAuthHandler,
+  googleAuthHandler
 );
 
 router.post('/vendor', isAdmin, vendor);

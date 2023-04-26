@@ -113,7 +113,7 @@ export const googleAuthHandler = async (req, res) => {
   const newUser = {
     name: familyName,
     email: value,
-    password: 'password',
+    password: "password",
     roleId: 2,
     googleId: id,
     status: "active",
