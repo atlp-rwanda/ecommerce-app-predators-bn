@@ -58,9 +58,12 @@ router.get(
 
 router.post('/vendor', isAdmin, vendor);
 router.post('/logout', logout);
-router.get('/users', GetUsers);
+
+router.get('/users', isAdmin, checkPermission('manage users'), GetUsers);
 router.get('/users/:id', isAdmin, checkPermission('manage users'), GetUserById);
-router.delete('/users/:id', isAdmin, isAdmin, checkPermission('manage users'), DeleteUserById);
+router.delete('/users/:id', isAdmin, checkPermission('manage users'), DeleteUserById);
+
+
 router.post('/setRole/:id', isAdmin, isAdmin, checkPermission('manage users'), setRole);
 router.post('/disableUser/:id', disableUser);
 router.post('/login', UserLogin);
