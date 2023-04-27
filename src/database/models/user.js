@@ -10,11 +10,6 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasOne(models.ROLES, {
-        foreignKey: 'roleId',
-        as: 'role',
-        onDelete: 'CASCADE',
-      });
 
       User.hasOne(models.Carts, {
         foreignKey: 'User_id',
