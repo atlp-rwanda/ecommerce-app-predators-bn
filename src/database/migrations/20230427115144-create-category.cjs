@@ -9,6 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+
       category_id:{
         type:Sequelize.INTEGER,
         allowNull:true,
@@ -17,6 +18,7 @@ module.exports = {
           key:'id'
         }
       },
+
       name: {
         type: Sequelize.STRING,
         allowNull:false,
@@ -24,6 +26,7 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
+
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
@@ -31,6 +34,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+
       }
     });
   },

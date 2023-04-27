@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import db from "../database/models/index.js";
@@ -8,8 +9,10 @@ import {
   handleSellerWithoutAccess,
   handleSellerScenario,
   handleBuyerScenario,
+
   handleServerError,
 } from "../services/product.services.js";
+
 // getting all products
 
 export const getAllProducts = async (req, res) => {
@@ -45,6 +48,7 @@ export const getAllProducts = async (req, res) => {
 // Getting Product by Id
 export const getProductById = async (req, res) => {
   try {
+
     const { id } = req.params;
 
     // Check if item exists and retrieve details
@@ -130,6 +134,7 @@ export const updateProduct = async (req, res) => {
     },
   });
 };
+
 export const deleteSpecificProduct = async (req, res) => {
   try {
     // Validate input data
@@ -184,3 +189,4 @@ export default {
   updateProduct,
   deleteSpecificProduct,
 };
+

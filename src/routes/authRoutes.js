@@ -59,7 +59,9 @@ router.get(
   googleAuthHandler,
 );
 
+
 router.post('/vendor',isAdmin, vendor);
+
 router.post('/logout', logout);
 
 router.get('/users', GetUsers);

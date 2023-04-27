@@ -1,6 +1,8 @@
 'use strict';
+
 import { Model } from 'sequelize';
 export default (sequelize, DataTypes) => {
+
   class Category extends Model {
     /**
      * Helper method for defining associations.
@@ -9,7 +11,9 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
       Category.belongsTo(models.Product, {
+
         foreignKey: 'category_id',
         as: 'category',
         onDelete: 'CASCADE',
@@ -19,6 +23,7 @@ export default (sequelize, DataTypes) => {
   Category.init({
     name: DataTypes.STRING,
     category_id: DataTypes.INTEGER,
+
   }, {
     sequelize,
     modelName: 'Category',
