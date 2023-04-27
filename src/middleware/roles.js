@@ -9,7 +9,6 @@ const isAdmin = async (req, res, next) => {
     return res.status(401).json({ message: 'Token not provided' }); // assuming the token is sent in the Authorization header
   }
   const token = authheader.split(" ")[1];
-  const { id } = req.params;
   try {
     const decodedToken = JwtUtility.verifyToken(token);
 
