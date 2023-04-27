@@ -1,9 +1,15 @@
 /* eslint-disable camelcase */
-import Joi from 'joi';
-import jwt from 'jsonwebtoken';
-import db from '../database/models/index.js';
-
-// import all the ROLES from './index.js' file. 描述如何从文件中;
+import Joi from "joi";
+import jwt from "jsonwebtoken";
+import db from "../database/models/index.js";
+import {
+  handleItemNotFound,
+  handleUnauthorized,
+  handleSellerWithoutAccess,
+  handleSellerScenario,
+  handleBuyerScenario,
+  handleServerError,
+} from "../services/product.services.js";
 // getting all products
 
 export const getAllProducts = async (req, res) => {
@@ -39,87 +45,33 @@ export const getAllProducts = async (req, res) => {
 // Getting Product by Id
 export const getProductById = async (req, res) => {
   try {
-    const { itemId } = req.params;
+    const { id } = req.params;
 
-    // Validate token and check user role
+    // Check if item exists and retrieve details
+    const item = await db.Product.findOne({ where: { id: id } });
+    if (!item) return handleItemNotFound(res);
+
     const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      return res.status(401).json({
-        status: 'fail',
-        code: 401,
-        data: { error: 'You have to be loggen in to perform an action' },
-      });
-    }
+    if (!authHeader) return handleBuyerScenario(res, item);
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
-      return res.status(401).json({
-        status: 'fail',
-        code: 401,
-        data: { error: 'You have to be loggen in to perform an action' },
-      });
-    }
-    const isSeller = decoded.roleId === 1;
-
-    // Check if item exists and retrieve details
-    const item = await db.Product.findOne({ where: { id: itemId } });
-
-    if (!item) {
-      return res.status(404).json({
-        status: 'fail',
-        code: 404,
-        data: {
-          error: 'Item not found',
-        },
-      });
+      return handleUnauthorized(res);
     }
 
-    // Handle seller scenario
-    if (isSeller) {
-      if (item.vendor_id !== decoded.roleId) {
-        return res.status(403).json({
-          status: 'fail',
-          code: 403,
-          data: {
-            error: 'Sorry, you do not have access to this item as you are not the owner of this item',
-          },
-        });
+    if (decoded.roleId === 1) {
+      if (item.vendor_id !== decoded.id) {
+        return handleSellerWithoutAccess(res);
       }
-
-      return res.status(200).json({
-        status: 'success',
-        code: 200,
-        data: {
-          message: 'Item retrieved successfully', item,
-        },
-
-      });
+      return handleSellerScenario(res, item);
     }
 
-    // Handle buyer scenario
-    if (item.available) {
-      return res.status(200).json({
-        status: 'success',
-        code: 200,
-        data: { item },
-        message: 'Item retrieved successfully',
-      });
-    }
-    return res.status(404).json({
-      status: 'fail',
-      code: 404,
-      error: 'Item not found',
-    });
+    return handleBuyerScenario(res, item);
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({
-      status: "server error",
-      code: 500,
-      error: 'Server error, try again later',
-    });
+    return handleServerError(res);
   }
 };
 
@@ -127,7 +79,7 @@ export const updateProduct = async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
-    return res.status(400).json({ error: 'id is required' });
+    return res.status(400).json({ error: "id is required" });
   }
   const inputData = req.body;
   const schema = Joi.object({
@@ -137,7 +89,7 @@ export const updateProduct = async (req, res) => {
     expiryDate: Joi.date().iso().required(),
     picture_urls: Joi.array().items(Joi.string()),
     instock: Joi.number().integer().positive().required(),
-    available: Joi.string().valid('yes', 'no').required(),
+    available: Joi.string().valid("yes", "no").required(),
   });
   const { error } = schema.validate(inputData);
   if (error) return res.status(400).json({ error: error.details[0].message });
@@ -165,7 +117,7 @@ export const updateProduct = async (req, res) => {
   } = item;
   return res.json({
     status: 200,
-    message: 'Item updated successfully',
+    message: "Item updated successfully",
     item: {
       id,
       name,
@@ -178,4 +130,57 @@ export const updateProduct = async (req, res) => {
     },
   });
 };
-export default { getAllProducts, getProductById, updateProduct };
+export const deleteSpecificProduct = async (req, res) => {
+  try {
+    // Validate input data
+    const { reason } = req.body;
+    const productId = parseInt(req.params.id);
+    if (
+      isNaN(productId) ||
+      typeof reason !== "string" ||
+      reason.trim() === ""
+    ) {
+      return res.status(400).json({
+        status: "fail",
+        data: { message: "Invalid input data" },
+      });
+    }
+
+    const isAvailable = await db.Product.findOne({
+      where: { id: productId, vendor_id: req.user.id },
+    });
+    if (!isAvailable) {
+      // If the product is not found in the collection, return a JSend fail response with an appropriate message
+      return res.status(401).json({
+        status: "fail",
+        data: { message: "Can not find such product in your collection" },
+      });
+    } else {
+      // If the product is found, delete it and return a JSend success response with a message indicating the reason for deletion
+      await isAvailable.destroy();
+      return res.status(200).json({
+        status: "success",
+        data: {
+          message: `This product has been removed because of the following reason: ${reason}.`,
+        },
+      });
+    }
+  } catch (error) {
+    // If there's any error, return a JSend error response with an appropriate message
+    console.error(error);
+    return res.status(500).json({
+      status: "error",
+      data: {
+        message:
+          "Oops, something went wrong on the server side. Please try again later.",
+      },
+    });
+  }
+};
+
+export default {
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteSpecificProduct,
+};
