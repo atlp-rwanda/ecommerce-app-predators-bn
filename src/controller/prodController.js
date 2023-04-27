@@ -3,7 +3,6 @@ import db from '../database/models/index.js';
 
 async function addProduct(req, res) {
   // A seller should be able to Create/Add a product
-
   try {
     // receive body & Validate user input
     const {

@@ -1,7 +1,7 @@
 'use strict';
 import { Model } from 'sequelize';
 export default (sequelize, DataTypes) => {
-  class ROLES extends Model {
+  class Roles extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -10,17 +10,17 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      ROLES.hasMany(models.User, {
+      Roles.hasMany(models.User, {
         foreignKey: 'roleId',
         as: 'users',
       });
     }
   }
-  ROLES.init({
+  Roles.init({
     name: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'ROLES',
+    modelName: 'Roles',
   });
-  return ROLES;
+  return Roles;
 };
