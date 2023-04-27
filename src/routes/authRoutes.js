@@ -1,20 +1,11 @@
-<<<<<<< HEAD
 /* eslint-disable import/no-named-as-default-member */
-=======
->>>>>>> dff5979 (ft(update-product-from-collection-33): Added new function.)
 import { Router } from 'express';
 import passport from 'passport';
 import Jwt from '../utils/jwt.js';
 import { googlePass } from '../utils/passport.js';
 import profileController from '../controller/profileController.js';
-<<<<<<< HEAD
-import productController from '../controller/productController.js';
+import {getProductById} from '../controller/productController.js';
 import vendor from '../controller/vendorController.js';
-=======
-import vendor from '../controller/vendorController.js';
-
-const router = Router();
->>>>>>> dff5979 (ft(update-product-from-collection-33): Added new function.)
 
 // Google route
 import {
@@ -26,15 +17,10 @@ import {
   disableUser,
   register,
   UserLogin,
-<<<<<<< HEAD
   AdminLogin,
   requestResetPassword,
   resetPasswordLink,
   resetPassword,
-=======
-  AdminLogin
-
->>>>>>> dff5979 (ft(update-product-from-collection-33): Added new function.)
 } from '../controller/authController.js';
 import {
   isAdmin,
@@ -73,7 +59,7 @@ router.get(
   googleAuthHandler,
 );
 
-router.post('/vendor', isAdmin, vendor);
+router.post('/vendor',isAdmin, vendor);
 router.post('/logout', logout);
 
 router.get('/users', GetUsers);
@@ -85,9 +71,8 @@ router.post('/disableUser/:id', disableUser);
 router.post('/login', UserLogin);
 router.post('/adminLogin', AdminLogin);
 router.post('/register', register);
-router.post('/vendor', isAdmin, vendor);
 router.patch('/users/profiles/:id', profileController.updateUserProfile);
-router.get('/products/:itemId', productController.getProductById);
+router.get('/products/:id',getProductById);
 router.post('/reset/password', requestResetPassword);
 router.get('/user/reset-password/:token', resetPasswordLink);
 router.put('/user/reset-password/:token', resetPassword);

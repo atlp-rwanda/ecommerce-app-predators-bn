@@ -41,6 +41,15 @@ export const searchProducts = async (req, res, next) => {
         message: ":no_entry_sign: Oops...no product found at the moment.",
       });
     } else {
+      // Find related products based on the category of the searched product
+      const relatedProducts = await models.Product.findAndCountAll({
+        where: {
+          category_id: products.rows[0].category_id,
+          id: { [Op.not]: products.rows[0].id },
+        },
+        limit: 5, // limit to 5 related products
+      });
+
       res.status(200).json({
         status: "success",
         message: `:rocket:${products.count} Products Found Successfully.:rocket:`,
@@ -52,6 +61,18 @@ export const searchProducts = async (req, res, next) => {
           picture_urls: product.picture_urls,
           description: product.description,
         })),
+
+         //recommended products
+         recommended_products: `You may also like these related products:`,
+         related: relatedProducts.rows.map((product) => ({
+             id: product.id,
+             name: product.Name,
+             category_id: product.category_id,
+             price: product.price,
+             picture_urls: product.picture_urls,
+             description: product.description,
+           })),
+           
         pagination: {
           page,
           totalPages: Math.ceil(products.count / limit),
