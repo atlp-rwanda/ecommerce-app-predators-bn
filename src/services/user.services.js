@@ -11,7 +11,11 @@ export const registerGoogle = async (data) => {
   }
 };
 //getUserByEmail
+<<<<<<< HEAD
 export const getUserByEmail = async (email) => {
+=======
+const getUserByEmail = async (email) => {
+>>>>>>> dff5979 (ft(update-product-from-collection-33): Added new function.)
   try {
     const user = await db.User.findOne({
       where: {
