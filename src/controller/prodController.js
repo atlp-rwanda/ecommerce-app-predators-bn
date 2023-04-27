@@ -3,18 +3,17 @@ import db from '../database/models/index.js';
 
 async function addProduct(req, res) {
   // A seller should be able to Create/Add a product
-
   try {
     // receive body & Validate user input
     const {
-      name, description, categoryId, pictureUrls, expiryDate, price, instock, available,
+      name, description, category_id, picture_urls, expiryDate, price, instock, available,
     } = req.body;
     if (
       !name
       || !description
-      || !categoryId
+      || !category_id
       || !price
-      || !pictureUrls
+      || !picture_urls
       || !expiryDate
       || !instock
       || !available
@@ -37,8 +36,8 @@ async function addProduct(req, res) {
     const product = await db.Product.create({
       name,
       description,
-      category_id: categoryId,
-      picture_urls: pictureUrls,
+      category_id,
+      picture_urls,
       expiryDate,
       price,
       instock,

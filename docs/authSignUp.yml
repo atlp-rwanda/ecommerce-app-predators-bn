@@ -1,5 +1,5 @@
 paths:
-  /register:
+  /api/register:
     post:
       tags:
         - Users
