@@ -9,6 +9,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+
+      category_id:{
+        type:Sequelize.INTEGER,
+        allowNull:true,
+        references:{
+          model:'Categories',
+          key:'id'
+        }
+      },
+
       name: {
         type: Sequelize.STRING,
         allowNull:false,
@@ -16,11 +26,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+
       }
     });
   },

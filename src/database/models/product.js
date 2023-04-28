@@ -11,6 +11,10 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
         foreignKey: 'vendor_id',
         as: 'vendor',
       });
+      Product.belongsTo(models.Category, {
+        foreignKey: 'category_id',
+        as: 'category',
+      });
     }
   }
   Product.init({

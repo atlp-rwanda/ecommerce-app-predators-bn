@@ -1,8 +1,8 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+
+import { Model } from 'sequelize';
+export default (sequelize, DataTypes) => {
+
   class Category extends Model {
     /**
      * Helper method for defining associations.
@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Product.belongsTo(models.Category, {
+
+      Category.belongsTo(models.Product, {
+
         foreignKey: 'category_id',
         as: 'category',
         onDelete: 'CASCADE',
@@ -19,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Category.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    category_id: DataTypes.INTEGER,
+
   }, {
     sequelize,
     modelName: 'Category',

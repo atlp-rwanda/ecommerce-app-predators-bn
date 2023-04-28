@@ -10,12 +10,12 @@ import cors from 'cors';
 import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
 import i18next from './middleware/i18next.js';
-
 // Routes URL definitions
 import prodRoute from './routes/prodRoute.js';
 import welcomeRoute from './routes/welcome.js';
 import product from "./routes/ProductRoutes.js";
 import authRoute from './routes/authRoutes.js';
+import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 
 // Sequelize configuration
@@ -74,6 +74,7 @@ app.use('/api/products', prodRoute);
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/api", product);
+app.use('/api/category', category);
 app.use("/", welcomeRoute);
 
 

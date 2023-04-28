@@ -1,13 +1,18 @@
 /* eslint-disable camelcase */
-import Joi from 'joi';
-import jwt from 'jsonwebtoken';
-import db from '../database/models/index.js';
-import {handleItemNotFound,
+
+import Joi from "joi";
+import jwt from "jsonwebtoken";
+import db from "../database/models/index.js";
+import {
+  handleItemNotFound,
   handleUnauthorized,
   handleSellerWithoutAccess,
   handleSellerScenario,
   handleBuyerScenario,
-  handleServerError,} from '../services/product.services.js';
+
+  handleServerError,
+} from "../services/product.services.js";
+
 // getting all products
 
 export const getAllProducts = async (req, res) => {
@@ -43,7 +48,8 @@ export const getAllProducts = async (req, res) => {
 // Getting Product by Id
 export const getProductById = async (req, res) => {
   try {
-    const {id } = req.params;
+
+    const { id } = req.params;
 
     // Check if item exists and retrieve details
     const item = await db.Product.findOne({ where: { id: id } });
@@ -52,7 +58,7 @@ export const getProductById = async (req, res) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) return handleBuyerScenario(res, item);
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -77,7 +83,7 @@ export const updateProduct = async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
-    return res.status(400).json({ error: 'id is required' });
+    return res.status(400).json({ error: "id is required" });
   }
   const inputData = req.body;
   const schema = Joi.object({
@@ -87,7 +93,7 @@ export const updateProduct = async (req, res) => {
     expiryDate: Joi.date().iso().required(),
     picture_urls: Joi.array().items(Joi.string()),
     instock: Joi.number().integer().positive().required(),
-    available: Joi.string().valid('yes', 'no').required(),
+    available: Joi.string().valid("yes", "no").required(),
   });
   const { error } = schema.validate(inputData);
   if (error) return res.status(400).json({ error: error.details[0].message });
@@ -115,7 +121,7 @@ export const updateProduct = async (req, res) => {
   } = item;
   return res.json({
     status: 200,
-    message: 'Item updated successfully',
+    message: "Item updated successfully",
     item: {
       id,
       name,
@@ -128,42 +134,59 @@ export const updateProduct = async (req, res) => {
     },
   });
 };
-export const deleteSpecificProduct = async (req, res) =>{
+
+export const deleteSpecificProduct = async (req, res) => {
   try {
-      // Validate input data
-      const {reason} = req.body;
-      const productId = parseInt(req.params.id);
-      if (isNaN(productId) || typeof reason !== "string" || reason.trim() === "") {
-          return res.status(400).json({
-              status: "fail",
-              data: { message: "Invalid input data" }
-          });
-      }
-
-      const isAvailable = await db.Product.findOne({ where: { id: productId, vendor_id: req.user.id } });
-      if(!isAvailable){
-          // If the product is not found in the collection, return a JSend fail response with an appropriate message
-          return res.status(401).json({
-              status: "fail",
-              data: { message: "Can not find such product in your collection" }
-          });
-      }
-      else {
-          // If the product is found, delete it and return a JSend success response with a message indicating the reason for deletion
-          await isAvailable.destroy();
-          return res.status(200).json({
-              status: "success",
-              data: { message: `This product has been removed because of the following reason: ${reason}.` }
-          });
-      }
-  } catch (error) {
-      // If there's any error, return a JSend error response with an appropriate message
-      console.error(error);
-      return res.status(500).json({
-          status: "error",
-          data: { message: "Oops, something went wrong on the server side. Please try again later."}
+    // Validate input data
+    const { reason } = req.body;
+    const productId = parseInt(req.params.id);
+    if (
+      isNaN(productId) ||
+      typeof reason !== "string" ||
+      reason.trim() === ""
+    ) {
+      return res.status(400).json({
+        status: "fail",
+        data: { message: "Invalid input data" },
       });
-  }
-}
+    }
 
-export default { getAllProducts, getProductById, updateProduct, deleteSpecificProduct };
+    const isAvailable = await db.Product.findOne({
+      where: { id: productId, vendor_id: req.user.id },
+    });
+    if (!isAvailable) {
+      // If the product is not found in the collection, return a JSend fail response with an appropriate message
+      return res.status(401).json({
+        status: "fail",
+        data: { message: "Can not find such product in your collection" },
+      });
+    } else {
+      // If the product is found, delete it and return a JSend success response with a message indicating the reason for deletion
+      await isAvailable.destroy();
+      return res.status(200).json({
+        status: "success",
+        data: {
+          message: `This product has been removed because of the following reason: ${reason}.`,
+        },
+      });
+    }
+  } catch (error) {
+    // If there's any error, return a JSend error response with an appropriate message
+    console.error(error);
+    return res.status(500).json({
+      status: "error",
+      data: {
+        message:
+          "Oops, something went wrong on the server side. Please try again later.",
+      },
+    });
+  }
+};
+
+export default {
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteSpecificProduct,
+};
+

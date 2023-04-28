@@ -13,7 +13,7 @@ const vendor = async (req, res) => {
 
   // Validate user input
   if (!name || !email || !gender || !preferred_language, !preferred_currency) {
-    return res.status(400).json({status:"fail\n",message:"Please provide all required fields" });
+    return res.status(400).json({status:"fail",message:"Please provide all required fields" });
   }
 
   try {
