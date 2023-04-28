@@ -12,7 +12,7 @@ export const Wishlist = async (req, res) => {
       productId: req.body.productId
     }})
     if(duplicate) {
-      throw Error(`${product.Name} is already in wishlist.`)
+      throw Error(`${product.name} is already in wishlist.`)
     }
     // Add the item to the buyer's wishlist
     await db.wishlist.create({
@@ -22,7 +22,7 @@ export const Wishlist = async (req, res) => {
     // Retrieve the updated wishlist for the buyer
     const wishlist = await db.wishlist.findAll({
       where: { userId: req.user.id },
-      include: [{ model: db.Product, attributes: ['Name', 'price', "picture_urls"] }],
+      include: [{ model: db.Product, attributes: ['name', 'price', "picture_urls"] }],
     });
     // Update the buyer's record in the users table with the new wishlist data
     await db.User.update(
@@ -31,7 +31,7 @@ export const Wishlist = async (req, res) => {
     );
     // Send a confirmation message to the frontend
     res.status(201).json({
-      message: `Product ${product.Name} added to wishlist.`,
+      message: `Product ${product.name} added to wishlist.`,
       wishlist,
     });
   } catch (error) {

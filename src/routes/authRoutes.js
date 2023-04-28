@@ -60,7 +60,7 @@ router.get(
 );
 
 
-router.post('/vendor',isAdmin, vendor);
+router.post('/vendor', vendor);
 
 router.post('/logout', logout);
 router.get('/users',GetUsers);

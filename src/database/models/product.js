@@ -7,10 +7,7 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Product.belongsTo(models.wishlist, {
-        foreignKey: 'productId',
-        onDelete: 'CASCADE',
-      });
+  
       Product.belongsTo(models.User, {
         foreignKey: 'vendor_id',
         as: 'vendor',
@@ -31,6 +28,7 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
     expiryDate: DataTypes.DATE,
     available: DataTypes.BOOLEAN,
     vendor_id: DataTypes.INTEGER,
+
   }, {
     sequelize,
     modelName: 'Product',
