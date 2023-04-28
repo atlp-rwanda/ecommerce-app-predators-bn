@@ -14,9 +14,9 @@ export default (sequelize, DataTypes) => {
         as: "role",
         onDelete: "CASCADE",
       });
-      User.hasOne(models.Carts, {
-        foreignKey: "User_id",
-        as: "cart",
+      User.hasMany(models.wishlist, {
+        foreignKey: "userId",
+        as: "wishlist",
         onDelete: "CASCADE",
       });
       User.hasMany(models.Product, {

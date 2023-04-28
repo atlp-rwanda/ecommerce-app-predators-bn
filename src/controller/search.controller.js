@@ -15,7 +15,7 @@ export const searchProducts = async (req, res, next) => {
     }
     // Search by name
     if (name) {
-      query["$Product.Name$"] = { [Op.like]: name };
+      query["$Product.name$"] = { [Op.like]: name };
     }
     // search by  description
     if(description){

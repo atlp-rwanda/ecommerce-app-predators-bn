@@ -1,7 +1,7 @@
+'use strict';
 import { Model } from 'sequelize';
-
 export default (sequelize, DataTypes) => {
-  class Carts extends Model {
+  class Roles extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,18 +9,18 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Carts.hasMany(models.Cart_items, {
-        foreignKey: 'cart_id',
-        as: 'cart_items',
-        onDelete: 'CASCADE',
+
+      Roles.hasMany(models.User, {
+        foreignKey: 'roleId',
+        as: 'users',
       });
     }
   }
-  Carts.init({
-    user_id: DataTypes.STRING,
+  Roles.init({
+    name: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Carts',
+    modelName: 'Roles',
   });
-  return Carts;
+  return Roles;
 };
