@@ -9,7 +9,7 @@ export default class authenticated{
                 .status(401)
                  .json(jsend.fail({ message: "You need to be logged" }));
                 const token = await authHeader.split(" ")[1];
-                await Jwt(token);
+                await Jwt.verifyToken(token);
                 next();
         }catch(e){
              throw new Error("Unkown error: " + e.message);
