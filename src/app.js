@@ -17,6 +17,7 @@ import product from "./routes/ProductRoutes.js";
 import authRoute from './routes/authRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
+import wishlistRoute from './routes/wishlistRoute.js';
 
 // Sequelize configuration
 dotenv.config();
@@ -75,6 +76,7 @@ app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/api", product);
 app.use('/api/category', category);
+app.use('/api', wishlistRoute);
 app.use("/", welcomeRoute);
 
 

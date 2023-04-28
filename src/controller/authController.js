@@ -15,8 +15,9 @@ import generateToken from '../utils/userToken.js';
 import sendEmail from '../utils/sendEmail.js';
 
 dotenv.config();
-const { ADMIN_EMAIL } = process.env;
-const { ADMIN_PASSWORD } = process.env;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
 export const AdminLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -292,8 +293,7 @@ export const register = async (req, res) => {
     const user = await db.User.create({
       name,
       email,
-      gender,
-      roleId: 2,
+      roleId: 1,
       password: hashedPassword,
       status: 'active',
       preferred_currency: preferredCurrency,
