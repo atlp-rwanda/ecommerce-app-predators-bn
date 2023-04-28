@@ -2,7 +2,7 @@
 import db from "../database/models/index.js";
 
 export const get_collection = (req, res) => {
-    const user_id = req.body.id;
+    const user_id = req.user.dataValues.id;
     if (!user_id) {
         res.status(400).send({ status: "fail", message: "The operation was not successful, encountered errors.", data: { errors: {
             id: "Missing id of the vendor",

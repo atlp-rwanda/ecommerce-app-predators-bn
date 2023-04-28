@@ -18,6 +18,7 @@ import authRoute from './routes/authRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
+import productListingRoute from "./routes/productListingRoute.js"
 
 // Sequelize configuration
 dotenv.config();
@@ -72,6 +73,7 @@ passport.deserializeUser((id, done) => {
 
 // Routes
 app.use('/api/products', prodRoute);
+app.use('/api', productListingRoute);
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/api", product);
