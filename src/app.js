@@ -18,7 +18,7 @@ import authRoute from './routes/authRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
-
+import cartRoute from './routes/cartRoutes.js';
 // Sequelize configuration
 dotenv.config();
 const { sequelize } = db;

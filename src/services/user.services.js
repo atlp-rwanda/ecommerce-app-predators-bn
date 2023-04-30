@@ -39,7 +39,7 @@ export const getUserByGoogleId = async (googleId) => {
 
 
 
-const updateUserPassword = async (payload,userPass) => {
+export const updateUserPassword = async (payload,userPass) => {
   try{ 
         const email = payload.email; 
         const pass = userPass.password; 
@@ -62,5 +62,4 @@ const updateUserPassword = async (payload,userPass) => {
         return false
       }
 };
-
-export { registerGoogle, getUserByEmail, getUserByGoogleId,updateUserPassword};
+ 
