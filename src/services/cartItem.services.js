@@ -28,6 +28,7 @@ export default class Cart {
         }
     };
 
+    
 
     static getCartItems = async (user) => {
         try {
@@ -52,6 +53,8 @@ export default class Cart {
            return false
         }
     };
+
+ 
 
     static clearCart = async (cartData) => {
       

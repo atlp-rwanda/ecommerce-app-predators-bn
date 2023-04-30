@@ -55,6 +55,7 @@ export default class cartController {
         
     }
 
+
     static getCartItems = async (req,res)=>{
         try { 
             const authHeader=req.headers['authorization'];
@@ -91,7 +92,7 @@ export default class cartController {
         try { 
             const authHeader=req.headers['authorization'];
             const token = await authHeader.split(" ")[1];
-            const product_id= req.body.product_id;
+            const product_id= req.params.id;
           
             const user= await Jwt.verifyToken(token); 
             const product = await productDetail.getProductById(product_id); 
@@ -105,6 +106,7 @@ export default class cartController {
                     }
             const cartData = {product_id:product.id,User_id:user.value.id}
         
+            //calling clearCart function from cartItem.services.js
             const cartItems = await Cart.clearCart(cartData);
 
             if(!cartItems) {

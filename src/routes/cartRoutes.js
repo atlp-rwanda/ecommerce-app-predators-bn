@@ -5,6 +5,6 @@ import authenticated from "../middleware/auth.middleware";
 
 router.post('/',authenticated.auth,cartController.addCartItem);
 router.get('/',authenticated.auth,cartController.getCartItems);
-router.delete('/',authenticated.auth,cartController.ClearCartItem);
+router.delete('/:id',authenticated.auth,cartController.ClearCartItem);
 
 export default router;

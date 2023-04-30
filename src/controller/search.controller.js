@@ -2,7 +2,7 @@ import { Op } from "sequelize";
 import models from "../database/models";
 export const searchProducts = async (req, res, next) => {
   try {
-    const { name, category, description, price, keyword, page = 1, limit = 10 } = req.query;
+    const { name, category, description, price, keyword, page = 1, limit = 1 } = req.query;
     let query = {};
     // Search by keyword or phrase
     if (keyword) {
@@ -63,7 +63,7 @@ export const searchProducts = async (req, res, next) => {
         })),
 
          //recommended products
-         recommended_products: `You may also like these related products:`,
+         recommended_products: `More related products:`,
          related: relatedProducts.rows.map((product) => ({
              id: product.id,
              name: product.Name,
