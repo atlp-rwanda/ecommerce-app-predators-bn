@@ -56,6 +56,7 @@ const isSeller = async (req, res, next) => {
     res
       .status(500)
       .json({ message: "Your are Unauthorized to perform this action" });
+      console.log(err)
   }
 };
 const isBuyer = async (req, res, next) => {
