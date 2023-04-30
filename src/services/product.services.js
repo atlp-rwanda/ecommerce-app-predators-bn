@@ -1,3 +1,28 @@
+import db from "../database/models/index.js";
+
+//getProductById
+export default class productDetail {
+    static getProductById = async (id) => {
+        try { 
+             const Product = await db.Product.findOne({
+                        where: {
+                            id: id
+                        },
+                    });
+            if (!Product) {  
+               return false
+            }
+          
+        return Product; 
+        } catch (error) {
+           return false
+        }
+    };
+
+}
+
+
+
 export const handleItemNotFound = (res) => {
     return res.status(404).json({
       status: 'fail',
@@ -52,12 +77,3 @@ export const handleItemNotFound = (res) => {
       error: 'Server error',
     });
     };
-
-    export default {
-        handleItemNotFound,
-        handleUnauthorized,
-        handleSellerWithoutAccess,
-        handleSellerScenario,
-        handleBuyerScenario,
-        handleServerError,
-    }

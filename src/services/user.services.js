@@ -4,9 +4,8 @@ export const registerGoogle = async (data) => {
   try {
     const user = await db.User.create(data);
     return user;
-  } catch (error) {
-    console.log(error.message);
-    throw new Error("Could not create user");
+  } catch (error) { 
+    return false
     
   }
 };
@@ -18,9 +17,12 @@ export const getUserByEmail = async (email) => {
         email: email,
       },
     });
+    if (!user) {
+       return false
+    }
     return user;
   } catch (error) {
-    throw new Error("Could not find user");
+    return false
   }
 };
 export const getUserByGoogleId = async (googleId) => {
@@ -31,13 +33,13 @@ export const getUserByGoogleId = async (googleId) => {
       },
     });
     return user;
-  } catch (error) {
- // eslint-disable-line no-console 		throw new Error('Could not find user';
-    throw new Error('Could not find user');
+  } catch (error) {return false;
   }
 };
 
-export const updateUserPassword = async (payload,userPass) => {
+
+
+const updateUserPassword = async (payload,userPass) => {
   try{ 
         const email = payload.email; 
         const pass = userPass.password; 
@@ -61,4 +63,4 @@ export const updateUserPassword = async (payload,userPass) => {
       }
 };
 
-export  default{ registerGoogle, getUserByEmail, getUserByGoogleId,updateUserPassword};
+export { registerGoogle, getUserByEmail, getUserByGoogleId,updateUserPassword};

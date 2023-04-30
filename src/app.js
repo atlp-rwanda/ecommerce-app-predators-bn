@@ -77,8 +77,7 @@ app.use('/api', authRoute);
 app.use("/api", product);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
-app.use("/", welcomeRoute);
-
-
+app.use("/", welcomeRoute); 
+app.use("/api/cart", cartRoute);
 // Export the app
 export default app;

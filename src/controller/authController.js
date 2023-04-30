@@ -443,6 +443,4 @@ export default {
   AdminLogin
   ,
 };
-
-/* eslint-disable consistent-return */
-// imports
+ 
