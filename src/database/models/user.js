@@ -53,6 +53,7 @@ export default (sequelize, DataTypes) => {
     district: DataTypes.STRING,
     sector: DataTypes.STRING,
     streetAddress: DataTypes.STRING,
+    receive_notifications: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'User',
