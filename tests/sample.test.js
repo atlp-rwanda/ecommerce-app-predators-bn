@@ -1,9 +1,14 @@
-import calculator from "./sample";
+import calculator from './sample.js';
+import chai from 'chai';
 
-test("adds 1 + 2 to equal 3", () => {
-  expect(calculator.sum(1, 2)).toBe(3);
-});
+const expect = chai.expect;
 
-test("subtraction 10-6to equel 4", () => {
-  expect(calculator.subtract(10, 6)).toBe(4);
+describe('Calculator', () => {
+  it('should add 1 + 2 to equal 3', () => {
+    expect(calculator.sum(1, 2)).to.equal(3);
+  });
+
+  it('should subtract 10 - 6 to equal 4', () => {
+    expect(calculator.subtract(10, 6)).to.equal(4);
+  });
 });

@@ -1,5 +1,5 @@
 import db from "../database/models/index.js";
-import JwtUtility from "../utils/jwt";
+import JwtUtility from "../utils/jwt.js";
 
 
 const isAdmin = async (req, res, next) => {

@@ -1,7 +1,7 @@
 // routers/discountCoupon.js
 import express from 'express';
 import { createCoupon, getCoupons, getCouponById, deleteCouponById } from '../controller/discountCouponController.js';
-import { isSeller } from '../middleware/roles';
+import { isSeller } from '../middleware/roles.js';
 
 const router = express.Router();
 

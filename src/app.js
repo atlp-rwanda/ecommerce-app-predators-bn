@@ -18,6 +18,7 @@ import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
 import discountCouponRouter from './routes/discountCouponRoute.js';
+import couponeBuyer from './routes/applyCouponRoutes.js';
 
 // Sequelize configuration
 dotenv.config();
@@ -78,6 +79,7 @@ app.use("/api", product);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
+app.use('/api',couponeBuyer);
 app.use("/", welcomeRoute);
 
 

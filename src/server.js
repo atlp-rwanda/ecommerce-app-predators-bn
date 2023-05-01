@@ -7,3 +7,5 @@ app.listen(PORT, () => {
     console.log("I am in "+ process.env.NODE_ENV + " environment")
     console.log(`[Server@${PORT}] On`);
 });
+
+export default app;
