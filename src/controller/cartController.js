@@ -9,7 +9,7 @@ export default class cartController {
             let product_id= req.body.product_id;
             let quantity=req.body.quantity;
             
-            const authHeader=req.headers['authorization'];
+            const authHeader=req.headers["authorization"];
             if(!authHeader) 
                 return res
                     .status(401)
