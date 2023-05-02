@@ -1,7 +1,7 @@
 // Import necessary dependencies
 import db from '../database/models/index.js';
 // Route to handle the POST request to add an item to the wishlist
-export const Wishlist = async (req, res) => {
+export const addWishlist = async (req, res) => {
   try {
    
     // Retrieve the product details from the database
@@ -38,4 +38,39 @@ export const Wishlist = async (req, res) => {
     res.status(400).send({status: "fail", message: "Encountered Error", data: { error: error.message}})
   }
 };
-export default Wishlist;
+export const deleteFromWishlist = async (req, res) => {
+  try {
+    const  productId = req.params.productId;
+    const wishlistItem = await db.wishlist.findOne({
+      where: { userId: req.user.id, productId },
+    });
+    if (!wishlistItem) {
+      throw Error('Item not found in wishlist.');
+    }
+    await wishlistItem.destroy();
+    const wishlist = await db.wishlist.findAll({
+      where: { userId: req.user.id },
+      include: [{ model: db.Product, attributes: ['name', 'price', 'picture_urls'] }],
+    });
+    await db.User.update(
+      { wishlist: wishlist.map((item) => item.Product) },
+      { where: { id: req.user.id } },
+    );
+    res.status(200).json({ message: 'Item removed from wishlist.', wishlist });
+  } catch (error) {
+    res.status(400).send({ status: 'fail', message: 'Encountered Error', data: { error: error.message } });
+  }
+};
+export const getWishlist = async (req, res) => { //TODO: Implement pagination, search, and sort options. 描述：获
+  try{
+    const wishlist = await db.wishlist.findAll({
+      where: { userId: req.user.id },
+      include: [{ model: db.Product, attributes: ['name', 'price', 'picture_urls'] }],
+    });
+    res.status(200).json({message: "item successfully retrieved", wishlist});
+  }catch (error) {
+    res.status(400).send({ status: 'fail', message: 'Encountered Error', data: { error: error.message } });
+  }
+}
+
+export default {addWishlist, deleteFromWishlist, getWishlist};

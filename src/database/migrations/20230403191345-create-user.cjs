@@ -99,6 +99,12 @@ module.exports = {
       preferred_currency: {
         type: Sequelize.UUID,
       },
+      
+      receive_notifications:{
+
+       type:Sequelize.BOOLEAN,
+       defaultValue:true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
