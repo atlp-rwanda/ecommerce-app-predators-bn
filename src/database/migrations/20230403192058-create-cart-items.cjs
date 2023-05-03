@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      User_id: {
         type: Sequelize.INTEGER
       },
       product_id: {
@@ -19,7 +19,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       amount:{
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
+        allowNull: true
+      },
+      coupon:{
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: "0",
       },
       createdAt: {
         allowNull: false,

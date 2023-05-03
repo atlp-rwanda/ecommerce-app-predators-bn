@@ -19,10 +19,14 @@ export default (sequelize, DataTypes) => {
       });
     }
   }
-  Cart_items.init({    User_id: DataTypes.INTEGER,
+  Cart_items.init({
+
+    User_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
-    amount:DataTypes.FLOAT,  }, {
+    amount:DataTypes.FLOAT,
+    coupon: DataTypes.STRING,
+  }, {
     sequelize,
     modelName: 'Cart_items',
   });

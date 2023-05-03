@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "make-model": "npx sequelize-cli model:generate --name",
+    "make-model": "npx sequelize-cli model:generate",
     "migrate": "npx sequelize-cli db:migrate",
     "make-seed": "npx sequelize-cli seed:generate --name",
     "seed": "npx sequelize-cli db:seed:all",

@@ -17,6 +17,10 @@ import authRoute from './routes/authRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
+import discountCouponRouter from './routes/discountCouponRoute.js';
+import cart from "./routes/cartRoutes.js";
+import checkoutRoute from "./routes/checkoutRoute.js";
+import applyCoupon from "./routes/applyCouponRoutes.js"
 
 // Sequelize configuration
 dotenv.config();
@@ -73,10 +77,15 @@ passport.deserializeUser((id, done) => {
 
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
+app.use('/api', checkoutRoute);
+app.use('/api', cart);
 app.use("/api", product);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
+app.use('/api/discount-coupons', discountCouponRouter);
+app.use('/api',applyCoupon)
 app.use("/", welcomeRoute);
+
 
 
 // Export the app

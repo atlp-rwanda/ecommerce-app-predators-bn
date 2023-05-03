@@ -25,7 +25,7 @@ export default (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       User.hasMany(models.Cart_items, {
-        foreignKey: "cart_id",
+        foreignKey: "id",
         as: "cart_items",
         onDelete: "CASCADE",
       });
@@ -47,7 +47,7 @@ export default (sequelize, DataTypes) => {
     otp_base32: DataTypes.STRING,
     otp_auth_url: DataTypes.STRING,
     preferred_language: DataTypes.STRING,
-    preferred_currency: DataTypes.UUID,
+    preferred_currency: DataTypes.STRING,
     country: DataTypes.STRING,
     province: DataTypes.STRING,
     district: DataTypes.STRING,

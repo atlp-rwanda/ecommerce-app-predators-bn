@@ -97,7 +97,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       preferred_currency: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
       },
       
       receive_notifications:{
