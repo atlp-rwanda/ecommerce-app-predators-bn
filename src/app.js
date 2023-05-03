@@ -11,6 +11,7 @@ import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
 import i18next from './middleware/i18next.js';
 // Routes URL definitions
+import prodRoute from './routes/prodRoute.js';
 import welcomeRoute from './routes/welcome.js';
 import product from "./routes/ProductRoutes.js";
 import authRoute from './routes/authRoutes.js';
@@ -74,10 +75,7 @@ passport.deserializeUser((id, done) => {
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/api", product);
-app.use('/api/category', category);
-app.use('/api', wishlistRoute);
-app.use("/", welcomeRoute);
-
-
+app.use("/", welcomeRoute); 
+app.use("/api/cart", cartRoute);
 // Export the app
 export default app;
