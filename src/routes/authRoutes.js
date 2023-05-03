@@ -20,7 +20,7 @@ import {
   AdminLogin,
   requestResetPassword,
   resetPasswordLink,
-  resetPassword,
+  resetPassword, 
 } from '../controller/authController.js';
 import {
   isAdmin,
@@ -60,7 +60,7 @@ router.get(
 );
 
 
-router.post('/vendor',isAdmin, vendor);
+router.post('/vendor', vendor);
 
 router.post('/logout', logout);
 router.get('/users',GetUsers);
@@ -72,5 +72,9 @@ router.post('/login', UserLogin);
 router.post('/adminLogin', AdminLogin);
 router.post('/register', register);
 router.patch('/users/profiles', profileController.updateUserProfile);
+
+router.post('/reset/password',requestResetPassword);
+router.get('/user/reset-password/:token',resetPasswordLink);
+router.put('/user/reset-password/:token',resetPassword);
 
 export default router;

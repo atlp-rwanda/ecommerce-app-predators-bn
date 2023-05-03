@@ -24,6 +24,41 @@ module.exports = {
         key: 'id'
       }
     },
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    category_id: {
+      type: Sequelize.INTEGER,
+    },
+    picture_urls: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: false,
+    },
+    price: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    instock: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    },
+    expiryDate: {
+      type: Sequelize.DATE,
+    },
+    available: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    vendor_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

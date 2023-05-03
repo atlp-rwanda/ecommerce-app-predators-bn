@@ -17,7 +17,8 @@ import authRoute from './routes/authRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
-
+import expiredRoute from './routes/expiredRoute.js'; // for testing only 描述这个页面需要过时的时间来重新
+import cartRoute from './routes/cartRoutes.js'; // for testing only 描述这个页面需要过时的时间来重新计算购物车数
 // Sequelize configuration
 dotenv.config();
 const { sequelize } = db;
@@ -73,9 +74,11 @@ passport.deserializeUser((id, done) => {
 
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
-app.use("/api", product);
+app.use("/api", product); 
+app.use("/api/cart", cartRoute);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
+app.use('/api', expiredRoute);
 app.use("/", welcomeRoute);
 
 

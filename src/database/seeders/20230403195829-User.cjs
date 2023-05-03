@@ -1,5 +1,7 @@
-/* eslint-disable no-unused-vars */
+// import { hasher } from '../../utils/hashPassword';
+
 /** @type {import('sequelize-cli').Migration} */
+  
 module.exports = {
 
   async up(queryInterface, Sequelize) {
@@ -8,8 +10,8 @@ module.exports = {
       [
         {
           name: 'John Doe',
-          email: 'teting@gmail.com',
-          password: '123456789',
+          email: 'yobuys@gmail.com',
+          password:'$2y$10$bb.ZLaQkxDxLBvFadjr7A.MzYbGcinp68U/4svnM4JDNLJqgqhpRG',
           roleId: 1,
           status: 'active',
           googleId: 1,
