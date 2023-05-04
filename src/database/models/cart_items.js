@@ -25,7 +25,7 @@ export default (sequelize, DataTypes) => {
     product_id: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
     amount:DataTypes.FLOAT,
-
+    coupon: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Cart_items',

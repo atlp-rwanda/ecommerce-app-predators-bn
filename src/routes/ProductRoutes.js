@@ -1,7 +1,7 @@
-import {getAllProducts, getProductById, updateProduct, deleteSpecificProduct} from '../controller/productController';
+import {getAllProducts, getProductById, updateProduct, deleteSpecificProduct} from '../controller/productController.js';
 import { get_collection, get_available_products } from "../controller/productListingController.js";
 import { isAdmin, isSeller, isBuyer, checkPermission } from "../middleware/roles.js";
-import  productSearch from '../controller/search.controller';
+import  productSearch from '../controller/search.controller.js';
 import { Router } from "express";
 import jsend from 'jsend';
 import { addProduct, showCatalogue } from '../controller/prodController.js';
