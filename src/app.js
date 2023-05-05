@@ -1,16 +1,3 @@
-// Imports
-import morgan from 'morgan';
-import session from 'express-session';
-import passport from 'passport';
-import middleware from 'i18next-http-middleware';
-import dotenv from 'dotenv';
-import swaggerUI from 'swagger-ui-express';
-import express from 'express';
-import cors from 'cors';
-import swagger from '../docs/swagger.js';
-import db from './database/models/index.js';
-import i18next from './middleware/i18next.js';
-// Routes URL definitions
 import prodRoute from './routes/prodRoute.js';
 import welcomeRoute from './routes/welcome.js';
 import product from "./routes/ProductRoutes.js";
@@ -18,6 +5,19 @@ import authRoute from './routes/authRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
+import morgan from "morgan";
+import session from "express-session";
+import passport from "passport";
+import i18next from "./middleware/i18next.js";
+import middleware from "i18next-http-middleware";
+import dotenv from "dotenv";
+import swaggerUI from "swagger-ui-express";
+import swagger from "../docs/swagger.js";
+import db from "../src/database/models/index.js"; 
+import cartRoute from "./routes/cartRoutes.js";  
+ 
+import express from "express";
+import cors from "cors";
 
 // Sequelize configuration
 dotenv.config();
@@ -75,6 +75,8 @@ passport.deserializeUser((id, done) => {
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
 app.use("/api", product);
+app.use('/api/category', category);
+app.use('/api', wishlistRoute);
 app.use("/", welcomeRoute); 
 app.use("/api/cart", cartRoute);
 // Export the app

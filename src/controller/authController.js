@@ -8,11 +8,12 @@ import db from '../database/models/index.js';
 import Jwt from '../utils/jwt.js';
 import {
   getUserByGoogleId,
-  registerGoogle,getUserByEmail,updateUserPassword
-} from "../services/user.services.js";
-import generateToken from "../utils/userToken.js";
-import sendEmail from "../utils/sendEmail.js";
-import dotenv from 'dotenv'
+  registerGoogle,updateUserPassword,
+  getUserByEmail,
+} from '../services/user.services.js';
+import generateToken from '../utils/userToken.js';
+import sendEmail from '../utils/sendEmail.js';
+
 dotenv.config();
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -312,21 +313,48 @@ export const requestResetPassword = async (req, res) => {
   const email=req.body.email; 
   try {
      const user=await getUserByEmail(email);
+   
       if (!user) { 
-        return res.status(400).jsend.error({ message: 'User with email does not exist!',data: false });}
-    const userEmail = { email, id: user.id };  
+        return res.status(400).jsend.error({
+            code: 400,
+            message: 'User with email does not exist!',
+            data: false
+        });
+
+      }
+
+    const userEmail = { email, id: user.id }; 
+   
     const token = Jwt.generateToken(userEmail,'15m');
  
       sendEmail.sendEmail({
             email,
             subject: 'Predators E-commerce Reset Password',
-            text: ` <p>Reset your password.</p> <p>Please click the link below to reset your password.</p>  <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>`
+            text: `
+                    <p>Reset your password.</p>
+                    <p>Please click the link below to reset your password.</p> 
+                    
+                    <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>
+                    
+                    `
           });   
         res.cookie('reset-token', token,{httponly:true,expiresIn:'15m'});
-        res.status(200).send(jsend.success({  message: 'Password reset link was sent to your email', data:{ token }}));
+
+        res.status(200).send(jsend.success({ 
+                code:200, 
+                message: 'Password reset link was sent to your email', 
+                data:{ token }
+              }));
+
   } catch (error) {
-     return res.status(500).send(jsend.fail({ message: error.message,data: false})); 
-  } 
+     return res.status(500).send(jsend.fail({
+            code: 500,
+            message: error.message,
+            data: false
+          })); 
+  }
+   
+ 
 };
  
 
