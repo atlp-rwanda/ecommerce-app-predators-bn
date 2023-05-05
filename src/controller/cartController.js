@@ -106,6 +106,8 @@ export default class cartController {
                     data: cartItem
                 })); 
                 
+                //commit added
+
 
         } catch (error) {
              
@@ -117,6 +119,66 @@ export default class cartController {
                     })); 
         }
         
+    }
+
+    static ClearCartItem = async (req,res)=>{
+        try { 
+
+            const cart_id= req.params.id;
+
+            const cartData = {cart_id, User_id:req.user.id}
+
+            const cartItems = await Cart.clearCart(cartData);
+
+            if(!cartItems) {
+                return res.status(500).send(jsend.fail({
+                            code: 500,
+                            message:  "cart item not removed",
+                            data: cartItems
+                        })); 
+            }
+            return res.status(200).send(jsend.success({
+                            code: 200,
+                            message:  "item removed in cart",
+                            data: cartItems
+                        }));
+
+        } catch (error) {
+             return res.status(500)
+                    .send(jsend.fail({
+                        code: 500,
+                        message:  "unexpected error",
+                        data: error
+                    })); 
+        }
+    }
+
+    static ClearAllCartItem = async (req,res)=>{
+        try { 
+           const cartData = {User_id:req.user.id}
+            const cartItems = await Cart.clearAllCart(cartData);
+
+            if(!cartItems) {
+                return res.status(404).send(jsend.fail({
+                            code: 404,
+                            message:  "not cart item found ",
+                            data: cartItems
+                        })); 
+            }
+            return res.status(200).send(jsend.success({
+                            code: 200,
+                            message:  "All items removed, your cart is empty now",
+                            data: cartItems
+                        }));
+
+        } catch (error) {
+             return res.status(500)
+                    .send(jsend.fail({
+                        code: 500,
+                        message:  "unexpected error",
+                        data: error
+                    })); 
+        }
     }
  
 
