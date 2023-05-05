@@ -78,4 +78,51 @@ export default class Cart {
         }
     };
 
+    static clearCart = async (cartData) => {
+
+        try {  
+            const Carts = await db.Cart_items.findOne({
+                where:{
+                    User_id:cartData.User_id,
+                    id:cartData.cart_id
+                }
+            });
+            //  console.log(cartData)
+            if (!Carts) {  
+                return false;
+            } 
+            const ClearCart= Carts.destroy();
+            return true;
+
+        } catch (error) {
+           return false
+        }
+    };
+
+    static clearAllCart = async (cartData) => {
+        try {
+          const Carts = await db.Cart_items.findAll({
+            where: {
+              User_id: cartData.User_id,
+            },
+          });
+
+          if (!Carts || Carts.length === 0) {
+            return false;
+          }
+
+          // Destroy each instance of Cart_items in parallel
+          await Promise.all(Carts.map((cart) => cart.destroy()));
+          return true;
+        } catch (error) {
+          return error;
+        }
+      };
+
+
+
+
+
+
+
 }
