@@ -74,7 +74,10 @@ passport.deserializeUser((id, done) => {
 
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
-app.use("/api", product); 
+app.use("/api", product);
+app.use('/api/category', category);
+app.use('/api', wishlistRoute);
+app.use("/", welcomeRoute); 
 app.use("/api/cart", cartRoute);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);

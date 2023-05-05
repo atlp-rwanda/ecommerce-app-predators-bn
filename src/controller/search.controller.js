@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import models from "../database/models";
+import models from "../database/models/index.js";
 
 export const searchProducts = async (req, res, next) => {
   try {
