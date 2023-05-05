@@ -1,7 +1,7 @@
 'use strict';
-import { Model } from 'sequelize';
+import { Model } from "sequelize";
 export default (sequelize, DataTypes) => {
-  class wishlist extends Model {
+  class DiscountCoupon extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,22 +9,20 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      wishlist.belongsTo(models.User, {
-        foreignKey: 'id',
-        onDelete: 'CASCADE',
-      });
-      wishlist.belongsTo(models.Product, {
-        foreignKey: 'id',
+      DiscountCoupon.belongsTo(models.Product, {
+        foreignKey: 'productId',
         onDelete: 'CASCADE',
       });
     }
   }
-  wishlist.init({
-    userId: DataTypes.INTEGER,
+  DiscountCoupon.init({
+    code: DataTypes.STRING,
+    discountPercentage: DataTypes.FLOAT,
+    expiresAt: DataTypes.DATE,
     productId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'wishlist',
+    modelName: 'DiscountCoupon',
   });
-  return wishlist;
+  return DiscountCoupon;
 };
