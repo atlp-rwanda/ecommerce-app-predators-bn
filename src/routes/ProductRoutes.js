@@ -1,14 +1,17 @@
-import {getAllProducts, getProductById, updateProduct, deleteSpecificProduct} from '../controller/productController.js';
-import { get_collection, get_available_products } from "../controller/productListingController.js";
-import { isAdmin, isSeller, isBuyer, checkPermission } from "../middleware/roles.js";
-import  productSearch from '../controller/search.controller.js';
-import { Router } from "express";
+import { Router } from 'express';
 import jsend from 'jsend';
+import {
+  getAllProducts, getProductById, updateProduct, deleteSpecificProduct,
+} from '../controller/productController.js';
+import { get_collection, get_available_products } from '../controller/productListingController.js';
+import {
+  isAdmin, isSeller, isBuyer, checkPermission,
+} from '../middleware/roles.js';
+import productSearch from '../controller/search.controller.js';
 import { addProduct, showCatalogue } from '../controller/prodController.js';
 import db from '../database/models/index.js';
 
 const router = Router();
-
 
 router.param('userId', async (req, res, next, id) => {
   // try to get the user details from the User model and attach it to the request object
@@ -27,9 +30,9 @@ router.post('/product', isSeller, addProduct);
 router.get('/product/available/:userId', showCatalogue);
 router.get('/product', getAllProducts);
 router.get('/product/:id', getProductById);
-router.put('/product/:id',isSeller, updateProduct);
-router.delete('/product/:id', isSeller, deleteSpecificProduct)
-router.get('/products/search',productSearch);
+router.put('/product/:id', isSeller, updateProduct);
+router.delete('/product/:id', isSeller, deleteSpecificProduct);
+router.get('/products/search', productSearch);
 router.get('/user/products', isBuyer, get_available_products);
 router.post('/vendor/collection', isSeller, get_collection);
 
