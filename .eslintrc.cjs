@@ -18,6 +18,7 @@ module.exports = {
   ],
   rules: {
     'linebreak-style': 0,
+    camelCase: 'off',
     'import/extensions': ['error', 'always', {
       js: 'always',
       jsx: 'always',

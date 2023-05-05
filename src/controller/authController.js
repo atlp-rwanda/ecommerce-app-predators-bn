@@ -8,11 +8,12 @@ import db from '../database/models/index.js';
 import Jwt from '../utils/jwt.js';
 import {
   getUserByGoogleId,
-  registerGoogle,getUserByEmail,updateUserPassword
-} from "../services/user.services.js";
-import generateToken from "../utils/userToken.js";
-import sendEmail from "../utils/sendEmail.js";
-import dotenv from 'dotenv'
+  registerGoogle,updateUserPassword,
+  getUserByEmail,
+} from '../services/user.services.js';
+import generateToken from '../utils/userToken.js';
+import sendEmail from '../utils/sendEmail.js';
+
 dotenv.config();
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -270,11 +271,11 @@ The E-commerce ATLP-Predators project team
 };
 export const register = async (req, res) => {
   const {
-    name, email, password, gender, preferredCurrency, preferredLanguage,
+    name, email, password, gender, preferred_currency, preferred_language,
   } = req.body;
 
   // Validate user input
-  if (!name || !email || !password || !gender || !preferredCurrency || !preferredLanguage) {
+  if (!name || !email || !password || !gender || !preferred_currency || !preferred_language) {
     return res.status(400).send('Invalid input');
   }
 
@@ -292,11 +293,12 @@ export const register = async (req, res) => {
     const user = await db.User.create({
       name,
       email,
-      roleId: 1,
+      roleId: 2,
       password: hashedPassword,
+      gender,
       status: 'active',
-      preferred_currency: preferredCurrency,
-      preferred_language: preferredLanguage,
+      preferred_currency,
+      preferred_language,
     });
     res.status(200).json({ message: user }); // /!\use jsend
 
@@ -312,21 +314,48 @@ export const requestResetPassword = async (req, res) => {
   const email=req.body.email; 
   try {
      const user=await getUserByEmail(email);
+   
       if (!user) { 
-        return res.status(400).jsend.error({ message: 'User with email does not exist!',data: false });}
-    const userEmail = { email, id: user.id };  
+        return res.status(400).jsend.error({
+            code: 400,
+            message: 'User with email does not exist!',
+            data: false
+        });
+
+      }
+
+    const userEmail = { email, id: user.id }; 
+   
     const token = Jwt.generateToken(userEmail,'15m');
  
       sendEmail.sendEmail({
             email,
             subject: 'Predators E-commerce Reset Password',
-            text: ` <p>Reset your password.</p> <p>Please click the link below to reset your password.</p>  <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>`
+            text: `
+                    <p>Reset your password.</p>
+                    <p>Please click the link below to reset your password.</p> 
+                    
+                    <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>
+                    
+                    `
           });   
         res.cookie('reset-token', token,{httponly:true,expiresIn:'15m'});
-        res.status(200).send(jsend.success({  message: 'Password reset link was sent to your email', data:{ token }}));
+
+        res.status(200).send(jsend.success({ 
+                code:200, 
+                message: 'Password reset link was sent to your email', 
+                data:{ token }
+              }));
+
   } catch (error) {
-     return res.status(500).send(jsend.fail({ message: error.message,data: false})); 
-  } 
+     return res.status(500).send(jsend.fail({
+            code: 500,
+            message: error.message,
+            data: false
+          })); 
+  }
+   
+ 
 };
  
 

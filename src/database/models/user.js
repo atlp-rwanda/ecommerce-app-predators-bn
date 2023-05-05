@@ -25,7 +25,7 @@ export default (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       User.hasMany(models.Cart_items, {
-        foreignKey: "cart_id",
+        foreignKey: "id",
         as: "cart_items",
         onDelete: "CASCADE",
       });
