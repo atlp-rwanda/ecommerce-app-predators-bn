@@ -12,6 +12,7 @@ import {
 
   handleServerError,
 } from "../services/product.services.js";
+import eventEmitter from '../services/event.services.js';
 
 // getting all products
 
@@ -20,7 +21,7 @@ export const getAllProducts = async (req, res) => {
     const products = await db.Product.findAll({
       include: [],
     });
-
+     const totalProducts = products.length;
     if (!products) {
       return res.status(404).json({
         status: "fail",
@@ -32,8 +33,8 @@ export const getAllProducts = async (req, res) => {
     return res.status(200).json({
       status: "success",
       code: 200,
+      message: `Products retreived successfully, total products: ${totalProducts}`,
       data: { products },
-      message: "Products retreived successfully",
     });
   } catch (error) {
     console.log(error);
@@ -90,7 +91,7 @@ export const updateProduct = async (req, res) => {
     name: Joi.string().required(),
     description: Joi.string().required(),
     price: Joi.number().positive().required(),
-    expiryDate: Joi.date().iso().required(),
+    expiryDate: Joi.date().required(),
     picture_urls: Joi.array().items(Joi.string()),
     instock: Joi.number().integer().positive().required(),
     available: Joi.string().valid("yes", "no").required(),
@@ -106,9 +107,9 @@ export const updateProduct = async (req, res) => {
       .status(404)
       .json({ error: "Item not found in seller's collection" });
   }
-
   Object.assign(item, inputData);
   await item.save();
+  eventEmitter.emit('product:updated', item);
 
   const {
     name,
@@ -137,14 +138,10 @@ export const updateProduct = async (req, res) => {
 
 export const deleteSpecificProduct = async (req, res) => {
   try {
-    // Validate input data
     const { reason } = req.body;
     const productId = parseInt(req.params.id);
-    if (
-      isNaN(productId) ||
-      typeof reason !== "string" ||
-      reason.trim() === ""
-    ) {
+
+    if (isNaN(productId) || typeof reason !== "string" || reason.trim() === "") {
       return res.status(400).json({
         status: "fail",
         data: { message: "Invalid input data" },
@@ -154,14 +151,14 @@ export const deleteSpecificProduct = async (req, res) => {
     const isAvailable = await db.Product.findOne({
       where: { id: productId, vendor_id: req.user.id },
     });
+
     if (!isAvailable) {
-      // If the product is not found in the collection, return a JSend fail response with an appropriate message
       return res.status(401).json({
         status: "fail",
         data: { message: "Can not find such product in your collection" },
       });
     } else {
-      // If the product is found, delete it and return a JSend success response with a message indicating the reason for deletion
+      eventEmitter.emit('product:removed', isAvailable);
       await isAvailable.destroy();
       return res.status(200).json({
         status: "success",
@@ -171,13 +168,11 @@ export const deleteSpecificProduct = async (req, res) => {
       });
     }
   } catch (error) {
-    // If there's any error, return a JSend error response with an appropriate message
     console.error(error);
     return res.status(500).json({
       status: "error",
       data: {
-        message:
-          "Oops, something went wrong on the server side. Please try again later.",
+        message: "Oops, something went wrong on the server side. Please try again later.",
       },
     });
   }

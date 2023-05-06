@@ -97,13 +97,17 @@ module.exports = {
         type: Sequelize.STRING,
       },
       preferred_currency: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
       },
       
       receive_notifications:{
 
        type:Sequelize.BOOLEAN,
        defaultValue:true
+      },
+      receive_notifications:{
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
       },
       createdAt: {
         allowNull: false,
