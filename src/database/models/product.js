@@ -11,10 +11,12 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
       Product.belongsTo(models.User, {
         foreignKey: 'vendor_id',
         as: 'vendor',
+        onDelete: "CASCADE",
       });
       Product.belongsTo(models.Category, {
         foreignKey: 'category_id',
         as: 'category',
+        onDelete: "CASCADE",
       });
     }
   }
@@ -22,6 +24,7 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     category_id: DataTypes.INTEGER,
+
     price: DataTypes.STRING,
     picture_urls: DataTypes.ARRAY(DataTypes.STRING),
     instock: DataTypes.INTEGER,
