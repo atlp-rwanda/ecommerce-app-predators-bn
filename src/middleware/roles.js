@@ -1,6 +1,7 @@
 import db from "../database/models/index.js";
 import JwtUtility from "../utils/jwt.js";
 
+
 const isAdmin = async (req, res, next) => {
   const authheader = req.headers.authorization;
   // assuming the token is sent in the Authorization header
@@ -55,6 +56,7 @@ const isSeller = async (req, res, next) => {
     res
       .status(500)
       .json({ message: "Your are Unauthorized to perform this action" });
+      console.log(err)
   }
 };
 const isBuyer = async (req, res, next) => {
