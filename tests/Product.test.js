@@ -1,13 +1,19 @@
 import app from '../src/app.js';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import dotenv from 'dotenv';
-dotenv.config();
+import config from "config";
+import { login } from './login.js';
 const expect = chai.expect;
 chai.use(chaiHttp);
 chai.should();
-const token = process.env.TOKEN;
+
 describe('Product API', function() {
+  let token;
+
+  before(async () => {
+      token = await login(config.vendor_credentials);
+  });
+  
   describe("get all products", () => {
     it("should return all products", (done) => {
       chai.request(app)
@@ -50,4 +56,19 @@ describe('Product API', function() {
         });
     });
   });
+  // describe('DELETE api/product/:id', function() {
+  //   it('should delete a product and return the product details', function(done) {
+  //     const reason = 'Product no longer needed'; // Prompt user to provide reason
+  //     chai.request(app)
+  //       .delete('/api/product/1')
+  //       .set('Authorization', 'Bearer ' + token)
+  //       .send({ reason: reason }) // Pass reason in the request body
+  //       .end(function(err, res) {
+  //         expect(err).to.be.null;
+  //         expect(res).to.have.status(200);
+  //         expect(res.body.message).to.equal('Item deleted successfully');
+  //         done();
+  //       });
+  //   });
+  // });  
 });

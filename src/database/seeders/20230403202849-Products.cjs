@@ -14,7 +14,7 @@ module.exports = {
         instock: 10,
         available: true,
         expiryDate: new Date('2023-12-31'),
-        vendor_id: 1,
+        vendor_id: 2,
         category_id: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -32,6 +32,78 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        "name": "Sumsang 1111TV 52 inch",
+        "description": "New brand for sale",
+        "category_id": 1,
+        "price": 800,
+        "picture_urls": [
+            "https://example.com/picture1.jpg",
+            "https://example.com/picture2.jpg",
+            "https://example.com/picture3.jpg",
+            "https://example.com/picture4.jpg"
+        ],
+        "instock": 0,
+        "expiryDate": "2000-11-30T22:00:00.000Z",
+        "available": true,
+        "vendor_id": 2,
+        "createdAt": "2023-05-08T11:26:25.927Z",
+        "updatedAt": "2023-05-08T11:46:05.856Z"
+    },
+    {
+        "name": "Iphone1111 13 pro",
+        "description": "New brand for sale",
+        "category_id": 1,
+        "price": 800,
+        "picture_urls": [
+            "https://example.com/picture1.jpg",
+            "https://example.com/picture2.jpg",
+            "https://example.com/picture3.jpg",
+            "https://example.com/picture4.jpg"
+        ],
+        "instock": 0,
+        "expiryDate": "2000-11-30T22:00:00.000Z",
+        "available": true,
+        "vendor_id": 2,
+        "createdAt": "2023-05-08T13:48:23.916Z",
+        "updatedAt": "2023-05-08T14:11:33.373Z"
+    },
+    {
+        "name": "Iphone 12",
+        "description": "New brand ",
+        "category_id": 1,
+        "price": 120000,
+        "picture_urls": [
+            "https://example.com/picture1.jpg",
+            "https://example.com/picture2.jpg",
+            "https://example.com/picture3.jpg",
+            "https://example.com/picture4.jpg"
+        ],
+        "instock": 0,
+        "expiryDate": "2000-11-30T22:00:00.000Z",
+        "available": true,
+        "vendor_id": 2,
+        "createdAt": "2023-05-08T14:15:42.837Z",
+        "updatedAt": "2023-05-08T14:57:01.656Z"
+    },
+    {
+        "name": "logitech111 master",
+        "description": "mouse",
+        "category_id": 2,
+        "price": 2000,
+        "picture_urls": [
+            "https://example.com/picture1.jpg",
+            "https://example.com/picture2.jpg",
+            "https://example.com/picture3.jpg",
+            "https://example.com/picture4.jpg"
+        ],
+        "instock": 199,
+        "expiryDate": "2000-11-30T22:00:00.000Z",
+        "available": true,
+        "vendor_id": 2,
+        "createdAt": "2023-05-08T17:00:37.911Z",
+        "updatedAt": "2023-05-08T17:10:42.770Z"
+    }
       // Add more product data here...
     ]);
   },

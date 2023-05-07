@@ -19,6 +19,11 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
     }
+    static async findAndPaginateAll({page=1, limit=10, where = {}}) {
+      const offset = (page - 1) * limit;
+      const products = await Product.findAll({ offset, limit, where });
+      return products;
+    }
   }
   Product.init({
     name: DataTypes.STRING,
