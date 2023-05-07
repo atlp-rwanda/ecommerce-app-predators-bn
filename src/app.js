@@ -9,20 +9,20 @@ import express from 'express';
 import cors from 'cors';
 import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
-import i18next from './middleware/i18next.js';
 import { expired, expiring_soon, orderExpiry } from './services/node-cron.services.js';
 // Routes URL definitions
 import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
-import product from './routes/ProductRoutes.js';
+import product from "./routes/ProductRoutes.js";
 import authRoute from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
-import cartRoute from './routes/cartRoutes.js';
-
 import discountCouponRouter from './routes/discountCouponRoute.js';
+import i18next from "./middleware/i18next.js";
+
+import cartRoute from './routes/cartRoutes.js';
 import checkoutRoute from './routes/checkoutRoute.js';
 import applyCoupon from './routes/applyCouponRoutes.js';
 
@@ -92,6 +92,12 @@ app.use('/api/discount-coupons', discountCouponRouter);
 app.use('/api', applyCoupon);
 app.use('/', welcomeRoute);
 app.use('/api/cart', cartRoute);
+app.use('/api/category', category);
+app.use('/api', wishlistRoute);
+app.use('/api/discount-coupons', discountCouponRouter);
+app.use("/", welcomeRoute);
+
+
 app.use('.api', category);
 app.use('/api', orderRoutes);
 // Export the app

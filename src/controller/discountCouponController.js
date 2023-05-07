@@ -2,54 +2,65 @@ import db from "../database/models/index.js";
 import { isSeller } from "../middleware/roles.js";
 
 export const createCoupon = async (req, res) => {
-    try {
-      const { code, discountPercentage, expiresAt, productId } = req.body;
-      // Validate request body
-      if (!code || !discountPercentage || !expiresAt || !productId) {
-        return res.status(400).json({
-          status: "fail",
-          data: { message: 'Missing required fields' }
-        });
-      }
-  
-      // Check if the coupon code already exists
-      const existingCoupon = await db.DiscountCoupon.findOne({
-        where: { code: code },
-      });
-      if (existingCoupon) {
-        return res.status(400).json({
-          status: "fail",
-          data: { message: 'Coupon code already exists' }
-        });
-      }
-  
-      // Create the new coupon
-      const newCoupon = await db.DiscountCoupon.create({
-        code,
-        discountPercentage,
-        expiresAt,
-        productId: req.body.productId
-      });
-  
-      return res.status(200).json({
-        status: "success",
-        data: newCoupon
-      });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        status: "error",
-        message: 'Server error'
+  try {
+    const { code, discountPercentage, expiresAt, productId } = req.body;
+    
+    // Validate request body
+    if (!code || !discountPercentage || !expiresAt || !productId) {
+      return res.status(400).json({
+        status: "fail",
+        data: { message: 'Missing required fields' }
       });
     }
-  };
-  
+
+    // Check if the product exists in user collection
+    const product = await db.Product.findOne({ where: { id: productId, vendor_id: req.user.id } });
+    if (!product) {
+      return res.status(400).json({
+        status: "fail",
+        data: { message: 'Product not found in your Collection' }
+      });
+    }
+
+    // Check if the coupon code already exists
+    const existingCoupon = await db.DiscountCoupon.findOne({
+      where: {  vendor_id: req.user.id,code: code},
+    });
+    // console.log(vendor_id)
+    if (existingCoupon) {
+      return res.status(400).json({
+        status: "fail",
+        data: { message: 'Coupon code already exists' }
+      });
+    }
+
+    // Create the new coupon
+    const newCoupon = await db.DiscountCoupon.create({
+      code,
+      discountPercentage,
+      expiresAt,
+      productId,
+      vendor_id: req.user.id,
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: newCoupon
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: "error",
+      message: 'Server error'
+    });
+  }
+};
+
 
 export const getCoupons = async (req, res) => {
   try {
     const coupons = await db.DiscountCoupon.findAll({
-        include: [],
-    });
+       where: { vendor_id: req.user.id }});
     if (!coupons) {
         return res.status(404).json({
             status: "fail",
@@ -59,10 +70,11 @@ export const getCoupons = async (req, res) => {
         });
     }
     return res.status(200).json({
+        message: "These are available coupons",
         status: "success",
         code: 200,
         data: {coupons},
-        message: "These are available coupons",
+        
     })
   } catch (error) {
     console.error(error);
@@ -73,7 +85,7 @@ export const getCouponById = async(req, res) => {
     try {
         const {id} = req.params;
 
-        const coupon = await db.DiscountCoupon.findOne({where: {id: id}});
+        const coupon = await db.DiscountCoupon.findOne({where: {id: id, vendor_id: req.user.id}});
         if(!coupon) {
             return res.staus(404).json({message: "Coupon not found"});
         }
@@ -89,43 +101,92 @@ export const getCouponById = async(req, res) => {
         
     }
 };
-export const deleteCouponById = async (req, res) => {
-    try {
-        const {reason} = req.body;
-        const couponId = parseInt(req.params.id);
-        if (
-            isNaN(couponId) ||
-            typeof reason !== "string" ||
-            reason.trim() === ""
-          ) {
-            return res.status(400).json({
-              status: "fail",
-              data: { message: "Invalid input data" },
-            });
-          }
-        const availableCoupon = await db.Product.findOne({
-            where: { id: productId, vendor_id: req.user.id },
-          });
-        if(!availableCoupon) {
-            return res.status(401).json({
-                status: "fail",
-                data: { message: "Can not find such Coupon in your collection" },
-              });
-        }
-        else {
-            // If the product is found, delete it and return a JSend success response with a message indicating the reason for deletion
-            await availableCoupon.destroy();
-            return res.status(200).json({
-              status: "success",
-              data: {
-                message: `This Coupon has been removed because of the following reason: ${reason}.`,
-              },
-            });
-          }
-        
-    } catch (error) {
-        
-    }
-}
+export const updateCoupon = async (req, res) => {
+  try {
+    const couponId = parseInt(req.params.id); // fixed, access the "id" property instead of the entire object
+    const { code, discountPercentage, expiresAt, productId } = req.body;
 
-export default { createCoupon, getCoupons, getCouponById, deleteCouponById };
+    // Validate request body
+    if (!code || !discountPercentage || !expiresAt || !productId) {
+      return res.status(400).json({
+        status: "fail",
+        data: { message: 'Missing required fields' }
+      });
+    }
+
+     // Check if the product exists
+     const product = await db.Product.findOne({ where: { id: productId, vendor_id: req.user.id } });
+     if (!product) {
+       return res.status(400).json({
+         status: "fail",
+         data: { message: 'Product not found in your Collection' }
+       });
+     }
+
+    // Check if the coupon exists
+    const coupon = await db.DiscountCoupon.findOne({
+      where: { id: couponId, vendor_id: req.user.id },
+    });
+
+    if (!coupon) {
+      return res.status(404).json({
+        status: "fail",
+        data: { message: 'Coupon not found' }
+      });
+    }
+
+    // Update the coupon
+    const updatedCoupon = await coupon.update({
+      code,
+      discountPercentage,
+      expiresAt,
+      productId,
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: updatedCoupon
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: "error",
+      message: 'Server error'
+    });
+  }
+};
+
+export const deleteCoupon = async (req, res) => {
+  try {
+    const couponId = req.params.id;
+
+    // Check if the coupon exists
+    const coupon = await db.DiscountCoupon.findOne({
+      where: { id: couponId, vendor_id: req.user.id },
+    });
+
+    if (!coupon) {
+      return res.status(404).json({
+        status: "fail",
+        data: { message: 'Coupon not found' }
+      });
+    }
+
+    // Delete the coupon
+    await coupon.destroy();
+
+    return res.status(200).json({
+      status: "success",
+      data: { message: 'Coupon deleted successfully' }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: "error",
+      message: 'Server error'
+    });
+  }
+};
+
+
+export default { createCoupon, getCoupons, getCouponById, updateCoupon, deleteCoupon };

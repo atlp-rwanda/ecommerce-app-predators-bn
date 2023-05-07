@@ -1,7 +1,7 @@
 import { Router } from "express";
+import { isBuyer } from "../middleware/roles.js";
 const router = Router();
 import cartController from "../controller/cartController.js"; 
-import {isBuyer} from "../middleware/roles.js"
 
 router.post('/', isBuyer,cartController.addCartItem);
 router.get('/',isBuyer,cartController.getCartItems); 
