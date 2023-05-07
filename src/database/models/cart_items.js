@@ -14,6 +14,7 @@ export default (sequelize, DataTypes) => {
         as: 'user',
       });
       
+      
       Cart_items.belongsTo(models.Product, {
         foreignKey: 'product_id',
         as: 'product',

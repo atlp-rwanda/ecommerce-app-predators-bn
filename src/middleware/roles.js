@@ -1,7 +1,6 @@
 import db from "../database/models/index.js";
 import JwtUtility from "../utils/jwt.js";
 
-
 const isAdmin = async (req, res, next) => {
   const authheader = req.headers.authorization;
   // assuming the token is sent in the Authorization header
