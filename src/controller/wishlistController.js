@@ -58,6 +58,7 @@ export const deleteFromWishlist = async (req, res) => {
       { wishlist: wishlist.map((item) => item.Product) },
       { where: { id: req.user.id } },
     );
+    eventEmitter.emit('wishlist:remove',wishlistItem);
     res.status(200).json({ message: 'Item removed from wishlist.', wishlist });
   } catch (error) {
     res.status(400).send({ status: 'fail', message: 'Encountered Error', data: { error: error.message } });

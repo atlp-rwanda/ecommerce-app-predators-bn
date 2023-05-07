@@ -72,6 +72,7 @@ export const checkout = async (req, res) => {
       status,
       billing_info,
     });
+    eventEmitter.emit('product:checkout', new_order);
     res.status(200).send({ status: 'success', data: { order: new_order } });
   } catch (error) {
     res.status(400).send({ status: 'fail', data: { error } });
