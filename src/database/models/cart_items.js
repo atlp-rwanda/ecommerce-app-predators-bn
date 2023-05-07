@@ -14,6 +14,7 @@ export default (sequelize, DataTypes) => {
         as: 'user',
       });
       
+      
       Cart_items.belongsTo(models.Product, {
         foreignKey: 'product_id',
         as: 'product',
@@ -25,7 +26,7 @@ export default (sequelize, DataTypes) => {
     product_id: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
     amount:DataTypes.FLOAT,
-
+    coupon: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Cart_items',

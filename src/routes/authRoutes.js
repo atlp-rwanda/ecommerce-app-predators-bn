@@ -4,7 +4,7 @@ import passport from 'passport';
 import Jwt from '../utils/jwt.js';
 import { googlePass } from '../utils/passport.js';
 import profileController from '../controller/profileController.js';
-import {getProductById} from '../controller/productController.js';
+import { getProductById } from '../controller/productController.js';
 import vendor from '../controller/vendorController.js';
 
 // Google route
@@ -20,7 +20,7 @@ import {
   AdminLogin,
   requestResetPassword,
   resetPasswordLink,
-  resetPassword, 
+  resetPassword,
 } from '../controller/authController.js';
 import {
   isAdmin,
@@ -63,18 +63,18 @@ router.get(
 router.post('/vendor', isAdmin, vendor);
 
 router.post('/logout', logout);
-router.get('/users',GetUsers);
-router.get('/users/:id', isAdmin,checkPermission("manage users"),GetUserById);
-router.delete('/users/:id', isAdmin,isAdmin,checkPermission("manage users"),DeleteUserById);
-router.post('/setRole/:id', isAdmin,isAdmin,checkPermission("manage users"), setRole);
-router.post('/disableUser/:id',isAdmin, disableUser);
+router.get('/users', GetUsers);
+router.get('/users/:id', isAdmin, checkPermission('manage users'), GetUserById);
+router.delete('/users/:id', isAdmin, isAdmin, checkPermission('manage users'), DeleteUserById);
+router.post('/setRole/:id', isAdmin, isAdmin, checkPermission('manage users'), setRole);
+router.post('/disableUser/:id', isAdmin, disableUser);
 router.post('/login', UserLogin);
 router.post('/adminLogin', AdminLogin);
 router.post('/register', register);
 router.patch('/users/profiles', profileController.updateUserProfile);
-
-router.post('/reset/password',requestResetPassword);
-router.get('/user/reset-password/:token',resetPasswordLink);
-router.put('/user/reset-password/:token',resetPassword);
+router.get('/product/:id', getProductById);
+router.post('/reset/password', requestResetPassword);
+router.get('/user/reset-password/:token', resetPasswordLink);
+router.put('/user/reset-password/:token', resetPassword);
 
 export default router;

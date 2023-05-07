@@ -10,15 +10,22 @@ import cors from 'cors';
 import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
 import i18next from './middleware/i18next.js';
+import { expired, expiring_soon, orderExpiry } from './services/node-cron.services.js';
 // Routes URL definitions
+import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
-import product from "./routes/ProductRoutes.js";
+import product from './routes/ProductRoutes.js';
 import authRoute from './routes/authRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
-import expiredRoute from './routes/expiredRoute.js'; // for testing only 描述这个页面需要过时的时间来重新
-import cartRoute from './routes/cartRoutes.js'; // for testing only 描述这个页面需要过时的时间来重新计算购物车数
+import cartRoute from './routes/cartRoutes.js';
+
+import discountCouponRouter from './routes/discountCouponRoute.js';
+import checkoutRoute from './routes/checkoutRoute.js';
+import applyCoupon from './routes/applyCouponRoutes.js';
+
 // Sequelize configuration
 dotenv.config();
 const { sequelize } = db;
@@ -36,7 +43,6 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -50,9 +56,12 @@ app.use(
     saveUninitialized: false,
   }),
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
-
+expired.start();
+expiring_soon.start();
+orderExpiry.start();
 // Swagger
 const options = {
   validatorUrl: null,
@@ -69,21 +78,21 @@ passport.deserializeUser((id, done) => {
     .then((user) => done(null, user))
     .catch((err) => done(err, null));
 });
-
+// Cron job
 // Routes
 
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
-app.use("/api", product);
+app.use('/api', notificationRoutes);
+app.use('/api', checkoutRoute);
+app.use('/api', product);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
-app.use("/", welcomeRoute); 
-app.use("/api/cart", cartRoute);
-app.use('/api/category', category);
-app.use('/api', wishlistRoute);
-app.use('/api', expiredRoute);
-app.use("/", welcomeRoute);
-
-
+app.use('/api/discount-coupons', discountCouponRouter);
+app.use('/api', applyCoupon);
+app.use('/', welcomeRoute);
+app.use('/api/cart', cartRoute);
+app.use('.api', category);
+app.use('/api', orderRoutes);
 // Export the app
 export default app;

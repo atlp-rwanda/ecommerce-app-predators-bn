@@ -1,7 +1,8 @@
 import jsend from "jsend";
 import Cart from "../services/cartItem.services.js";
 import productDetail from "../services/product.services.js";
-import Jwt from "../utils/jwt.js"; 
+import eventEmitter from "../services/event.services.js";
+
 export default class cartController {
     static addCartItem = async (req, res) => {
         try { 
@@ -27,6 +28,7 @@ export default class cartController {
                             data: error
                         }));   
                 } 
+                eventEmitter.emit('cart:created', cartItem);
                 return res.status(200).send(jsend.success({
                     code: 200,
                     message:  "Product added ",

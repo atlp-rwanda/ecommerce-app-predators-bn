@@ -10,11 +10,11 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       wishlist.belongsTo(models.User, {
-        foreignKey: 'userId',
+        foreignKey: 'id',
         onDelete: 'CASCADE',
       });
       wishlist.belongsTo(models.Product, {
-        foreignKey: 'productId',
+        foreignKey: 'id',
         onDelete: 'CASCADE',
       });
     }

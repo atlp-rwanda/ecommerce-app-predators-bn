@@ -22,6 +22,7 @@ const cleanUp = async () => {
         const seller = await db.User.findOne({ where: { id: product.vendor_id } });
         
         if (!seller) {
+          console.log(`Seller with ID ${product.vendor_id} not found`)
           continue;
         }
         
@@ -40,7 +41,7 @@ const cleanUp = async () => {
   }
 };
 
-const cleanUpJob = new cron.CronJob('0 0 * * *', cleanUp);
+const cleanUpJob = new cron.CronJob('0 0 * * * *', cleanUp);
 
 cleanUpJob.start();
 export default cleanUp;

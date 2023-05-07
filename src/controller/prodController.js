@@ -1,5 +1,6 @@
 import jsend from 'jsend';
 import db from '../database/models/index.js';
+import eventEmitter from '../services/event.services.js';
 
 async function addProduct(req, res) {
   // A seller should be able to Create/Add a product
@@ -44,6 +45,7 @@ async function addProduct(req, res) {
       available,
       vendor_id: req.user.id,
     });
+   eventEmitter.emit('product:created', product);
     // send response
     return res.status(200).json(
       jsend.success({

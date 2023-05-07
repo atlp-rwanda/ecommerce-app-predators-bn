@@ -356,6 +356,8 @@ export const requestResetPassword = async (req, res) => {
  
 };
  
+ 
+ 
 
 // validate reset link
 export const resetPasswordLink = async (req, res) => {
@@ -403,5 +405,6 @@ export default {
   AdminLogin
   ,
 };
- 
- 
+
+/* eslint-disable consistent-return */
+// imports
