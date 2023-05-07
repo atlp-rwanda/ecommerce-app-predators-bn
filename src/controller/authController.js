@@ -2,7 +2,6 @@
 /* eslint-disable no-shadow */
 import bcrypt from 'bcrypt';
 import jsend from 'jsend';
-import dotenv from 'dotenv';
 import hasher from '../utils/hashPassword.js';
 import db from '../database/models/index.js';
 import Jwt from '../utils/jwt.js';
@@ -13,7 +12,7 @@ import {
 } from '../services/user.services.js';
 import generateToken from '../utils/userToken.js';
 import sendEmail from '../utils/sendEmail.js';
-
+import dotenv from 'dotenv';
 dotenv.config();
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
