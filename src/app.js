@@ -25,15 +25,19 @@ import cartRoute from './routes/cartRoutes.js';
 import discountCouponRouter from './routes/discountCouponRoute.js';
 import checkoutRoute from './routes/checkoutRoute.js';
 import applyCoupon from './routes/applyCouponRoutes.js';
+import paymentRoute from './routes/paymentsRouter.js';
 
 // Sequelize configuration
 dotenv.config();
 const { sequelize } = db;
-sequelize.authenticate().then(() => {
-  console.log('Connection has been established successfully.');
-}).catch((err) => {
-  console.error('Unable to connect to the database:', err);
-});
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 // App setup
 const app = express();
@@ -87,6 +91,7 @@ app.use('/api', notificationRoutes);
 app.use('/api', checkoutRoute);
 app.use('/api', product);
 app.use('/api/category', category);
+app.use('/api/pay', paymentRoute);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
 app.use('/api', applyCoupon);
