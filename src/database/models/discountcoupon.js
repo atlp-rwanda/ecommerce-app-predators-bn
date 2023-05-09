@@ -19,7 +19,8 @@ export default (sequelize, DataTypes) => {
     code: DataTypes.STRING,
     discountPercentage: DataTypes.FLOAT,
     expiresAt: DataTypes.DATE,
-    productId: DataTypes.INTEGER
+    productId: DataTypes.INTEGER, 
+    vendor_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'DiscountCoupon',

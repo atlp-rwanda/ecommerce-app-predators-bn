@@ -105,10 +105,6 @@ module.exports = {
        type:Sequelize.BOOLEAN,
        defaultValue:true
       },
-      receive_notifications:{
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
