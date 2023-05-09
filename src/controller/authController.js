@@ -74,6 +74,10 @@ export const UserLogin = async (req, res) => {
         .status(401)
         .json(jsend.fail({ message: 'User is disabled😥' }));
     }
+    // Check if the user is required to update their password
+  if (user.force_password_update) {
+    return res.status(200).json({ message: 'Please update your password' });
+  }
 
     // Compare the given password with the hashed password in the database
     const passwordMatches = await bcrypt.compare(password, user.password);

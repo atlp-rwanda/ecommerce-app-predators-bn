@@ -17,6 +17,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+      SECRET: ${{ secrets.SECRET }}
+      DB_URI_TEST: ${{ secrets.DB_URI }}
+      GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
+      GMAIL_USER: ${{ secrets.GMAIL_USER }   
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

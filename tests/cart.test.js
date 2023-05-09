@@ -7,8 +7,8 @@ chai.should();
 
 describe("cart feature", () => {
    const user = {
-                  "email": "yobu@gmail.com", 
-                  "password": "yobu"
+                  "email": "faidterence@outlook.com", 
+                  "password": "-Ims)ZN_%7OQwJPB"
                 } 
     const product ={
                     "name":"google samsung 80",
