@@ -85,6 +85,7 @@ export const getOrderStatus = async (req, res) => {
       res.status(403).json({
         status: 'fail',
         message: req.t('Unauthorized'),
+        message: req.t('Unauthorized'),
       });
     } else {
       const token = authHeader.split(' ')[1];
@@ -102,6 +103,7 @@ export const getOrderStatus = async (req, res) => {
           status: 'fail',
           code: 404,
           message: req.t('Order_not_found'),
+          message: req.t('Order_not_found'),
         });
       }
       return res.status(200).json({
@@ -118,6 +120,7 @@ export const getOrderStatus = async (req, res) => {
       status: 'fail',
       code: 500,
       message: req.t('server_error'),
+      message: req.t('server_error'),
     });
   }
 };
@@ -130,44 +133,12 @@ export const updateOrderStatus = async (req, res) => {
         status: 'fail',
         message: req.t('Unauthorized'),
       });
-    } else {
-      const token = authHeader.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const { orderId } = req.params;
-      const { status } = req.body;
-      const order = await db.Order.findOne({
-        where: { id: orderId },
-      });
-      if (!order) {
-        return res.status(404).json({
-          status: 'fail',
-          code: 404,
-          message: 'Order not found',
-        });
-      }
-      if (decoded.roleId !== 0) {
-        return res.status(403).json({
-          status: 'fail',
-          code: 403,
-          message: 'You are not authorized to perform this action',
-        });
-      }
-      order.status = status;
-
-      await order.save();
-      return res.status(200).json({
-        status: 'success',
-        code: 200,
-        data: {
-          message: 'Order status updated successfully',
-          order: { order },
-        },
-      });
     }
   } catch (error) {
     return res.status(500).json({
       status: 'fail',
       code: 500,
+      message: req.t('server_error'),
       message: req.t('server_error'),
     });
   }
