@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Imports
 import morgan from 'morgan';
 import session from 'express-session';

@@ -84,7 +84,7 @@ export const getOrderStatus = async (req, res) => {
     if (!authHeader) {
       res.status(403).json({
         status: 'fail',
-        message: 'Please log in first!',
+        message: req.t('Unauthorized'),
       });
     } else {
       const token = authHeader.split(' ')[1];
@@ -101,14 +101,14 @@ export const getOrderStatus = async (req, res) => {
         return res.status(404).json({
           status: 'fail',
           code: 404,
-          message: 'Order not found',
+          message: req.t('Order_not_found'),
         });
       }
       return res.status(200).json({
         status: 'success',
         code: 200,
         data: {
-          message: 'Order status retrieved successfully',
+          message: req.t('Order_retrieved'),
           order: { order },
         },
       });
@@ -117,7 +117,7 @@ export const getOrderStatus = async (req, res) => {
     return res.status(500).json({
       status: 'fail',
       code: 500,
-      message: 'Server error',
+      message: req.t('server_error'),
     });
   }
 };
@@ -128,7 +128,7 @@ export const updateOrderStatus = async (req, res) => {
     if (!authHeader) {
       res.status(403).json({
         status: 'fail',
-        message: 'Please log in first!',
+        message: req.t('Unauthorized'),
       });
     } else {
       const token = authHeader.split(' ')[1];
@@ -168,7 +168,7 @@ export const updateOrderStatus = async (req, res) => {
     return res.status(500).json({
       status: 'fail',
       code: 500,
-      message: 'Server error',
+      message: req.t('server_error'),
     });
   }
 };

@@ -1,5 +1,5 @@
-/* eslint-disable no-else-return */
-/* eslint-disable no-shadow */
+
+/* eslint-disable */
 import bcrypt from 'bcrypt';
 import jsend from 'jsend';
 import hasher from '../utils/hashPassword.js';
@@ -166,7 +166,7 @@ export const GetUsers = async (req, res) => {
   try {
     const users = await db.User.findAll();
     return res.status(200).json({
-      status: 'success',
+      status: req.t("status_message_success"),
       data: {
         users,
       },

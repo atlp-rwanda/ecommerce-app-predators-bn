@@ -1,3 +1,4 @@
+/* eslint-disable */
 import db from "../database/models/index.js";
 
 export const handleItemNotFound = (res) => {

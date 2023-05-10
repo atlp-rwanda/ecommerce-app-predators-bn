@@ -1,3 +1,4 @@
+/* eslint-disable */
 require('dotenv').config();
 
 module.exports = {
@@ -6,6 +7,20 @@ module.exports = {
   otp_length_sms: 6,
   otp_name: 'Team Predators',
   otp_issuer: 'E-commerce app',
+  NODE_ENV: process.env.NODE_ENV,
+  USERS_PRIMARY: JSON.parse(process.env.USERS_PRIMARY),
+  admin_credentials: {
+      email: process.env.ADMIN_ACC_EMAIL,
+      password: process.env.ACC_PASS,
+  },
+  vendor_credentials: {
+      email: process.env.VENDOR_ACC_EMAIL,
+      password: process.env.ACC_PASS,
+  },
+  user_credentials: {
+      email: process.env.USER_ACC_EMAIL,
+      password: process.env.ACC_PASS,
+  },
   twilio: {
     accountSid: process.env.TWILIO_ACCOUNT_SID,
     authToken: process.env.TWILIO_AUTH_TOKEN,
