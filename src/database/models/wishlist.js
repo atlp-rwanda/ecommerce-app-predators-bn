@@ -13,7 +13,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'id',
         onDelete: 'CASCADE',
       });
-      wishlist.belongsTo(models.Product, {
+      wishlist.hasMany(models.Product, {
         foreignKey: 'id',
         onDelete: 'CASCADE',
       });
@@ -22,15 +22,8 @@ export default (sequelize, DataTypes) => {
   wishlist.init({
     userId: DataTypes.INTEGER,
     productId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    category_id: DataTypes.INTEGER,
-    price: DataTypes.STRING,
-    picture_urls: DataTypes.ARRAY(DataTypes.STRING),
-    instock: DataTypes.INTEGER,
-    expiryDate: DataTypes.DATE,
-    available: DataTypes.BOOLEAN,
-    vendor_id: DataTypes.INTEGER,
+   
+   
   }, {
     sequelize,
     modelName: 'wishlist',
