@@ -9,10 +9,10 @@ module.exports = {
       'Users',
       [
         {
-          name: 'John Doe',
-          email: 'yobuys@gmail.com',
-          password:'$2y$10$bb.ZLaQkxDxLBvFadjr7A.MzYbGcinp68U/4svnM4JDNLJqgqhpRG',
-          roleId: 1,
+          name: 'Admin',
+          email: 'andelapreda@gmail.com',
+          password:'PredatorAdmin@1',
+          roleId: 0,
           status: 'active',
           googleId: 1,
           gender: 'male',
