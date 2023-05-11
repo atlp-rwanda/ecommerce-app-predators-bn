@@ -116,6 +116,7 @@ const updateUserProfile = async (req, res) => {
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
+      user.last_password_update= new Date();
     }
     user.name = name || user.name;
     user.email = email || user.email;
