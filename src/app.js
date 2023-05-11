@@ -26,6 +26,7 @@ import i18next from './middleware/i18next.js';
 import cartRoute from './routes/cartRoutes.js';
 import checkoutRoute from './routes/checkoutRoute.js';
 import applyCoupon from './routes/applyCouponRoutes.js';
+import review from './routes/reviewRoute.js';
 
 // Sequelize configuration
 dotenv.config();
