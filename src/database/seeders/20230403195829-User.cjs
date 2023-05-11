@@ -9,9 +9,15 @@ module.exports = {
       'Users',
       [
         {
+<<<<<<< HEAD
           name: 'Predators Admin',
           email: process.env.EMAIL,
           password: hashedPassword,
+=======
+          name: 'Admin',
+          email: 'andelapreda@gmail.com',
+          password:'PredatorAdmin@1',
+>>>>>>> 14367e8 (ft(buyer-give-review)-9)
           roleId: 0,
           status: 'active',
           googleId: 1,

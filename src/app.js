@@ -99,7 +99,12 @@ app.use('/api/cart', cartRoute);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
+<<<<<<< HEAD
 app.use('/', welcomeRoute);
+=======
+app.use("/", welcomeRoute);
+app.use('/api/',review);
+>>>>>>> 14367e8 (ft(buyer-give-review)-9)
 
 app.use('.api', category);
 app.use('/api', orderRoutes);
