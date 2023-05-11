@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/CSS/rooms.css"><!-- Load the script that connects the socket.io server to this HTML file -->
+  <script src="http://localhost:4000/socket.io/socket.io.js"></script>
+  <script src="/JS/rooms.js"></script> 
+  <title>Rooms</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Rooms</h1>
+    <div class="rooms">
+      <ul>
+        <!-- list of rooms go here (insert using js) -->
+      </ul>
+    </div>
+    <form class="join-form" action="" method="POST">
+      <input type="text" name="roomName" placeholder="Enter room name" />
+      <input type="submit" value="Join Room" />
+    </form>
+  </div>
+</body>
+</html>

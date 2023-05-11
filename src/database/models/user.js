@@ -1,5 +1,5 @@
-"use strict";
-import { Model } from "sequelize";
+import { Model } from 'sequelize';
+
 export default (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -10,28 +10,38 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasOne(models.Roles, {
-        foreignKey: "roleId",
-        as: "role",
-        onDelete: "CASCADE",
+        foreignKey: 'roleId',
+        as: 'role',
+        onDelete: 'CASCADE',
+      });
+      User.hasMany(models.Socket, {
+        onDelete: 'CASCADE',
+        as: 'socket',
+        foreignKey: 'userId',
+      });
+      User.hasMany(models.Chat, {
+        onDelete: 'CASCADE',
+        as: 'user',
+        foreignKey: 'userId',
       });
       User.hasMany(models.wishlist, {
-        foreignKey: "userId",
-        as: "wishlist",
-        onDelete: "CASCADE",
+        foreignKey: 'userId',
+        as: 'wishlist',
+        onDelete: 'CASCADE',
       });
       User.hasMany(models.Product, {
-        foreignKey: "vendor_id",
-        as: "products",
-        onDelete: "CASCADE",
+        foreignKey: 'vendor_id',
+        as: 'products',
+        onDelete: 'CASCADE',
       });
       User.hasMany(models.Cart_items, {
-        foreignKey: "id",
-        as: "cart_items",
-        onDelete: "CASCADE",
+        foreignKey: 'id',
+        as: 'cart_items',
+        onDelete: 'CASCADE',
       });
       User.hasMany(models.Notification, {
-        foreignKey: "id",
-        as: "notifications",
+        foreignKey: 'id',
+        as: 'notifications',
       });
     }
   }
