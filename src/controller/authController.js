@@ -74,7 +74,6 @@ export const UserLogin = async (req, res) => {
         .status(401)
         .json(jsend.fail({ message: 'User is disabled😥' }));
     }
-
     // Compare the given password with the hashed password in the database
     const passwordMatches = await bcrypt.compare(password, user.password);
     if (!passwordMatches) {
@@ -102,7 +101,6 @@ export const UserLogin = async (req, res) => {
       .json(jsend.error({ message: 'Opps 😰 server error' }));
   }
 };
-
 // Function to create a new user with a Google account
 export const googleAuthHandler = async (req, res) => {
   const { value } = req.user.emails[0];
@@ -292,7 +290,7 @@ export const register = async (req, res) => {
     const user = await db.User.create({
       name,
       email,
-      roleId: 1,
+      roleId: 2,
       password: hashedPassword,
       status: 'active',
       preferred_currency: preferredCurrency,
@@ -356,9 +354,6 @@ export const requestResetPassword = async (req, res) => {
  
 };
  
- 
- 
-
 // validate reset link
 export const resetPasswordLink = async (req, res) => {
   try { 

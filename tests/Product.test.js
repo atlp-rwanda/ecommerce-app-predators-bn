@@ -7,6 +7,7 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 chai.should();
 const token = process.env.TOKEN;
+
 describe('Product API', function() {
   describe("get all products", () => {
     it("should return all products", (done) => {
@@ -21,6 +22,38 @@ describe('Product API', function() {
   
     });
   });
+  describe("get a product by id", () => {
+    it("should return a product by id", (done) => {
+      const id = 1;
+      chai.request(app)
+        .get(`/api/product/${id}`)
+        .end((error, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+  });
+  describe('POST api/product', function() {
+    it('should add a new product', async () => {
+      const res = await chai.request(app)
+        .post('/api/product')
+        .send({
+          name: 'Test Prod',
+          description: 'This is a test product',
+          category_id: 1,
+          picture_urls: ['https://example.com/image.png'],
+          expiryDate: '2023-05-31',
+          price: 10.99,
+          instock: 50,
+          available: true
+        })
+        .auth(token, { type: 'bearer' });
+  
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('status', 'success');
+    });
+  });
+  
   describe('PUT api/product/:id', function() {
     it('should update a product and return the updated product details', function(done) {
       const updatedProduct = {
@@ -50,19 +83,4 @@ describe('Product API', function() {
         });
     });
   });
-  // describe('DELETE api/product/:id', function() {
-  //   it('should delete a product and return the product details', function(done) {
-  //     const reason = 'Product no longer needed'; // Prompt user to provide reason
-  //     chai.request(app)
-  //       .delete('/api/product/1')
-  //       .set('Authorization', 'Bearer ' + token)
-  //       .send({ reason: reason }) // Pass reason in the request body
-  //       .end(function(err, res) {
-  //         expect(err).to.be.null;
-  //         expect(res).to.have.status(200);
-  //         expect(res.body.message).to.equal('Item deleted successfully');
-  //         done();
-  //       });
-  //   });
-  // });  
 });

@@ -17,6 +17,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+      SECRET: ${{ secrets.SECRET }}  
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

@@ -58,6 +58,7 @@ export default (sequelize, DataTypes) => {
     sector: DataTypes.STRING,
     streetAddress: DataTypes.STRING,
     receive_notifications: DataTypes.BOOLEAN,
+    last_password_update: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'User',
