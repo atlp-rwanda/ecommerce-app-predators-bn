@@ -37,8 +37,6 @@ export const getUserByGoogleId = async (googleId) => {
   }
 };
 
-
-
 export const updateUserPassword = async (payload,userPass) => {
   try{ 
         const email = payload.email; 
@@ -50,6 +48,7 @@ export const updateUserPassword = async (payload,userPass) => {
         
         if (userPass.password === userPass.confirm_password) {
             findData.password = password;
+            findData.last_password_update = new Date().getTime() + 86400000 * 30;
 
             await findData.save().then((result) =>{ 
               return result;
