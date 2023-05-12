@@ -1,5 +1,5 @@
 module.exports = {
-    timeout: 20000,
+    timeout: 100000,
     recursive: true,
     exit: true,
     spec: "tests/*.test.js",

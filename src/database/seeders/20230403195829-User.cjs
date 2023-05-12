@@ -1,18 +1,18 @@
-// import { hasher } from '../../utils/hashPassword';
-
+const bcrypt = require('bcrypt');
+require('dotenv').config();
 /** @type {import('sequelize-cli').Migration} */
-  
 module.exports = {
-
   async up(queryInterface, Sequelize) {
+    const hashedPassword = await bcrypt.hash(process.env.PASSWORD, 10);
+
     await queryInterface.bulkInsert(
       'Users',
       [
         {
-          name: 'John Doe',
-          email: 'yobuys@gmail.com',
-          password:'$2y$10$bb.ZLaQkxDxLBvFadjr7A.MzYbGcinp68U/4svnM4JDNLJqgqhpRG',
-          roleId: 1,
+          name: 'Predators Admin',
+          email: process.env.EMAIL,
+          password: hashedPassword,
+          roleId: 0,
           status: 'active',
           googleId: 1,
           gender: 'male',
@@ -24,8 +24,7 @@ module.exports = {
           otp_auth_url: null,
         },
       ],
-
-      {},
+      {}
     );
   },
 

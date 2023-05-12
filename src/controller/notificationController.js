@@ -51,7 +51,6 @@ export const markNotificationAsRead = async (req, res) => {
 export const deleteNotification = async (req, res) => {
   const notificationId = req.params.notificationId;
   const userId = req.user.id;
-
   try {
     const notification = await Notification.findOne({
       where: {

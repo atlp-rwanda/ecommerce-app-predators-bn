@@ -12,10 +12,12 @@ import {
 } from '../services/user.services.js';
 import generateToken from '../utils/userToken.js';
 import sendEmail from '../utils/sendEmail.js';
+import adminToken from '../utils/adminPreconfigToken.js';
 import dotenv from 'dotenv';
 dotenv.config();
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
 
 export const AdminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -37,7 +39,7 @@ export const AdminLogin = async (req, res) => {
     }
 
     // If the email and password are valid, generate a JWT token
-    const token = generateToken({ email });
+    const token = adminToken();
 
     // Set the token in a cookie with HttpOnly and Secure flags
     res.cookie('token', token, {
@@ -74,7 +76,6 @@ export const UserLogin = async (req, res) => {
         .status(401)
         .json(jsend.fail({ message: 'User is disabled😥' }));
     }
-
     // Compare the given password with the hashed password in the database
     const passwordMatches = await bcrypt.compare(password, user.password);
     if (!passwordMatches) {
@@ -102,7 +103,6 @@ export const UserLogin = async (req, res) => {
       .json(jsend.error({ message: 'Opps 😰 server error' }));
   }
 };
-
 // Function to create a new user with a Google account
 export const googleAuthHandler = async (req, res) => {
   const { value } = req.user.emails[0];
@@ -292,7 +292,7 @@ export const register = async (req, res) => {
     const user = await db.User.create({
       name,
       email,
-      roleId: 1,
+      roleId: 2,
       password: hashedPassword,
       status: 'active',
       preferred_currency: preferredCurrency,
@@ -356,9 +356,6 @@ export const requestResetPassword = async (req, res) => {
  
 };
  
- 
- 
-
 // validate reset link
 export const resetPasswordLink = async (req, res) => {
   try { 

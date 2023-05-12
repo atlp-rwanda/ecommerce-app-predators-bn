@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import db from "../database/models/index.js";
 import sendEmail from "../utils/sendEmail.js";
 export const eventEmitter = new EventEmitter();
-const { Product, User, Notification, wishlist,Order } = db;
+const { Product, User, Notification, wishlist } = db;
 
 eventEmitter.on("wishlist:add", async (product) => {
   try {
@@ -468,6 +468,56 @@ eventEmitter.on("cart:created", async (cart) => {
   const text = `You have created a cart!`;
   await sendEmail.sendNotification(user.email, subject, text)
 });
-  
+eventEmitter.on ("cart:updated", async (cart) => {
+  // Find the user who updated the cart
+  const user = await User.findByPk(cart.User_id);
+  if (!user) {
+    console.error("User not found");
+    return;
+  }
+  // Send notification to user here
+  await Notification.create({
+    user_id: user.id,
+    product_id: user.id,
+    message: `You have updated a cart!`,
+  });
+  console.log(`Notification sent to user: ${user.name}`);
+  // Send an email to the user who updated the cart with the cart information
+  const subject = "Cart updated";
+  const text = `You have updated a cart!`;
+  await sendEmail.sendNotification(user.email, subject, text)
+});
+eventEmitter.on ("cart:deleted", async (cart) => {
+  // Find the user who deleted the cart
+  const user = await User.findByPk(cart.User_id);
+  if (!user) {
+    console.error("User not found");
+    return;
+  }
+  // Send notification to user here
+  await Notification.create({
+    user_id: user.id,
+    product_id: user.id,
+    message: `You have deleted a cart!`,
+  });
+  console.log(`Notification sent to user: ${user.name}`);
+  // Send an email to the user who deleted the cart with the cart information
+  const subject = "Cart deleted";
+  const text = `You have deleted a cart!`;
+  await sendEmail.sendNotification(user.email, subject, text)
+});
+eventEmitter.on("password:updated", async (user) => {
+  // Send notification to user here
+  await Notification.create({
+    user_id: user.id,
+    product_id: user.id,
+    message: `Your Password has Expired, Please Update your Password`,
+  });
+  console.log(`Notification sent to user: ${user.name}`);
+  // Send an email to the user who changed the password with the user information
+  const subject = "Request to change password"
+  const text = `Your Password has Expired, Please Update your Password`;
+  await sendEmail.sendNotification(user.email, subject, text)
+});
 
 export default eventEmitter;

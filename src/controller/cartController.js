@@ -102,6 +102,7 @@ export default class cartController {
                             data: error
                         }));   
                 } 
+                eventEmitter.emit('cart:updated', cartItem);
                 return res.status(200).send(jsend.success({
                     code: 200,
                     message:  "item updated ",
@@ -139,6 +140,7 @@ export default class cartController {
                             data: cartItems
                         })); 
             }
+            eventEmitter.emit('cart:deleted', cartItems);
             return res.status(200).send(jsend.success({
                             code: 200,
                             message:  "item removed in cart",
