@@ -16,6 +16,7 @@ import { expired, expiring_soon, orderExpiry,passwordUpdated } from './services/
 import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
 import product from './routes/ProductRoutes.js';
+import product from './routes/ProductRoutes.js';
 import authRoute from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import category from './routes/categoryRoutes.js';
