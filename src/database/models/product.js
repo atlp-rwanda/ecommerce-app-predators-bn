@@ -18,6 +18,12 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
         as: 'category',
         onDelete: "CASCADE",
       });
+      Product.hasMany(models.Review, {
+        foreignKey: 'product_id',
+        as: 'reviews',
+        onDelete: "CASCADE",
+        });
+ 
     }
     static async findAndPaginateAll({page=1, limit=10, where = {}}) {
       const offset = (page - 1) * limit;
@@ -29,7 +35,6 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     category_id: DataTypes.INTEGER,
-
     price: DataTypes.STRING,
     picture_urls: DataTypes.ARRAY(DataTypes.STRING),
     instock: DataTypes.INTEGER,

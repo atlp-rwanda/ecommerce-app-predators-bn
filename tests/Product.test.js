@@ -27,6 +27,38 @@ describe('Product API', function() {
   
     });
   });
+  describe("get a product by id", () => {
+    it("should return a product by id", (done) => {
+      const id = 1;
+      chai.request(app)
+        .get(`/api/product/${id}`)
+        .end((error, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+  });
+  describe('POST api/product', function() {
+    it('should add a new product', async () => {
+      const res = await chai.request(app)
+        .post('/api/product')
+        .send({
+          name: 'Test Prod',
+          description: 'This is a test product',
+          category_id: 1,
+          picture_urls: ['https://example.com/image.png'],
+          expiryDate: '2023-05-31',
+          price: 10.99,
+          instock: 50,
+          available: true
+        })
+        .auth(token, { type: 'bearer' });
+  
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('status', 'success');
+    });
+  });
+  
   describe('PUT api/product/:id', function() {
     it('should update a product and return the updated product details', function(done) {
       const updatedProduct = {

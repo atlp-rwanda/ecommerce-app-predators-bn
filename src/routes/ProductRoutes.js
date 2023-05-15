@@ -1,6 +1,6 @@
 import {getAllProducts, getProductById, updateProduct, deleteSpecificProduct} from '../controller/productController.js';
 import { get_collection, get_available_products } from "../controller/productListingController.js";
-import { isAdmin, isSeller, isBuyer, checkPermission } from "../middleware/roles.js";
+import { isAdmin, isSeller, isBuyer, checkPermission,RestrictPassword } from "../middleware/roles.js";
 import  productSearch from '../controller/search.controller.js';
 import { Router } from "express";
 import jsend from 'jsend';
@@ -23,14 +23,14 @@ router.param('userId', async (req, res, next, id) => {
   }
 });
 
-router.post('/product', isSeller, addProduct);
+router.post('/product', isSeller,RestrictPassword, addProduct);
 router.get('/product/available/:userId', showCatalogue);
 router.get('/product', getAllProducts);
 router.get('/product/:id', getProductById);
-router.put('/product/:id',isSeller, updateProduct);
-router.delete('/product/:id', isSeller, deleteSpecificProduct)
+router.put('/product/:id',isSeller,RestrictPassword, updateProduct);
+router.delete('/product/:id', isSeller,RestrictPassword, deleteSpecificProduct)
 router.get('/products/search',productSearch);
-router.get('/user/products', isBuyer, get_available_products);
-router.get('/vendor/collection', isSeller, get_collection);
+router.get('/user/products', isBuyer, RestrictPassword,get_available_products);
+router.post('/vendor/collection', isSeller,RestrictPassword, get_collection);
 
 export default router;
