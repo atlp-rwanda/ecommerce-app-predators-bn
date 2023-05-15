@@ -6,6 +6,7 @@ module.exports = {
   otp_length_sms: 6,
   otp_name: 'Team Predators',
   otp_issuer: 'E-commerce app',
+  NODE_ENV: process.env.NODE_ENV,
   twilio: {
     accountSid: process.env.TWILIO_ACCOUNT_SID,
     authToken: process.env.TWILIO_AUTH_TOKEN,

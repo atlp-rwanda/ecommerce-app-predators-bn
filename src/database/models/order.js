@@ -12,7 +12,7 @@ export default (sequelize, DataTypes) => {
     }
   }
   Order.init({
-    products_info: DataTypes.JSON,
+    products_info: DataTypes.JSON(10000),
     user_id: DataTypes.INTEGER,
     billing_info: DataTypes.JSON,
     status: DataTypes.STRING,

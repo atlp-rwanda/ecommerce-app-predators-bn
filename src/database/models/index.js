@@ -15,8 +15,6 @@ const config = Config[env];
 const db = {};
 let sequelize;
 
-
-
 if (config.use_env_variable) {
   sequelize = new Sequelize(_env[config.use_env_variable], config);
 } else {
@@ -40,5 +38,8 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-db.sequelize = sequelize; 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+
 export default db;

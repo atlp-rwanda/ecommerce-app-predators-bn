@@ -15,7 +15,8 @@ const billingSchema = Joi.object({
 
 const get_discount = async (cart_item) => {
   const product = await db.Product.findOne({ where: { id: cart_item.product_id } });
-  const { name, description, price } = product;
+  let { name, description, price } = product;
+  price = parseInt(price)
   let { quantity } = cart_item;
   if (product.instock < quantity) {
     quantity = product.instock;
@@ -54,6 +55,9 @@ export const checkout = async (req, res) => {
     };
 
     const user_cart = await db.Cart_items.findAll({ where: { User_id: user_id } });
+    if(user_cart.length == 0) {
+      res.status(400).send({status: "fail", message: "This user has no items in the cart"});
+    }
     const products_info = [];
 
     for (const item of user_cart) {

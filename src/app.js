@@ -1,6 +1,7 @@
 // Imports
 import morgan from 'morgan';
 import session from 'express-session';
+import config from "config";
 import passport from 'passport';
 import middleware from 'i18next-http-middleware';
 import dotenv from 'dotenv';
@@ -11,6 +12,7 @@ import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
 import i18next from './middleware/i18next.js';
 import { expired, expiring_soon, orderExpiry,passwordUpdated } from './services/node-cron.services.js';
+
 // Routes URL definitions
 import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
@@ -47,7 +49,9 @@ const corsOptions = {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-app.use(morgan('dev'));
+if(config.NODE_ENV != 'test') {
+  app.use(morgan('dev'));
+}
 app.use(middleware.handle(i18next));
 app.use(
   session({
