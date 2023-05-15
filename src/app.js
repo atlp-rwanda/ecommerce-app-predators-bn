@@ -24,6 +24,7 @@ import discountCouponRouter from './routes/discountCouponRoute.js';
 import cartRoute from './routes/cartRoutes.js';
 import checkoutRoute from './routes/checkoutRoute.js';
 import applyCoupon from './routes/applyCouponRoutes.js';
+import review from './routes/reviewRoute.js';
 
 // Sequelize configuration
 dotenv.config();
@@ -96,7 +97,7 @@ app.use('/api/category', category);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
 app.use("/", welcomeRoute);
-
+app.use('/api/',review);
 
 app.use('.api', category);
 app.use('/api', orderRoutes);
