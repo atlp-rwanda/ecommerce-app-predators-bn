@@ -23,7 +23,6 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
         as: 'reviews',
         onDelete: "CASCADE",
         });
- 
     }
     static async findAndPaginateAll({page=1, limit=10, where = {}}) {
       const offset = (page - 1) * limit;

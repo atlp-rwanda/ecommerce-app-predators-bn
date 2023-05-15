@@ -31,6 +31,6 @@ router.put('/product/:id',isSeller,RestrictPassword, updateProduct);
 router.delete('/product/:id', isSeller,RestrictPassword, deleteSpecificProduct)
 router.get('/products/search',productSearch);
 router.get('/user/products', isBuyer, RestrictPassword,get_available_products);
-router.post('/vendor/collection', isSeller,RestrictPassword, get_collection);
+router.post('/vendor/collection', isSeller, RestrictPassword, get_collection);
 
 export default router;

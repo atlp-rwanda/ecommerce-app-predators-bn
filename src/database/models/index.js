@@ -13,27 +13,12 @@ const env = _env.NODE_ENV || 'development';
 
 const config = Config[env];
 const db = {};
-// let sequelize;
-
-
-
-// if (config.use_env_variable) {
-//   sequelize = new Sequelize(_env[config.use_env_variable], config);
-// } else {
-//   sequelize = new Sequelize(config.url, { dialect: config.dialect, logging: config.logging });
-// }
 let sequelize;
-if (config.url) {
-	sequelize = new Sequelize(config.url, config);
-} else {
 
-	sequelize = new Sequelize(
-		config.database,
-		config.username,
-		config.password,
-		config
-	);
-  // sequelize = new Sequelize(config.url, { dialect: config.dialect, logging: config.logging });
+if (config.use_env_variable) {
+  sequelize = new Sequelize(_env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.url, { dialect: config.dialect, logging: config.logging });
 }
 const modelFiles = readdirSync(join(process.cwd(), 'src', 'database', 'models')).filter((file) => (
   file.indexOf('.') !== 0
@@ -53,5 +38,8 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-db.sequelize = sequelize; 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+
 export default db;

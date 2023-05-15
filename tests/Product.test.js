@@ -88,19 +88,19 @@ describe('Product API', function() {
         });
     });
   });
-  // describe('DELETE api/product/:id', function() {
-  //   it('should delete a product and return the product details', function(done) {
-  //     const reason = 'Product no longer needed'; // Prompt user to provide reason
-  //     chai.request(app)
-  //       .delete('/api/product/1')
-  //       .set('Authorization', 'Bearer ' + token)
-  //       .send({ reason: reason }) // Pass reason in the request body
-  //       .end(function(err, res) {
-  //         expect(err).to.be.null;
-  //         expect(res).to.have.status(200);
-  //         expect(res.body.message).to.equal('Item deleted successfully');
-  //         done();
-  //       });
-  //   });
-  // });  
+  describe('DELETE api/product/:id', function() {
+    it('should delete a product and return the product details', function(done) {
+      const reason = 'Product no longer needed'; // Prompt user to provide reason
+      chai.request(app)
+        .delete('/api/product/1')
+        .set('Authorization', 'Bearer ' + token)
+        .send({ reason: reason }) // Pass reason in the request body
+        .end(function(err, res) {
+          expect(err).to.be.null;
+          expect(res).to.have.status(200);
+          expect(res.body.message).to.equal('Item deleted successfully');
+          done();
+        });
+    });
+  });  
 });

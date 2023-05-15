@@ -28,10 +28,10 @@ describe("Product Listing", () => {
         token = await login(config.vendor_credentials)
 
         chai.request(app)
-        .get("/api/vendor/collection")
+        .post("/api/vendor/collection")
         .auth(token, { type: 'bearer' })
         .end( (err, res) => {
-            // console.log(res)
+            // console.log(res.text)
             res.should.have.status(200);
             res.body.status.should.be.eql("success");
             res.body.data.should.be.a("array");
