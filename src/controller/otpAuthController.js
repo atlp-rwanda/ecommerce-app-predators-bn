@@ -6,15 +6,13 @@ import config from 'config';
 import qr from 'qrcode';
 import twilio from 'twilio';
 import db from '../database/models/index.js';
-
 const twilioClient = twilio(config.twilio.accountSid, config.twilio.authToken);
+
 // [...] Generate OTP
 const GenerateOTP = async (req, res) => {
   try {
-    const { user_id } = req.body;
-    const {
-      ascii, hex, base32, otpauth_url,
-    } = speakeasy.generateSecret({
+    const user_id = req.user.dataValues.id;
+    const { ascii, hex, base32, otpauth_url } = speakeasy.generateSecret({
       issuer: config.otp_issuer,
       name: config.otp_name,
       length: config.otp_length,
@@ -50,12 +48,12 @@ const GenerateOTP = async (req, res) => {
 // [...] Get OTP via SMS
 const GetOTP = async (req, res) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.user.dataValues.id;
 
     const user = await db.User.findByPk(user_id);
-    const message = "User doesn't exist";
-    if (!user) {
-      return res.status(404).json({
+    if (!user || !user.phone_number) {
+      const message = user.phone_number? "User doesn't exist": "No phone number set for this user";
+      return res.status(400).json({
         status: 'fail',
         message,
       });
@@ -89,7 +87,8 @@ const GetOTP = async (req, res) => {
 
 // [...] Verify OTP
 const VerifyOTP = async (req, res) => {
-  const { user_id, token } = req.body;
+  const { token } = req.body;
+  const user_id = req.user.dataValues.id;
 
   try {
     const user = await db.User.findByPk(user_id);
@@ -143,7 +142,8 @@ const VerifyOTP = async (req, res) => {
 // [...] Validate OTP
 const ValidateOTP = async (req, res) => {
   try {
-    const { user_id, token } = req.body;
+    const { token } = req.body;
+    const user_id = req.user.dataValues.id;
     const user = await db.User.findOne({ where: { id: user_id } });
 
     const message = "Token is invalid or user doesn't exist";
@@ -189,7 +189,7 @@ const ValidateOTP = async (req, res) => {
 // [...] Disable OTP
 const DisableOTP = async (req, res) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.user.dataValues.id;
 
     const user = await db.User.findByPk(user_id);
     if (!user) {

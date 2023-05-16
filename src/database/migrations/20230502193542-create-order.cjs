@@ -14,7 +14,7 @@ module.exports = {
         allowNull: false
       },
       products_info: {
-        type: Sequelize.JSON,
+        type: Sequelize.JSON(100000),
         allowNull: false,
       },
       billing_info: {

@@ -1,13 +1,9 @@
-import { Router } from 'express';
+import { Router } from "express";
+import {getAllProducts, getProductById, updateProduct, deleteSpecificProduct} from '../controller/productController.js';
+import { get_collection, get_available_products } from "../controller/productListingController.js";
+import { isAdmin, isSeller, isBuyer, checkPermission,RestrictPassword } from "../middleware/roles.js";
+import  productSearch from '../controller/search.controller.js';
 import jsend from 'jsend';
-import {
-  getAllProducts, getProductById, updateProduct, deleteSpecificProduct,
-} from '../controller/productController.js';
-import { get_collection, get_available_products } from '../controller/productListingController.js';
-import {
-  isAdmin, isSeller, isBuyer, checkPermission,
-} from '../middleware/roles.js';
-import productSearch from '../controller/search.controller.js';
 import { addProduct, showCatalogue } from '../controller/prodController.js';
 import db from '../database/models/index.js';
 
@@ -22,5 +18,6 @@ router.delete('/product/:id', isSeller, deleteSpecificProduct);
 router.get('/products/search', productSearch);
 router.get('/user/products', isBuyer, get_available_products);
 router.post('/vendor/collection', isSeller, get_collection);
+
 
 export default router;

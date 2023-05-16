@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import jsend from 'jsend';
 import { addProduct, showCatalogue } from '../controller/prodController.js';
-import { isSeller } from '../middleware/roles.js';
+import { isSeller,RestrictPassword } from '../middleware/roles.js';
 import db from '../database/models/index.js';
 
 const router = Router();

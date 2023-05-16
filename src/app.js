@@ -1,6 +1,7 @@
 // Imports
 import morgan from 'morgan';
 import session from 'express-session';
+import config from "config";
 import passport from 'passport';
 import middleware from 'i18next-http-middleware';
 import dotenv from 'dotenv';
@@ -9,7 +10,9 @@ import express from 'express';
 import cors from 'cors';
 import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
-import { expired, expiring_soon, orderExpiry } from './services/node-cron.services.js';
+import i18next from './middleware/i18next.js';
+import { expired, expiring_soon, orderExpiry,passwordUpdated } from './services/node-cron.services.js';
+
 // Routes URL definitions
 import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
@@ -20,12 +23,12 @@ import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
 import discountCouponRouter from './routes/discountCouponRoute.js';
-import i18next from './middleware/i18next.js';
 
 import cartRoute from './routes/cartRoutes.js';
 import checkoutRoute from './routes/checkoutRoute.js';
 import applyCoupon from './routes/applyCouponRoutes.js';
 import paymentRoute from './routes/paymentsRouter.js';
+import review from './routes/reviewRoute.js';
 
 // Sequelize configuration
 dotenv.config();
@@ -51,7 +54,9 @@ const corsOptions = {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-app.use(morgan('dev'));
+if(config.NODE_ENV != 'test') {
+  app.use(morgan('dev'));
+}
 app.use(middleware.handle(i18next));
 app.use(
   session({
@@ -66,6 +71,7 @@ app.use(passport.session());
 expired.start();
 expiring_soon.start();
 orderExpiry.start();
+passwordUpdated.start();
 // Swagger
 const options = {
   validatorUrl: null,
@@ -100,7 +106,8 @@ app.use('/api/cart', cartRoute);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
-app.use('/', welcomeRoute);
+app.use("/", welcomeRoute);
+app.use('/api/',review);
 
 app.use('.api', category);
 app.use('/api', orderRoutes);

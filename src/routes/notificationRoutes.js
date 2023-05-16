@@ -10,6 +10,6 @@ import { getAllNotifications, markNotificationAsRead, deleteNotification } from 
 
 const router = Router();
 router.get('/notification', isSeller, getAllNotifications);
-router.put('/:notificationId', markNotificationAsRead);
-router.delete('/:notificationId', deleteNotification);
+router.put('/:notificationId', isBuyer, markNotificationAsRead);
+router.delete('/:notificationId', isBuyer, deleteNotification);
 export default router;
