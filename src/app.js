@@ -16,26 +16,31 @@ import { expired, expiring_soon, orderExpiry,passwordUpdated } from './services/
 // Routes URL definitions
 import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
-import product from "./routes/ProductRoutes.js";
+import product from './routes/ProductRoutes.js';
 import authRoute from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
 import discountCouponRouter from './routes/discountCouponRoute.js';
+
 import cartRoute from './routes/cartRoutes.js';
 import checkoutRoute from './routes/checkoutRoute.js';
 import applyCoupon from './routes/applyCouponRoutes.js';
+import paymentRoute from './routes/paymentsRouter.js';
 import review from './routes/reviewRoute.js';
 
 // Sequelize configuration
 dotenv.config();
 const { sequelize } = db;
-sequelize.authenticate().then(() => {
-  console.log('Connection has been established successfully.');
-}).catch((err) => {
-  console.error('Unable to connect to the database:', err);
-});
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 // App setup
 const app = express();
@@ -92,6 +97,7 @@ app.use('/api', notificationRoutes);
 app.use('/api', checkoutRoute);
 app.use('/api', product);
 app.use('/api/category', category);
+app.use('/api/pay', paymentRoute);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
 app.use('/api', applyCoupon);

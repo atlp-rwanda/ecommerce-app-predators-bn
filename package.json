@@ -74,6 +74,8 @@
     "sequelize": "^6.31.0",
     "sequelize-cli": "^6.6.0",
     "speakeasy": "^2.0.0",
+    "stripe": "^12.5.0",
+    "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
     "twilio": "^4.10.0"

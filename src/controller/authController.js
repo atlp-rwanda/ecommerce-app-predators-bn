@@ -268,11 +268,11 @@ The E-commerce ATLP-Predators project team
 };
 export const register = async (req, res) => {
   const {
-    name, email, password, gender, preferredCurrency, preferredLanguage,
+    name, email, password, gender, preferred_currency, preferred_language,
   } = req.body;
 
   // Validate user input
-  if (!name || !email || !password || !gender || !preferredCurrency || !preferredLanguage) {
+  if (!name || !email || !password || !gender || !preferred_currency || !preferred_language) {
     return res.status(400).send('Invalid input');
   }
 
@@ -292,9 +292,10 @@ export const register = async (req, res) => {
       email,
       roleId: 2,
       password: hashedPassword,
+      gender,
       status: 'active',
-      preferred_currency: preferredCurrency,
-      preferred_language: preferredLanguage,
+      preferred_currency,
+      preferred_language,
     });
     res.status(200).json({ message: user }); // /!\use jsend
 
