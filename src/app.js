@@ -1,4 +1,6 @@
 // Imports
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import morgan from 'morgan';
 import session from 'express-session';
 import passport from 'passport';
@@ -10,21 +12,26 @@ import cors from 'cors';
 import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
 import { expired, expiring_soon, orderExpiry } from './services/node-cron.services.js';
+import SocketHandler from './utils/chatServer.js';
+
 // Routes URL definitions
 import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
-import product from "./routes/ProductRoutes.js";
+import product from './routes/ProductRoutes.js';
 import authRoute from './routes/authRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import category from './routes/categoryRoutes.js';
 import otpAuthRouter from './routes/otpAuthRoute.js';
 import wishlistRoute from './routes/wishlistRoute.js';
 import discountCouponRouter from './routes/discountCouponRoute.js';
-import i18next from "./middleware/i18next.js";
+import i18next from './middleware/i18next.js';
 
 import cartRoute from './routes/cartRoutes.js';
 import checkoutRoute from './routes/checkoutRoute.js';
 import applyCoupon from './routes/applyCouponRoutes.js';
+// Cron job
+// Routes
+import chatRoutes from './routes/chatRoutes.js';
 
 // Sequelize configuration
 dotenv.config();
@@ -43,8 +50,30 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
+
+/**
+ * CHAT SETTINGS
+ */
+
+// Express server for chat server.
+const httpServer = createServer(app);
+
+// Socket.io server.
+const io = new Server(httpServer, {
+  cors: corsOptions, // CORS Middleware.
+});
+
+// Socket Connections Handler
+const chatHandler = new SocketHandler(io);
+
+// Handle all sockets using the bound chatHandler instance.
+io.on('connection', chatHandler.onConnection.bind(chatHandler));
+
 // Middleware
 app.use(express.json());
+app.set('view engine', 'ejs');
+app.set('views', './src/views');
+app.use(express.static('src/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(morgan('dev'));
@@ -78,8 +107,9 @@ passport.deserializeUser((id, done) => {
     .then((user) => done(null, user))
     .catch((err) => done(err, null));
 });
-// Cron job
-// Routes
+// Chat Routes
+app.use('/chat/chatRoom', (req, res) => { res.render('chatRoom'); });
+app.use('/chatDB', chatRoutes);
 
 app.use('/auth', otpAuthRouter);
 app.use('/api', authRoute);
@@ -95,10 +125,13 @@ app.use('/api/cart', cartRoute);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
-app.use("/", welcomeRoute);
-
+app.use('/', welcomeRoute);
 
 app.use('.api', category);
 app.use('/api', orderRoutes);
+
+// Start the chat server on PORT 4000
+httpServer.listen(4000, () => console.log('[Chat-Server@4000] ON'));
+
 // Export the app
 export default app;
