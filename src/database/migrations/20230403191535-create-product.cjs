@@ -7,6 +7,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE', //CASCADE - on delete cascade; SET NULL - on delete set null; SET DEFAULT - the default value is
       },
       name: {
         type: Sequelize.STRING,
