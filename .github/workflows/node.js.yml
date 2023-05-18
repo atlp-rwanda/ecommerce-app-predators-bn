@@ -34,7 +34,7 @@ jobs:
       ADMIN_ACC_EMAIL: ${{ secrets.ADMIN_ACC_EMAIL }}
       VENDOR_ACC_EMAIL: ${{ secrets.VENDOR_ACC_EMAIL }}
       ACC_PASS: ${{ secrets.ACC_PASS }}
-      BILLINGINFO: ${{ secrets.BILLING_INFO }}
+      BILLING_INFO: ${{ secrets.BILLING_INFO }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       PORT: ${{ secrets.PORT }}
       SWAGGER_SERVER: ${{ secrets.SWAGGER_SERVER }}

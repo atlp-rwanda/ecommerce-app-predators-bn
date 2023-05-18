@@ -1,3 +1,4 @@
+/* eslint-disable */
 import app from '../src/app.js';
 import chai from 'chai';
 import chaiHttp from 'chai-http';

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Imports
 import morgan from 'morgan';
 import session from 'express-session';
@@ -12,7 +13,6 @@ import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
 import i18next from './middleware/i18next.js';
 import { expired, expiring_soon, orderExpiry,passwordUpdated } from './services/node-cron.services.js';
-
 // Routes URL definitions
 import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
