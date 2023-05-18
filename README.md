@@ -30,7 +30,7 @@ Clone this repository using the command : `git clone`
 Navigate to the project directory using the command: `cd ecommerce-app-predators-bn`
 Install dependencies by running : `npm install`
 Create a PostgreSQL database and update the config/config.js file with your database credentials.
-Run the database migrations using Sequelize by running the following command: `npm run migrate:up`
+Run the database migrations using Sequelize by running the following command: `npm run migrate`
 Start the application by running: `npm run dev` 
 
 ## Docker
@@ -61,8 +61,10 @@ Create a pull request.
 - Run migrate script to migrate db, use this command: `npm run migrate`
 - Run seed script to add seeds into the table, use this command: `npm run seed`
 - Run unseed script to remove seeds, use this command: `npm run unseed`
-- Run down script to undo the most recent migrate, use this command: `npm run down`
+- Run down script to reset the database, use this command: `npm run down`
 
+## Deployed link of the ecommerce-app-predators
+https://talented-wig-goat.cyclic.app/
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
