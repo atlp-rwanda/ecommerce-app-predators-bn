@@ -23,7 +23,12 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
         as: 'reviews',
         onDelete: "CASCADE",
         });
-    }
+      Product.hasMany(models.wishlist, {     
+        foreignKey: 'id',
+        as: 'wishlist',
+        onDelete: "CASCADE",
+    });
+  }
     static async findAndPaginateAll({page=1, limit=10, where = {}}) {
       const offset = (page - 1) * limit;
       const products = await Product.findAll({ offset, limit, where });

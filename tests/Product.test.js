@@ -29,7 +29,7 @@ describe('Product API', function() {
   });
   describe("get a product by id", () => {
     it("should return a product by id", (done) => {
-      const id = 1;
+      const id = 2;
       chai.request(app)
         .get(`/api/product/${id}`)
         .end((error, res) => {
@@ -76,7 +76,7 @@ describe('Product API', function() {
         available: 'yes'
       };
       chai.request(app)
-        .put('/api/product/1')
+        .put('/api/product/2')
         .send(updatedProduct)
         .auth(token, { type: 'bearer' })
         .end(function(err, res) {
@@ -92,7 +92,7 @@ describe('Product API', function() {
     it('should delete a product and return the product details', function(done) {
       const reason = 'Product no longer needed'; // Prompt user to provide reason
       chai.request(app)
-        .delete('/api/product/1')
+        .delete('/api/product/2')
         .set('Authorization', 'Bearer ' + token)
         .send({ reason: reason }) // Pass reason in the request body
         .end(function(err, res) {
