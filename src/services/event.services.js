@@ -1,11 +1,12 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from 'events';
 import { Op } from 'sequelize';
-import db from "../database/models/index.js";
-import sendEmail from "../utils/sendEmail.js";
-export const eventEmitter = new EventEmitter();
-const { Product, User, Notification, wishlist,Order } = db;
+import db from '../database/models/index.js';
+import sendEmail from '../utils/sendEmail.js';
 
-eventEmitter.on("wishlist:add", async (product) => {
+export const eventEmitter = new EventEmitter();
+const { Product, User, Notification, wishlist } = db;
+
+eventEmitter.on('wishlist:add', async (product) => {
   try {
     // Find the user who added the product to their wishlist
     const Wishlist = await wishlist.findOne({
@@ -29,7 +30,7 @@ eventEmitter.on("wishlist:add", async (product) => {
     }
 
     // Send an email to the user with a message indicating that the product has been added
-    const subject = "Product added to wishlist";
+    const subject = 'Product added to wishlist';
     const text = `You've added "${product.name}" to your wishlist. Check it out here: ${product.url}`;
     try {
       await sendEmail.sendNotification(user.email, subject, text);
@@ -42,7 +43,7 @@ eventEmitter.on("wishlist:add", async (product) => {
     console.error(`Error handling wishlist:add event for product ${product.id}:`, error);
   }
 });
-eventEmitter.on("wishlist:remove", async (wishlistItem) => {
+eventEmitter.on('wishlist:remove', async (wishlistItem) => {
   // Find the user who removed the product from their wishlist
   const user = await User.findByPk(wishlistItem.userId);
   if (!user) {
@@ -62,14 +63,14 @@ eventEmitter.on("wishlist:remove", async (wishlistItem) => {
     product_id: product.id,
     message,
   });
-  console.log("Notification sent to user:", user.name);
+  console.log('Notification sent to user:', user.name);
 
   // Send an email to the user with a message indicating that the product has been removed
-  const subject = "Product removed from wishlist";
+  const subject = 'Product removed from wishlist';
   const text = `You have removed "${product.name}" from your wishlist. Click here to view your wishlist: ${process.env.APP_URL}/wishlist`;
   await sendEmail.sendNotification(user.email, subject, text);
 });
-eventEmitter.on("product:buy", async (product, buyer) => {
+eventEmitter.on('product:buy', async (product, buyer) => {
   // Find the seller of the product
   const seller = await User.findByPk(product.user_id);
 
@@ -83,15 +84,15 @@ eventEmitter.on("product:buy", async (product, buyer) => {
   // Send an email to the seller with a message indicating that the product has been bought
   await sendEmail.sendNotification(
     seller.email,
-    "Product bought",
-    `The product "${product.name}" has been bought by ${buyer.name}`
+    'Product bought',
+    `The product "${product.name}" has been bought by ${buyer.name}`,
   );
 });
-eventEmitter.on("product:update", async (product, oldPrice) => {
+eventEmitter.on('product:update', async (product, oldPrice) => {
   // Find all users who have added the product to their wishlist
   const users = await User.findAll({
     include: {
-      association: "Wishlist",
+      association: 'Wishlist',
       where: { product_id: product.id },
     },
   });
@@ -108,23 +109,23 @@ eventEmitter.on("product:update", async (product, oldPrice) => {
         product_id: product.id,
         message: `The product "${product.name}" on your wishlist is now on sale for ${product.price}!`,
       });
-      console.log("Notification sent to user:", user.name);
+      console.log('Notification sent to user:', user.name);
 
       // Send the notification to the user via their preferred notification channel
       await sendNotification.sendSaleNotification(
         user.email,
         product.name,
         product.price,
-        product.url
+        product.url,
       );
     });
   }
 });
-eventEmitter.on("product:outofstock", async (product) => {
+eventEmitter.on('product:outofstock', async (product) => {
   // Find all users who have added the product to their wishlist
   const users = await User.findAll({
     include: {
-      association: "Wishlist",
+      association: 'Wishlist',
       where: { product_id: product.id },
     },
   });
@@ -138,17 +139,17 @@ eventEmitter.on("product:outofstock", async (product) => {
       product_id: product.id,
       message: `The product "${product.name}" is now out of stock. You can sign up for email notifications when it's back in stock here: ${product.pageLink}`,
     });
-    console.log("Notification sent to user:", user.name);
+    console.log('Notification sent to user:', user.name);
   });
 
   // Send an email to each user with a message indicating that the product is out of stock and include a link to the product page
-  const subject = "Product out of stock";
+  const subject = 'Product out of stock';
   const text = `The product "${product.name}" is now out of stock. You can sign up for email notifications when it's back in stock here: ${product.pageLink}`;
   users.forEach(async (user) => {
     await sendEmail.sendNotification(user.email, subject, text);
   });
 });
-eventEmitter.on("product:expiring_soon", async (product) => {
+eventEmitter.on('product:expiring_soon', async (product) => {
   // Find the seller of the product
   const seller = await User.findOne({ where: { id: product.vendor_id } });
   if (!seller) {
@@ -160,12 +161,12 @@ eventEmitter.on("product:expiring_soon", async (product) => {
   await Notification.create({
     user_id: seller.id,
     product_id: product.id,
-    message: message,
+    message,
   });
-  console.log("Notification sent to seller:", seller.name);
+  console.log('Notification sent to seller:', seller.name);
 
   // Send an email to the seller with a message indicating that the product is expiring soon
-  const subject = "Product expiring soon";
+  const subject = 'Product expiring soon';
   const productLink = `$http://localhost:3000/products/${product.id}`;
   const expiring_soon = ` 
   Hi ${seller.name},,
@@ -179,7 +180,7 @@ eventEmitter.on("product:expiring_soon", async (product) => {
   `;
   await sendEmail.sendNotification(seller.email, subject, expiring_soon);
 });
-eventEmitter.on("product:expired", async (product) => {
+eventEmitter.on('product:expired', async (product) => {
   // Find the seller of the expired product
   const seller = await User.findOne({ where: { id: product.vendor_id } });
   if (!seller) {
@@ -191,10 +192,10 @@ eventEmitter.on("product:expired", async (product) => {
     product_id: product.id,
     message: `The product "${product.name}" has expired on ${product.expiryDate}.`,
   });
-  console.log("Notification sent to seller:", seller.name);
+  console.log('Notification sent to seller:', seller.name);
   // Emit a "notification" event to the Socket.IO server
   // Send an email to the seller with a message indicating that the product has expired
-  const subject = "Product expired";
+  const subject = 'Product expired';
   const productLink = `http://localhost:3000/products/${product.id}`;
   const expired = `
   Hi ${seller.name},
@@ -208,7 +209,7 @@ eventEmitter.on("product:expired", async (product) => {
   `;
   await sendEmail.sendNotification(seller.email, subject, expired);
 });
-eventEmitter.on("product:sold", async (product, quantity, totalSaleAmount) => {
+eventEmitter.on('product:sold', async (product, quantity, totalSaleAmount) => {
   // Find the seller of the product
   const seller = await User.findByPk(product.user_id);
   if (!seller) {
@@ -224,13 +225,13 @@ eventEmitter.on("product:sold", async (product, quantity, totalSaleAmount) => {
   });
 
   // Send an email to the seller with details of the sale
-  const subject = "Product sold";
+  const subject = 'Product sold';
   const text = `Congratulations! The product "${product.name}" that you listed on our platform has been sold. Quantity: ${quantity}, Total sale amount: ${totalSaleAmount}.`;
   await sendEmail.sendNotification(seller.email, subject, text);
 
-  console.log("Notification sent to seller:", seller.name);
+  console.log('Notification sent to seller:', seller.name);
 });
-eventEmitter.on("product:added", async (product) => {
+eventEmitter.on('product:added', async (product) => {
   // Find all users who have opted in to receive notifications
   const users = await User.findAll({ where: { receive_notifications: true } });
   if (!users.length) {
@@ -243,16 +244,16 @@ eventEmitter.on("product:added", async (product) => {
       product_id: product.id,
       message: `A new product has been added: ${product.name}`,
     });
-    console.log("Notification sent to user:", user.name);
+    console.log('Notification sent to user:', user.name);
   });
   // Send an email to each user with a message indicating that a new product has been added
-  const subject = "New product added";
+  const subject = 'New product added';
   const text = `We've added a new product: ${product.name}! Check it out: ${product.url}`;
   users.forEach(async (user) => {
     await sendEmail.sendNotification(user.email, subject, text);
   });
 });
-eventEmitter.on("product:updated", async (product) => {
+eventEmitter.on('product:updated', async (product) => {
   // Find the user who updated the product
   const updatedUser = await User.findByPk(product.vendor_id);
   if (!updatedUser) {
@@ -267,26 +268,27 @@ eventEmitter.on("product:updated", async (product) => {
   });
   console.log(`Notification sent to user: ${updatedUser.name}`);
   // Send an email to the user who updated the product with the updated information
-  const subject = "Product updated";
+  const subject = 'Product updated';
   const text = `The product "${product.name}" has been updated!`;
   await sendEmail.sendNotification(updatedUser.email, subject, text);
 });
-eventEmitter.on("product:created", async (product) => {
+eventEmitter.on('product:created', async (product) => {
   // Find the user who added the product
   const user = await User.findByPk(product.vendor_id);
   if (!user) {
-    console.error("User not found");
+    console.error('User not found');
     return;
   }
 
   // Find all users who have opted in to receive notifications, except for the user who added the product
-  const users = await User.findAll({ 
-    where: { 
+
+  const users = await User.findAll({
+    where: {
       receive_notifications: true,
       id: {
-        [Op.ne]: user.id // exclude the user who added the product
-      }
-    } 
+        [Op.ne]: user.id, // exclude the user who added the product
+      },
+    },
   });
   if (!users.length) {
     return;
@@ -298,10 +300,10 @@ eventEmitter.on("product:created", async (product) => {
     product_id: product.id,
     message: `Your product has been added: ${product.name}`,
   });
-  console.log("Notification sent to user:", user.name);
+  console.log('Notification sent to user:', user.name);
 
   // Send an email to the user who added the product with a message indicating that the product has been added
-  const subject = "Your product has been added";
+  const subject = 'Your product has been added';
   const text = `Your product ${product.name} has been added! Check it out: ${product.url}`;
   await sendEmail.sendNotification(user.email, subject, text);
 
@@ -312,15 +314,15 @@ eventEmitter.on("product:created", async (product) => {
       product_id: product.id,
       message: `A new product has been added: ${product.name}`,
     });
-    console.log("Notification sent to user:", user.name);
+    console.log('Notification sent to user:', user.name);
 
     // Send an email to each user with a message indicating that a new product has been added
-    const subject = "New product added";
+    const subject = 'New product added';
     const text = `We've added a new product: ${product.name}! Check it out: ${product.url}`;
     await sendEmail.sendNotification(user.email, subject, text);
   });
 });
-eventEmitter.on("sale:ended", async (sale) => {
+eventEmitter.on('sale:ended', async (sale) => {
   // Find all users who have opted in to receive sale notifications
   const users = await User.findAll({
     where: { receive_sale_notifications: true },
@@ -332,21 +334,21 @@ eventEmitter.on("sale:ended", async (sale) => {
   users.forEach(async (user) => {
     await Notification.create({
       user_id: user.id,
-      message: `The sale has ended. We hope you enjoyed it!`,
+      message: 'The sale has ended. We hope you enjoyed it!',
     });
-    console.log("Notification sent to user:", user.name);
+    console.log('Notification sent to user:', user.name);
   });
 
   // Send an email to each user with a message indicating that the sale has ended
-  const subject = "Sale ended";
-  const text = `The sale has ended. We hope you enjoyed it!`;
+  const subject = 'Sale ended';
+  const text = 'The sale has ended. We hope you enjoyed it!';
   users.forEach(async (user) => {
     await sendEmail.sendNotification(user.email, subject, text);
   });
 });
-eventEmitter.on("product:removed", async (product) => {
+eventEmitter.on('product:removed', async (product) => {
   // Find the seller of the product
- const seller = await User.findByPk(product.vendor_id);
+  const seller = await User.findByPk(product.vendor_id);
   if (!seller) {
     console.log(`Seller with ID ${product.user_id} not found`);
     return;
@@ -360,34 +362,30 @@ eventEmitter.on("product:removed", async (product) => {
         include: [
           {
             model: Product,
-            where: { id: product.id }
-          }
-        ]
-      }
-    ]
+            where: { id: product.id },
+          },
+        ],
+      },
+    ],
   });
   if (!users.length) {
     return;
   }
   // Create a notification for each user with a message indicating that the product has been removed
-  const notifications = users.map(async (user) => {
-    return Notification.create({
-      user_id: user.id,
-      product_id: product.id,
-      message: `The product "${product.name}" has been removed from the platform. it has been removed from your wishlist as well.`,
-    });
-  });
+  const notifications = users.map(async (user) => Notification.create({
+    user_id: user.id,
+    product_id: product.id,
+    message: `The product "${product.name}" has been removed from the platform. it has been removed from your wishlist as well.`,
+  }));
   await Promise.all(notifications);
-  console.log("Notifications sent to users");
+  console.log('Notifications sent to users');
 
   // Send an email to each user with a message indicating that the product has been removed
-  const subject = "Product removed";
+  const subject = 'Product removed';
   const text = `The product "${product.name}" has been removed from the platform. it has been removed from your wishlist as well.`;
-  const emails = users.map(async (user) => {
-    return sendEmail.sendNotification(user.email, subject, text);
-  });
+  const emails = users.map(async (user) => sendEmail.sendNotification(user.email, subject, text));
   await Promise.all(emails);
-  console.log("Emails sent to users");
+  console.log('Emails sent to users');
 
   // Create a notification for the seller with a message indicating that the product has been removed
   await Notification.create({
@@ -397,39 +395,16 @@ eventEmitter.on("product:removed", async (product) => {
   });
 
   // Send an email to the seller with a message indicating that the product has been removed
-  const sellersubject = "Product removed";
+  const sellersubject = 'Product removed';
   const selletext = `The product "${product.name}" has been removed from the platform.`;
   await sendEmail.sendNotification(seller.email, sellersubject, selletext);
-  console.log("Notification sent to seller:", seller.name);
+  console.log('Notification sent to seller:', seller.name);
 });
-eventEmitter.on("product:checkout", async (order) => {
-    // Find the user who made the order
-    const user = await User.findByPk(order.user_id);
-    if (!user) {
-      console.error("User not found");
-      return;
-    }
-    const { email } = order.billing_info;
-    // Send notification to user here
-    await Notification.create({
-      user_id: user.id,
-      product_id: user.id,
-      message: `You have made an order!`,
-    });
-    console.log(`Notification sent to user: ${user.name}`);
-    // Send an email to the user who made the order with the order information
-    const subject = "Order made";
-    const text = `You have made an order!`;
-    await Promise.all([
-      sendEmail.sendNotification(email, subject, text),
-      sendEmail.sendNotification(user.email, subject, text)
-    ]);
-  });
-eventEmitter.on("order:cancelled", async (order) => {
+eventEmitter.on('product:checkout', async (order) => {
   // Find the user who made the order
   const user = await User.findByPk(order.user_id);
   if (!user) {
-    console.error("User not found");
+    console.error('User not found');
     return;
   }
   const { email } = order.billing_info;
@@ -437,22 +412,45 @@ eventEmitter.on("order:cancelled", async (order) => {
   await Notification.create({
     user_id: user.id,
     product_id: user.id,
-    message: `Your order has expired!`,
+    message: 'You have made an order!',
   });
   console.log(`Notification sent to user: ${user.name}`);
   // Send an email to the user who made the order with the order information
-  const subject = "Order expired";
-  const text = `Your order has expired!`;
+  const subject = 'Order made';
+  const text = 'You have made an order!';
   await Promise.all([
     sendEmail.sendNotification(email, subject, text),
-    sendEmail.sendNotification(user.email, subject, text)
+    sendEmail.sendNotification(user.email, subject, text),
   ]);
 });
-eventEmitter.on("cart:created", async (cart) => {
+eventEmitter.on('order:cancelled', async (order) => {
+  // Find the user who made the order
+  const user = await User.findByPk(order.user_id);
+  if (!user) {
+    console.error('User not found');
+    return;
+  }
+  const { email } = order.billing_info;
+  // Send notification to user here
+  await Notification.create({
+    user_id: user.id,
+    product_id: user.id,
+    message: 'Your order has expired!',
+  });
+  console.log(`Notification sent to user: ${user.name}`);
+  // Send an email to the user who made the order with the order information
+  const subject = 'Order expired';
+  const text = 'Your order has expired!';
+  await Promise.all([
+    sendEmail.sendNotification(email, subject, text),
+    sendEmail.sendNotification(user.email, subject, text),
+  ]);
+});
+eventEmitter.on('cart:created', async (cart) => {
   // Find the user who created the cart
   const user = await User.findByPk(cart.User_id);
   if (!user) {
-    console.error("User not found");
+    console.error('User not found');
     return;
   }
   const { email } = user;
@@ -460,14 +458,64 @@ eventEmitter.on("cart:created", async (cart) => {
   await Notification.create({
     user_id: user.id,
     product_id: user.id,
-    message: `You have created a cart!`,
+    message: 'You have created a cart!',
   });
   console.log(`Notification sent to user: ${user.name}`);
   // Send an email to the user who created the cart with the cart information
-  const subject = "Cart created";
-  const text = `You have created a cart!`;
+  const subject = 'Cart created';
+  const text = 'You have created a cart!';
+  await sendEmail.sendNotification(user.email, subject, text);
+});
+eventEmitter.on ("cart:updated", async (cart) => {
+  // Find the user who updated the cart
+  const user = await User.findByPk(cart.User_id);
+  if (!user) {
+    console.error("User not found");
+    return;
+  }
+  // Send notification to user here
+  await Notification.create({
+    user_id: user.id,
+    product_id: user.id,
+    message: `You have updated a cart!`,
+  });
+  console.log(`Notification sent to user: ${user.name}`);
+  // Send an email to the user who updated the cart with the cart information
+  const subject = "Cart updated";
+  const text = `You have updated a cart!`;
   await sendEmail.sendNotification(user.email, subject, text)
 });
-  
+eventEmitter.on ("cart:deleted", async (cart) => {
+  // Find the user who deleted the cart
+  const user = await User.findByPk(cart.User_id);
+  if (!user) {
+    console.error("User not found");
+    return;
+  }
+  // Send notification to user here
+  await Notification.create({
+    user_id: user.id,
+    product_id: user.id,
+    message: `You have deleted a cart!`,
+  });
+  console.log(`Notification sent to user: ${user.name}`);
+  // Send an email to the user who deleted the cart with the cart information
+  const subject = "Cart deleted";
+  const text = `You have deleted a cart!`;
+  await sendEmail.sendNotification(user.email, subject, text)
+});
+eventEmitter.on("password:updated", async (user) => {
+  // Send notification to user here
+  await Notification.create({
+    user_id: user.id,
+    product_id: user.id,
+    message: `Your Password has Expired, Please Update your Password`,
+  });
+  console.log(`Notification sent to user: ${user.name}`);
+  // Send an email to the user who changed the password with the user information
+  const subject = "Request to change password"
+  const text = `Your Password has Expired, Please Update your Password`;
+  await sendEmail.sendNotification(user.email, subject, text)
+});
 
 export default eventEmitter;

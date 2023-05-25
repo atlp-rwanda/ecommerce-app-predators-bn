@@ -6,7 +6,6 @@ class ChatController {
   static async createRoom(req, res) {
     try {
       const { name } = req.body;
-      console.log(name);
       const room = await db.Room.create({
         name,
       });
@@ -82,7 +81,6 @@ class ChatController {
       await room.destroy();
       return res.status(200).json({ message: 'Room deleted successfully' });
     } catch (error) {
-      console.error('Error deleting room:', error);
       return res
         .status(500)
         .json({ error: `Failed to delete room: ${error.message}` });
@@ -152,7 +150,6 @@ class ChatController {
   static async deleteSocketConnection(req, res) {
     try {
       const { id } = req.body;
-      console.log('socketId: ', id); // for debug only
       const socketConnection = await db.SocketConnection.findByPk(id);
       if (!socketConnection) {
         return res.status(200).json({ message: ' No Socket to delete!' });
@@ -233,7 +230,6 @@ class ChatController {
       await room.addSocketConnection(socket);
       return res.status(200).json({ success: true });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({
         error: `Error saving room socket connections to rooms:${error}`,
       });
@@ -293,7 +289,6 @@ class ChatController {
 
   static async resolve(req, res) {
     const { target } = req.body;
-    console.log('Resolve request: ', target);
     let entityType = null;
     try {
       const room = await db.Room.findOne({ where: { name: target } });
@@ -346,7 +341,6 @@ class ChatController {
   static async getTokenData(req, res) {
     try {
       const { token } = req.params;
-      console.log(token);
       const decodedToken = JwtUtility.verifyToken(token);
 
       const user = await db.User.findOne({

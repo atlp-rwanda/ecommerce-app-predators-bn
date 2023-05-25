@@ -1,8 +1,10 @@
-// Imports
+
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+
 import morgan from 'morgan';
 import session from 'express-session';
+import config from "config";
 import passport from 'passport';
 import middleware from 'i18next-http-middleware';
 import dotenv from 'dotenv';
@@ -11,9 +13,8 @@ import express from 'express';
 import cors from 'cors';
 import swagger from '../docs/swagger.js';
 import db from './database/models/index.js';
-import { expired, expiring_soon, orderExpiry } from './services/node-cron.services.js';
+import { expired, expiring_soon, orderExpiry, passwordUpdated } from './services/node-cron.services.js';
 import SocketHandler from './utils/chatServer.js';
-
 // Routes URL definitions
 import orderRoutes from './routes/orderRoutes.js';
 import welcomeRoute from './routes/welcome.js';
@@ -32,15 +33,20 @@ import applyCoupon from './routes/applyCouponRoutes.js';
 // Cron job
 // Routes
 import chatRoutes from './routes/chatRoutes.js';
+import paymentRoute from './routes/paymentsRouter.js';
+import review from './routes/reviewRoute.js';
 
 // Sequelize configuration
 dotenv.config();
 const { sequelize } = db;
-sequelize.authenticate().then(() => {
-  console.log('Connection has been established successfully.');
-}).catch((err) => {
-  console.error('Unable to connect to the database:', err);
-});
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 // App setup
 const app = express();
@@ -76,7 +82,9 @@ app.set('views', './src/views');
 app.use(express.static('src/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-app.use(morgan('dev'));
+if(config.NODE_ENV != 'test') {
+  app.use(morgan('dev'));
+}
 app.use(middleware.handle(i18next));
 app.use(
   session({
@@ -91,6 +99,7 @@ app.use(passport.session());
 expired.start();
 expiring_soon.start();
 orderExpiry.start();
+passwordUpdated.start();
 // Swagger
 const options = {
   validatorUrl: null,
@@ -117,6 +126,7 @@ app.use('/api', notificationRoutes);
 app.use('/api', checkoutRoute);
 app.use('/api', product);
 app.use('/api/category', category);
+app.use('/api/pay', paymentRoute);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
 app.use('/api', applyCoupon);
@@ -125,7 +135,8 @@ app.use('/api/cart', cartRoute);
 app.use('/api/category', category);
 app.use('/api', wishlistRoute);
 app.use('/api/discount-coupons', discountCouponRouter);
-app.use('/', welcomeRoute);
+app.use("/", welcomeRoute);
+app.use('/api/',review);
 
 app.use('.api', category);
 app.use('/api', orderRoutes);

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import db from "../database/models/index.js";
 
 export const handleItemNotFound = (res) => {
@@ -25,6 +26,7 @@ export const handleItemNotFound = (res) => {
   };
   
  export const handleSellerScenario = (res, item) => {
+
     return res.status(200).json({
       status: 'success',
       code: 200,
@@ -62,7 +64,7 @@ export default class productDetail {
              const Product = await db.Product.findOne({
                         where: {
                             id: id
-                        },
+                        } 
                     });
             if (!Product) {  
                return false

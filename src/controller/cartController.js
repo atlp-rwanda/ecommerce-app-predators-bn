@@ -24,7 +24,7 @@ export default class cartController {
                     return res.status(500)
                         .send(jsend.fail({
                             code: 500,
-                            message:  "unexpected error",
+                            message:  "error happened, please check your input",
                             data: error
                         }));   
                 } 
@@ -43,7 +43,8 @@ export default class cartController {
                         code: 500,
                         message:  "unexpected error",
                         data: error
-                    })); 
+                    }));
+              
         }
 
         
@@ -102,6 +103,7 @@ export default class cartController {
                             data: error
                         }));   
                 } 
+                eventEmitter.emit('cart:updated', cartItem);
                 return res.status(200).send(jsend.success({
                     code: 200,
                     message:  "item updated ",
@@ -139,6 +141,7 @@ export default class cartController {
                             data: cartItems
                         })); 
             }
+            eventEmitter.emit('cart:deleted', cartItems);
             return res.status(200).send(jsend.success({
                             code: 200,
                             message:  "item removed in cart",

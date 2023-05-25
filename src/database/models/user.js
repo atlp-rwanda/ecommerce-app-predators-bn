@@ -15,7 +15,7 @@ export default (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       User.hasMany(models.wishlist, {
-        foreignKey: "userId",
+        foreignKey: "id",
         as: "wishlist",
         onDelete: "CASCADE",
       });
@@ -62,6 +62,7 @@ export default (sequelize, DataTypes) => {
     sector: DataTypes.STRING,
     streetAddress: DataTypes.STRING,
     receive_notifications: DataTypes.BOOLEAN,
+    last_password_update: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'User',

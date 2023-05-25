@@ -21,7 +21,7 @@ export const getAllProducts = async (req, res) => {
     const products = await db.Product.findAll({
       include: [],
     });
-     const totalProducts = products.length;
+    const totalProducts = products.length;
     if (!products) {
       return res.status(404).json({
         status: "fail",
@@ -53,11 +53,14 @@ export const getProductById = async (req, res) => {
     const { id } = req.params;
 
     // Check if item exists and retrieve details
-    const item = await db.Product.findOne({ where: { id: id } });
+    const item = await db.Product.findOne({
+      where: { id: id },
+      include: 'reviews'
+    });
     if (!item) return handleItemNotFound(res);
 
     const authHeader = req.headers.authorization;
-    if (!authHeader) return handleBuyerScenario(res, item);
+    if (!authHeader) return handleBuyerScenario(req, res, item);
 
     const token = authHeader.split(" ")[1];
     let decoded;
@@ -66,16 +69,17 @@ export const getProductById = async (req, res) => {
     } catch (err) {
       return handleUnauthorized(res);
     }
-
     if (decoded.roleId === 1) {
       if (item.vendor_id !== decoded.id) {
         return handleSellerWithoutAccess(res);
       }
       return handleSellerScenario(res, item);
+
     }
 
-    return handleBuyerScenario(res, item);
+    return handleBuyerScenario(res, item, req);
   } catch (error) {
+    console.log(error);
     return handleServerError(res);
   }
 };

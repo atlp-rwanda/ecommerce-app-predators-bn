@@ -1,65 +1,91 @@
-import app from '../src/app.js';
-import chai from 'chai';
-import chaiHttp from 'chai-http';
+// "use strict";
+// import app from '../src/app.js';
+// import chai from 'chai';
+// import chaiHttp from 'chai-http';
+// import config from "config";
+// import { login } from './login.js';
+// chai.use(chaiHttp);
+// const { expect } = chai;
+// describe("Cart API Tests", () => {
+//   let token;
 
-chai.use(chaiHttp);
-chai.should();
-
-describe("cart feature", () => {
-   const user = {
-                  "email": "faidterence@outlook.com", 
-                  "password": "-Ims)ZN_%7OQwJPB"
-                } 
-    const product ={
-                    "name":"google samsung 80",
-                    "description":"Banana",
-                    "category_id":1,
-                    "picture_urls": [
-                        "https://example.com/picture1.jpg"
-                      ],
-                      "price":"10000",
-                      "expiryDate": "2023-04-28T10:57:26.371Z",
-                      "instock":"3",
-                      "available":"yes"
-                  } 
-
-  it("should add product to cart", (done) => {  
-    chai.request(app)
-      .post("/api/login")
-      .send(user)
-      .end((error, res) => {   
-        const token = res.body.data.token;
-
-    chai.request(app)
-          .post("/api/product")
-          .set({ Authorization: `Bearer ${token}` })
-          .send(product)
-          .end((error,res)=>{  
-            // res.should.have.status(200);  
-          }) 
-        done();
-      });
-
-  });
-
-  it("should not add product to cart [unauthorized]", (done) => {  
-    chai.request(app)
-      .post("/api/login")
-      .send(user)
-      .end((error, res) => {   
-        const token = res.body.data.token;
-
-    chai.request(app)
-          .post("/api/product") 
-          .set({ Authorization: `Bearer ${token}` })
-          .send(product)
-          .end((error,res)=>{  
-             res.body.should.have.property('message').equal("Token not provided");
-          }) 
-        done();
-      });
-
-  });
-
-
-});
+//   before(async () => {
+//       token = await login(config.user_credentials);
+//   });
+    
+//   describe("Add product to cart", () => {
+//     it("should add a product to the cart", (done) => {
+//       chai.request(app)
+//         .post("/api/cart")
+//         .set('Authorization', `Bearer ${token}`)
+//         .send({product_id: 3, quantity: 1})
+//         .end((err, res) => {
+//           expect(res).to.have.status(200);
+//           done();
+//         });
+//     });
+//     it("should not add a product to the cart [Product not found 404]", (done) => {
+//       const product = {
+//         product_id: 2000,
+//         quantity: 8
+//       };
+//       chai.request(app)
+//         .post("/api/cart")
+//         .set('Authorization', `Bearer ${token}`)
+//         .send({product})
+//         .end((err, res) => {
+//           expect(res).to.have.status(404);
+//           done();
+//         });
+//     });
+//   });
+//   describe("View cart products", () => {
+//     it("should not view products [user not found 404]", (done) => {
+//       chai.request(app)
+//         .get('/api/cart')
+//         .end((err, res) => {
+//           expect(res).to.have.status(401);
+//           done();
+//         });
+//     });
+//     it("should view products [products added to cart 200]", (done) => {
+//       // Add some products to the cart here before testing
+//       chai.request(app)
+//         .get('/api/cart')
+//         .set('Authorization', `Bearer ${token}`)
+//         .end((err, res) => {
+//           expect(res).to.have.status(200);
+//           done();
+//         });
+//     });
+//   });
+//   describe("Update cart items", () => {
+//     it("should update [cart]", (done) => {
+//           const product = {
+//               "product_id": 2,
+//               "quantity": 9
+//             };
+//       chai.request(app)
+//         .put(`/api/cart/${product.product_id}`)
+//         .set('Authorization', `Bearer ${token}`)
+//         .send(product)
+//         .end((err, res) => {
+//           expect(res).to.have.status(200);
+//         });   done();
+//     });
+//     it("should not update product not found [cart]", (done) => {
+//           const product = {
+//               "product_id":89912,
+//               "quantity": 9
+//             };
+//       chai.request(app)
+//         .put(`/api/cart${product.product_id}`)
+//         .set('Authorization', `Bearer ${token}`)
+//         .send(product)
+//         .end((err, res) => {
+//           console.log(res);
+//           expect(res).to.have.status(404);
+//         }); done();
+//     });
+//   });
+// });

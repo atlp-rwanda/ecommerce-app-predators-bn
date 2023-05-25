@@ -18,13 +18,27 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
         as: 'category',
         onDelete: "CASCADE",
       });
+      Product.hasMany(models.Review, {
+        foreignKey: 'product_id',
+        as: 'reviews',
+        onDelete: "CASCADE",
+        });
+      Product.hasMany(models.wishlist, {     
+        foreignKey: 'id',
+        as: 'wishlist',
+        onDelete: "CASCADE",
+    });
+  }
+    static async findAndPaginateAll({page=1, limit=10, where = {}}) {
+      const offset = (page - 1) * limit;
+      const products = await Product.findAll({ offset, limit, where });
+      return products;
     }
   }
   Product.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     category_id: DataTypes.INTEGER,
-
     price: DataTypes.STRING,
     picture_urls: DataTypes.ARRAY(DataTypes.STRING),
     instock: DataTypes.INTEGER,
