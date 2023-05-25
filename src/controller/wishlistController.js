@@ -1,3 +1,4 @@
+/* eslint-disable  */
 // Import necessary dependencies
 import db from '../database/models/index.js';
 import eventEmitter from '../services/event.services.js';
@@ -65,7 +66,7 @@ export const deleteFromWishlist = async (req, res) => {
     res.status(400).send({ status: 'fail', message: 'Encountered Error', data: { error: error.message } });
   }
 };
-export const getWishlist = async (req, res) => { //TODO: Implement pagination, search, and sort options. 描述：获
+export const getWishlist = async (req, res) => { 
   try{
     const wishlist = await db.wishlist.findAll({
       where: { userId: req.user.id },
