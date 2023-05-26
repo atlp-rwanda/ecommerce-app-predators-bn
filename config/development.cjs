@@ -1,3 +1,4 @@
+/* eslint-disable */
 require('dotenv').config();
 module.exports = {
   DATABASE_URL: process.env.DEV_DATABASE_URL,

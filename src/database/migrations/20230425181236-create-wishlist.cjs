@@ -1,3 +1,4 @@
+/* eslint-disable*/
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -22,10 +23,10 @@ module.exports = {
       references: {
         model: 'Products',
         key: 'id',
-        onDelete: 'CASCADE' // Remove the item from the cart on deletion of the user. This is the default on delete.
-
+        onDelete: 'CASCADE',
       }
     },
+   
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
