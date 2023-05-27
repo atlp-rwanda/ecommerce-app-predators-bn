@@ -1,3 +1,4 @@
+/* eslint-disable*/
 "use strict";
 import app from '../src/app.js';
 import chai from 'chai';

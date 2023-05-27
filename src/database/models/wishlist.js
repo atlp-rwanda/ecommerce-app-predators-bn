@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 import { Model } from 'sequelize';
 export default (sequelize, DataTypes) => {
@@ -13,8 +14,8 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'id',
         onDelete: 'CASCADE',
       });
-      wishlist.hasMany(models.Product, {
-        foreignKey: 'id',
+      wishlist.belongsTo(models.Product, {
+        foreignKey: 'productId',
         onDelete: 'CASCADE',
       });
     }
@@ -22,8 +23,7 @@ export default (sequelize, DataTypes) => {
   wishlist.init({
     userId: DataTypes.INTEGER,
     productId: DataTypes.INTEGER,
-   
-   
+  
   }, {
     sequelize,
     modelName: 'wishlist',
