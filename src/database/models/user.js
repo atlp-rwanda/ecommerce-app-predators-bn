@@ -19,6 +19,10 @@ export default (sequelize, DataTypes) => {
         as: "wishlist",
         onDelete: "CASCADE",
       });
+      User.hasMany(models.Chat, {
+        foreignKey: "userId", // the "userId" is the name of the foreign key in Chat and User models.
+        as: 'Chat', // the "chats" is the name of the association in the current model and the one in the associated model.  This should probably be
+      });
       User.hasMany(models.Product, {
         foreignKey: "vendor_id",
         as: "products",
