@@ -5,7 +5,7 @@ export const createCoupon = async (req, res) => {
   try {
     const { code, discountPercentage, expiresAt, productId } = req.body;
     
-    // Validate request body
+    // Validate request body before creating a coupon
     if (!code || !discountPercentage || !expiresAt || !productId) {
       return res.status(400).json({
         status: "fail",
@@ -13,7 +13,7 @@ export const createCoupon = async (req, res) => {
       });
     }
 
-    // Check if the product exists in user collection
+    // Check if the product exists in user's collection
     const product = await db.Product.findOne({ where: { id: productId, vendor_id: req.user.id } });
     if (!product) {
       return res.status(400).json({
@@ -22,7 +22,7 @@ export const createCoupon = async (req, res) => {
       });
     }
 
-    // Check if the coupon code already exists
+    // Check if the coupon code already exists in Database
     const existingCoupon = await db.DiscountCoupon.findOne({
       where: {  vendor_id: req.user.id,code: code},
     });
