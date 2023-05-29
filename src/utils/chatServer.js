@@ -25,11 +25,7 @@ export default class SocketHandler {
     // Save socket to db here.(DURING DB INTEGRATION PHASE)
     this.dbId = await chatsDb.saveSocketInstance(this.properties.id, this.properties.address, this.properties.connectedAt);
 
-    // For testing purposes only
-    console.log(`[SockId => [${this.properties.id}], DbId => [${this.dbId}]]: Connected.`);
-    console.log(socket.handshake.query.user);
     this.rooms.add('Public room');
-    console.log('Rooms:', this.rooms);
 
     socket.emit('server-message', '[You\'re Connected]');
 
@@ -52,9 +48,8 @@ export default class SocketHandler {
       await chatsDb.saveChat(msg, userId, 'public');
 
       socket.broadcast.emit('public-message', message);
-      console.log(`[${socket.id}] says: ${message}`);
     } catch (error) {
-      console.log(`Error: ${error}`);
+      throw new Error(error);
     }
   }
 
@@ -67,16 +62,14 @@ export default class SocketHandler {
       await chatsDb.saveChat(msg, userId, activeRoom);
 
       socket.to(activeRoom).emit('room-message', activeRoom, message);
-      console.log(`${socket.id}: ${message}`);
     } catch (error) {
-      console.log(`Error: ${error}`);
+      throw new Error(error);
     }
   }
 
   // When a client wants to join a room, join or create the room
   async handleJoin(socket, entity) {
     const target = await chatsDb.solveTargetType(entity);
-    console.log(target);
     let feedback;
     let chatHistory = [];
 
@@ -106,17 +99,14 @@ export default class SocketHandler {
     socket.join(entity);
 
     socket.emit('joined', feedback, entity, chatHistory);
-    console.log(`${socket.id}:${feedback}`);
   }
 
   // When a client disconnects, we need to remove it from the server and the db.
-  async handleDisconnect(socket, reason) {
+  async handleDisconnect(socket) {
     const message = `User disconnected: [${socket.id}].`;
-    console.log(`${message} Reason: ${reason}`);
 
     // delete socket instance from the db
-    const dbStatus = await chatsDb.deleteSocketInstance(this.dbId);
-    console.log(dbStatus);
+    await chatsDb.deleteSocketInstance(this.dbId);
 
     // Tell all server clients of the disconnected client.
     socket.broadcast.emit('message', message);

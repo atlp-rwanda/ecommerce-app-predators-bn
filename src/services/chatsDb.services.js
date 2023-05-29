@@ -22,7 +22,6 @@ export default class dbHandler {
       );
       return chat.id;
     } catch (error) {
-      console.error('Error saving chat instance:', error);
       throw new Error('Failed to save chat instance');
     }
   }
@@ -40,7 +39,6 @@ export default class dbHandler {
 
       return chatHistory;
     } catch (error) {
-      console.error('Error saving chat instance:', error);
       throw new Error('Failed to save chat instance');
     }
   }
@@ -56,7 +54,6 @@ export default class dbHandler {
       );
       return socket.id;
     } catch (error) {
-      console.error('Error saving socket instance:', error);
       throw new Error('Failed to save socket instance');
     }
   }
@@ -72,7 +69,6 @@ export default class dbHandler {
       );
       return response;
     } catch (error) {
-      console.log('Error deleting socket instance:', error.message);
       throw new Error('delete socket Error');
     }
   }
@@ -98,7 +94,6 @@ export default class dbHandler {
       const res = addToRoom ? room.id : null;
       return res;
     } catch (error) {
-      console.error('Error saving room AND/OR socket:', error);
       throw new Error('saving room AND/OR socket Error');
     }
   }
@@ -114,7 +109,6 @@ export default class dbHandler {
       );
       return status.success;
     } catch (error) {
-      console.error('Error adding new room:', error);
       throw new Error('add socket to room Error');
     }
   }
@@ -122,11 +116,9 @@ export default class dbHandler {
   static async getRoomByName(name) {
     try {
       const data = { name };
-      console.log('grbn', data);
       const id = await dbHandler.fetchJSON(`${dbHandler.DOMAIN}/post/getRoomByName`, 'POST', data);
       return id;
     } catch (error) {
-      console.log(`Error: ${error.message}`);
       throw new Error('get room by name Error');
     }
   }
@@ -142,7 +134,6 @@ export default class dbHandler {
       );
       return targetType;
     } catch (error) {
-      console.log('Unable to resolve target type: ', error);
       throw new Error('solveTarget Error');
     }
   }

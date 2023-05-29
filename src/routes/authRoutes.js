@@ -4,7 +4,7 @@ import passport from 'passport';
 import Jwt from '../utils/jwt.js';
 import { googlePass } from '../utils/passport.js';
 import profileController from '../controller/profileController.js';
-import {getProductById} from '../controller/productController.js';
+import { getProductById } from '../controller/productController.js';
 import vendor from '../controller/vendorController.js';
 
 // Google route
@@ -20,7 +20,7 @@ import {
   AdminLogin,
   requestResetPassword,
   resetPasswordLink,
-  resetPassword, 
+  resetPassword,
 } from '../controller/authController.js';
 import {
   isAdmin,
@@ -61,13 +61,12 @@ router.get(
 
 
 router.post('/vendor',isAdmin, vendor);
-router.post('/vendor',isAdmin, vendor);
 
 router.post('/logout', logout);
 router.get('/users', isAdmin, GetUsers);
 router.get('/users/:id', isAdmin, checkPermission('manage users'), GetUserById);
-router.delete('/users/:id', isAdmin, isAdmin, checkPermission('manage users'), DeleteUserById);
-router.post('/setRole/:id', isAdmin, isAdmin, checkPermission('manage users'), setRole);
+router.delete('/users/:id', isAdmin,checkPermission('manage users'), DeleteUserById);
+router.post('/setRole/:id', isAdmin,checkPermission('manage users'), setRole);
 router.post('/disableUser/:id', isAdmin, disableUser);
 router.post('/login', UserLogin);
 router.post('/adminLogin', AdminLogin);

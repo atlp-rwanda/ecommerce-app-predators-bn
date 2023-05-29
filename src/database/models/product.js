@@ -11,19 +11,11 @@ import { Model } from 'sequelize';export default (sequelize, DataTypes) => {
       Product.belongsTo(models.User, {
         foreignKey: 'vendor_id',
         as: 'vendor',
+        onDelete: "CASCADE",
       });
       Product.belongsTo(models.Category, {
         foreignKey: 'category_id',
         as: 'category',
-      });
-      Product.hasMany(models.Review, {
-        foreignKey: 'product_id',
-        as: 'reviews',
-        onDelete: "CASCADE",
-        });
-      Product.hasMany(models.wishlist, {     
-        foreignKey: 'id',
-        as: 'wishlist',
         onDelete: "CASCADE",
       });
       Product.hasMany(models.Review, {

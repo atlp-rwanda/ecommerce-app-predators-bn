@@ -1,5 +1,7 @@
+/* eslint-disable  */
 // Import necessary dependencies
 import db from '../database/models/index.js';
+import eventEmitter from '../services/event.services.js';
 // Route to handle the POST request to add an item to the wishlist
 export const addWishlist = async (req, res) => {
   try {
@@ -30,6 +32,7 @@ export const addWishlist = async (req, res) => {
       { wishlist: wishlist.map((item) => item.Product) },
       { where: { id: req.user.id } },
     );
+    eventEmitter.emit('wishlist:add',product);
     // Send a confirmation message to the frontend
     res.status(201).json({
       message: `Product ${product.name} added to wishlist.`,
@@ -57,12 +60,13 @@ export const deleteFromWishlist = async (req, res) => {
       { wishlist: wishlist.map((item) => item.Product) },
       { where: { id: req.user.id } },
     );
+    eventEmitter.emit('wishlist:remove',wishlistItem);
     res.status(200).json({ message: 'Item removed from wishlist.', wishlist });
   } catch (error) {
     res.status(400).send({ status: 'fail', message: 'Encountered Error', data: { error: error.message } });
   }
 };
-export const getWishlist = async (req, res) => { //TODO: Implement pagination, search, and sort options. 描述：获
+export const getWishlist = async (req, res) => { 
   try{
     const wishlist = await db.wishlist.findAll({
       where: { userId: req.user.id },

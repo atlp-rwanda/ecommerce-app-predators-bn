@@ -33,6 +33,10 @@ export default (sequelize, DataTypes) => {
         as: "cart_items",
         onDelete: "CASCADE",
       });
+      User.hasMany(models.Notification, {
+        foreignKey: "id",
+        as: "notifications",
+      });
     }
   }
   User.init({
@@ -51,13 +55,14 @@ export default (sequelize, DataTypes) => {
     otp_base32: DataTypes.STRING,
     otp_auth_url: DataTypes.STRING,
     preferred_language: DataTypes.STRING,
-    preferred_currency: DataTypes.UUID,
+    preferred_currency: DataTypes.STRING,
     country: DataTypes.STRING,
     province: DataTypes.STRING,
     district: DataTypes.STRING,
     sector: DataTypes.STRING,
     streetAddress: DataTypes.STRING,
-    receive_notifications: DataTypes.BOOLEAN
+    receive_notifications: DataTypes.BOOLEAN,
+    last_password_update: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'User',

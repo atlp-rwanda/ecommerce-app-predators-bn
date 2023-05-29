@@ -1,12 +1,13 @@
 import express from "express";
 import authController from "../controller/otpAuthController.js";
+import { checkUser } from "../middleware/roles.js";
 
 const router = express.Router();
 
-router.post("/otp/generate", authController.GenerateOTP);
-router.post("/otp/getotp", authController.GetOTP);//generates otp by sms
-router.post("/otp/verify", authController.VerifyOTP);
-router.post("/otp/validate", authController.ValidateOTP);
-router.post("/otp/disable", authController.DisableOTP);
+router.post("/otp/generate", checkUser, authController.GenerateOTP);
+router.post("/otp/getotp", checkUser, authController.GetOTP);//generates otp by sms
+router.post("/otp/verify", checkUser, authController.VerifyOTP);
+router.post("/otp/validate", checkUser, authController.ValidateOTP);
+router.post("/otp/disable", checkUser, authController.DisableOTP);
 
 export default router;

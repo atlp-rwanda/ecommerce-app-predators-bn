@@ -5,9 +5,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 const expect = chai.expect;
 chai.use(chaiHttp);
-
+// Admin Tests
 describe('ADMIN PRE-CONFIGURED CREDENTIAL SIGIN', function() {
- 
   it('should return an error message on invalid credentials', async () => {
     const res = await chai.request(app)
       .post('/api/adminLogin')

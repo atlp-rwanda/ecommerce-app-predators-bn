@@ -1,33 +1,37 @@
-/* eslint-disable*/
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Categories', {
+    await queryInterface.createTable('Orders', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-
-      category_id:{
-        type:Sequelize.INTEGER,
-        allowNull:true,
-        references:{
-          model:'Categories',
-          key:'id'
-        }
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
-
-      name: {
+      products_info: {
+        type: Sequelize.JSON(100000),
+        allowNull: false,
+      },
+      billing_info: {
+        type: Sequelize.JSON,
+        allowNull: false,
+      },
+      total: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      status: {
         type: Sequelize.STRING,
-        allowNull:false,
-        unique:true,
+        allowNull: false,
+        defaultValue: "pending",
       },
       createdAt: {
         allowNull: false,
-
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
@@ -35,11 +39,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Categories');
+    await queryInterface.dropTable('Orders');
   }
 };

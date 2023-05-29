@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build
-        run:
+        run: |
           npm install
           npm run build
   test:
@@ -47,7 +47,13 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Dependencies
         run: npm install
+      - name: Emptying Database
+        run: npm run down
+      - name: Migrating Database
+        run: npm run migrate
+      - name: Seeding Database
+        run: npm run seed
       - name: Run Tests
         run: npm test
-      - name: running coverage
+      - name: Run coverage
         run: npm run coverage

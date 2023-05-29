@@ -100,7 +100,7 @@ export const getReviews = async (req, res) => {
 export const deleteReview = async (req, res) => {
     try {
         // only seller can delete review
-        if (req.user.roleId !== 2) {
+        if (req.user.roleId !== 1) {
             return res.status(401).json(
                 jsend.fail({
                     message: 'you are not allowed to delete this review😥',
@@ -109,10 +109,7 @@ export const deleteReview = async (req, res) => {
         }
             
         const review = await db.Review.findOne({
-            where: {
-                 id: req.params.id,
-                 buyer_id:req.user.id
-             },
+            where: { id: req.params.id },
         });
         if (!review) {
             return res.status(404).json({

@@ -97,13 +97,15 @@ module.exports = {
         type: Sequelize.STRING,
       },
       preferred_currency: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
       },
-      
       receive_notifications:{
-
-       type:Sequelize.BOOLEAN,
-       defaultValue:true
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },
+      last_password_update: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       createdAt: {
         allowNull: false,
