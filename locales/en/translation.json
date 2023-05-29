@@ -15,7 +15,10 @@
     "Unauthorized":"Not authorized please sign in first",
     "Order_not_found": "Order not found",
     "Order_retrieved":"Order retrieved successfully",
-    "Order_not_paid":"this order not yet paid"
-
-    
+    "Order_not_paid":"this order not yet paid",
+    "Not_authorized":"You are Unauthorized to perform this action",
+    "Token_not_provided":"Token not provided",
+    "User_not_found":"User not found",
+    "Not_logged_in": "Not logged in",
+    "Identification":"Your Identification is Invalid" 
 }
