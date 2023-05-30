@@ -53,6 +53,12 @@ jobs:
         run: npm run migrate
       - name: Seeding Database
         run: npm run seed
+      - name: Emptying Database
+        run: npm run down
+      - name: Migrating Database
+        run: npm run migrate
+      - name: Seeding Database
+        run: npm run seed
       - name: Run Tests
         run: npm test
       - name: Run coverage
