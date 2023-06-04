@@ -1,7 +1,9 @@
 [![Node.js CI](https://github.com/atlp-rwanda/ecommerce-app-predators-bn/actions/workflows/node.js.yml/badge.svg)](https://github.com/atlp-rwanda/ecommerce-app-predators-bn/actions/workflows/node.js.yml)
-<a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/maintainability"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/maintainability" /></a>
- <a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/test_coverage"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/test_coverage" /></a>
+<a href="https://codeclimate.com/github/atlp-rwanda/ecommerce-app-predators-bn/maintainability"><img src="https://api.codeclimate.com/v1/badges/f43b1bf0f2429d8e6ad6/maintainability" /></a> 
+
+[![Coverage Status](https://coveralls.io/repos/github/atlp-rwanda/ecommerce-app-predators-bn/badge.svg?branch=testing-coverage)](https://coveralls.io/github/atlp-rwanda/ecommerce-app-predators-bn?branch=testing-coverage)
 # ecommerce-app-predators-bn
+
 
 This is a full-stack ecommerce website built using Node.js, Express,Postgres
 
