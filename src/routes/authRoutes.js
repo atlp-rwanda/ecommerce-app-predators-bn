@@ -59,9 +59,7 @@ router.get(
   googleAuthHandler,
 );
 
-
-router.post('/vendor',isAdmin, vendor);
-
+router.post('/vendor', vendor);
 router.post('/logout', logout);
 router.get('/users', isAdmin, GetUsers);
 router.get('/users/:id', isAdmin, checkPermission('manage users'), GetUserById);
@@ -73,6 +71,7 @@ router.post('/adminLogin', AdminLogin);
 router.post('/register', register);
 router.patch('/users/profiles/:id', profileController.updateUserProfile);
 router.get('/product/:id', getProductById);
+
 router.post('/reset/password', requestResetPassword);
 router.get('/user/reset-password/:token', resetPasswordLink);
 router.put('/user/reset-password/:token', resetPassword);

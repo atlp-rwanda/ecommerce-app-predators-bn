@@ -21,8 +21,7 @@ const cleanUp = async () => {
       if (productExpiryDate < currentDate) {
         const seller = await db.User.findOne({ where: { id: product.vendor_id } });
         
-        if (!seller) {
-          console.log(`Seller with ID ${product.vendor_id} not found`)
+        if (!seller) { 
           continue;
         }
         

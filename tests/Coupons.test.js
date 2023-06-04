@@ -54,6 +54,3 @@ describe('Discount Coupon CRUD Operations', function() {
 
   // Rest of the tests...
 });
-
-
-
