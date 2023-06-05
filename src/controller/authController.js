@@ -311,16 +311,16 @@ export const register = async (req, res) => {
 
 // requesting reset password
 export const requestResetPassword = async (req, res) => {
-  const { email } = req.body;
+  const {email} = req.body;
   try {
     const user = await getUserByEmail(email);
 
-    if (!user) {
-      return res.status(400).jsend.error({
-        code: 400,
+    if (!user) { 
+      res.status(404).send(jsend.fail({
+        code: 404,
         message: 'User with email does not exist!',
-        data: false,
-      });
+        data:false,
+      }));
     }
 
     const userEmail = { email, id: user.id };
@@ -340,10 +340,11 @@ export const requestResetPassword = async (req, res) => {
       message: 'Password reset link was sent to your email',
       data: { token },
     }));
+
   } catch (error) {
     return res.status(500).send(jsend.fail({
       code: 500,
-      message: error.message,
+      message: error,
       data: false,
     }));
   }
@@ -353,8 +354,7 @@ export const requestResetPassword = async (req, res) => {
 export const resetPasswordLink = async (req, res) => {
   try {
     const { token } = req.params;
-    const payload = Jwt.verifyToken(token);
-     
+    const payload = Jwt.verifyToken(token); 
     const userEmail = { email: payload.value.email }; 
     const user = await getUserByEmail(userEmail.email);
     if (!payload) {
