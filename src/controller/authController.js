@@ -326,18 +326,13 @@ export const requestResetPassword = async (req, res) => {
     const userEmail = { email, id: user.id };
 
     const token = Jwt.generateToken(userEmail, '15m');
-
-    sendEmail.sendEmail({
-      email,
-      subject: 'Predators E-commerce Reset Password',
-      text: `
-                    <p>Reset your password.</p>
+    const subject= 'Predators E-commerce Reset Password';
+    const text=` <p>Reset your password.</p>
                     <p>Please click the link below to reset your password.</p> 
                     
                     <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>
-                    
-                    `,
-    });
+                    `;
+    sendEmail.sendEmail(email,subject,text);
     res.cookie('reset-token', token, { httponly: true, expiresIn: '15m' });
 
     res.status(200).send(jsend.success({
@@ -359,14 +354,16 @@ export const resetPasswordLink = async (req, res) => {
   try {
     const { token } = req.params;
     const payload = Jwt.verifyToken(token);
-    const userEmail = { email: payload.email }; const user = await getUserByEmail(userEmail.email);
+     
+    const userEmail = { email: payload.value.email }; 
+    const user = await getUserByEmail(userEmail.email);
     if (!payload) {
       return res.status(401).send(jsend.fail({ message: 'Token is invalid', data: false }));
     } else {
       if (!user) {
         return res.status(401).send(jsend.fail({ message: 'User does not exist', data: false }));
       }
-      return res.status(200).send(jsend.fail({ message: 'User exists', data: user }));
+      return res.status(200).send(jsend.success({ message: 'User exists', data: user }));
     }
   } catch (error) {
     return res.status(401).send(jsend.fail({ message: error.message, data: false }));
@@ -376,14 +373,15 @@ export const resetPasswordLink = async (req, res) => {
 // reset password
 export const resetPassword = async (req, res) => {
   try {
-    const { token } = req.params; const payload = Jwt.verifyToken(token);
+    const { token } = req.params; 
+    const payload = Jwt.verifyToken(token); 
     const userPass = req.body;
     await updateUserPassword(payload, userPass).then((result) => {
       if (result == 0) {
         return res.status(400).send(jsend.fail({ message: 'Password reset failed', data: false }));
       }
       res.cookie('reset-token', '', { maxAge: 1 });
-      return res.status(200).send(jsend.success({ message: 'You have reset successful your password', data: resul }));
+      return res.status(200).send(jsend.success({ message: 'You have reset successful your password', data: result }));
     });
   } catch (error) {
     return res.status(401).send(jsend.fail({ message: error.message, data: false }));
