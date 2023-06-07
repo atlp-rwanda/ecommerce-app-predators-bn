@@ -170,8 +170,30 @@ const RestrictPassword = async (req, res, next) => {
     res.status(500).json({ message: req.t('server_error') });
   }
 };
+// isLoggedIn middleware
+const isLoggedIn = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    res.status(401).send({ status: 401, message: req.t("Not_logged_in") });
+  }
+  const token = authHeader.split(" ")[1];
+  try {
+    const decodedToken = JwtUtility.verifyToken(token);
+    const user = await db.User.findOne({ where: { id: decodedToken.value.id } });
+    if (user) {
+      req.user = user;
+      next();
+    } else {
+      res.status(403).send({ status: 403, message: req.t('User_not_found') });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ status: 500, message: req.t('server_error') });
+  }
+};
+
 
 
 export {
-  isAdmin, isSeller, isBuyer, checkPermission, checkUser, RestrictPassword
+  isAdmin, isSeller, isBuyer, checkPermission, checkUser, RestrictPassword,isLoggedIn
 };

@@ -19,3 +19,6 @@ describe('ADMIN PRE-CONFIGURED CREDENTIAL SIGIN', function() {
     expect(res.body.data).to.have.property('message', 'Invalid Credentials😥');
   });
 });
+
+
+

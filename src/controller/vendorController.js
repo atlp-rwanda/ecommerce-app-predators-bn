@@ -60,14 +60,14 @@ const vendor = async (req, res) => {
       secure: true,
       service: "gmail",
       auth: {
-        user: process.env.NODE_MAILER_USER,
-        pass: process.env.NODE_MAILER_PASS,
+        user: process.env.USER_EMAIL,
+        pass: process.env.USER_PASS,
       },
     });
 
     // set up the email message
     const mailOptions = {
-      from: process.env.NODE_MAILER_USER,
+      from: process.env.USER_EMAIL,
       to: user.email,
       subject: "Confirmation Email",
       text: `Your Vendor account credentials are:

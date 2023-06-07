@@ -6,7 +6,6 @@ const CartItem = models.Cart_items;
 const applyCoupon = async (req, res) => {
   const { code } = req.body;
   const user_id = req.user.dataValues.id;
-
   try {
     if(!code) {
       res.status(400).send({status: "fail", message: "missing coupon code"});

@@ -1,15 +1,16 @@
 /* eslint-disable */
 import { Router } from 'express';
 import {
-  isAdmin,
-  isSeller,
-  isBuyer,
-  checkPermission,
+  isLoggedIn
 } from '../middleware/roles.js';
-import { getAllNotifications, markNotificationAsRead, deleteNotification } from '../controller/notificationController.js';
+import { getAllNotifications, markNotificationAsRead, deleteNotification ,markAllAsRead} from '../controller/notificationController.js';
 
 const router = Router();
-router.get('/notification', isSeller, getAllNotifications);
-router.put('/:notificationId', isBuyer, markNotificationAsRead);
-router.delete('/:notificationId', isBuyer, deleteNotification);
+router.get('/notification',isLoggedIn, getAllNotifications);
+router.put('/notification/mark-all-as-read', isLoggedIn, markAllAsRead);
+router.put('/notification/:notificationId', isLoggedIn, markNotificationAsRead);
+router.delete('/notification/:notificationId', isLoggedIn, deleteNotification);
+
+
+
 export default router;
