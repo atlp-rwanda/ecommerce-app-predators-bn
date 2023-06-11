@@ -74,6 +74,6 @@ router.get('/product/:id', getProductById);
 
 router.post('/reset/password', requestResetPassword);
 router.get('/user/reset-password/:token', resetPasswordLink);
-router.put('/user/reset-password/:token', resetPassword);
+router.put('/user/reset-password', resetPassword);
 
 export default router;

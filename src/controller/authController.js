@@ -315,12 +315,12 @@ export const requestResetPassword = async (req, res) => {
   try {
     const user = await getUserByEmail(email);
 
-    if (!user) {
-      return res.status(404).jsend.error({
+    if (!user) { 
+      res.status(404).send(jsend.fail({
         code: 404,
         message: 'User with email does not exist!',
-        data: false,
-      });
+        data:false,
+      }));
     }
 
     const userEmail = { email, id: user.id };
@@ -334,12 +334,8 @@ export const requestResetPassword = async (req, res) => {
                     `;
     sendEmail.sendEmail(email,subject,text);
     res.cookie('reset-token', token, { httponly: true, expiresIn: '15m' });
-
-    res.status(200).send(jsend.success({
-      code: 200,
-      message: 'Password reset link was sent to your email',
-      data: { token },
-    }));
+    res.status(200).json({ message: 'Password Reset Link sent to your email', token });
+    console.log(res)
 
   } catch (error) {
     return res.status(500).send(jsend.fail({
@@ -372,8 +368,13 @@ export const resetPasswordLink = async (req, res) => {
 
 // reset password
 export const resetPassword = async (req, res) => {
+  const authheader = req.headers.authorization;
+  // assuming the token is sent in the Authorization header
+  if (!authheader) {
+    return res.status(403).json({ message: req.t('Token_not_provided') }); // assuming the token is sent in the Authorization header
+  }
   try {
-    const { token } = req.params; 
+    const token = authheader.split(" ")[1];
     const payload = Jwt.verifyToken(token); 
     const userPass = req.body;
     await updateUserPassword(payload, userPass).then((result) => {
