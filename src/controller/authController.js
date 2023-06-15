@@ -330,12 +330,11 @@ export const requestResetPassword = async (req, res) => {
     const text=` <p>Reset your password.</p>
                     <p>Please click the link below to reset your password.</p> 
                     
-                    <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>
+                    <a href="http://localhost:5173/confirm-password-page">Reset password</a>
                     `;
     sendEmail.sendEmail(email,subject,text);
     res.cookie('reset-token', token, { httponly: true, expiresIn: '15m' });
     res.status(200).json({ message: 'Password Reset Link sent to your email', token });
-    console.log(res)
 
   } catch (error) {
     return res.status(500).send(jsend.fail({
@@ -366,7 +365,8 @@ export const resetPasswordLink = async (req, res) => {
   }
 };
 
-// reset password
+// reset password 
+
 export const resetPassword = async (req, res) => {
   const authheader = req.headers.authorization;
   // assuming the token is sent in the Authorization header

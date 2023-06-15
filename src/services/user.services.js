@@ -1,5 +1,5 @@
 import db from "../database/models/index.js";
-import hasher from "../utils/hashPassword"
+import hasher from "../utils/hashPassword.js"
 export const registerGoogle = async (data) => {
   try {
     const user = await db.User.create(data);
