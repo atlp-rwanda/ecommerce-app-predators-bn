@@ -1,4 +1,15 @@
 paths:
+  /api/profile:
+    get:
+      tags:
+        - Users
+      summary: Get Own profile info
+      description: Retrieve the information about the user initiating the request
+      responses:
+        200:
+          description: The retrieval was successful and will get respective data about the user
+        404:
+          description: The retrival was not sucessful, an error occured in the middle!
   /api/profiles:
     get:
       tags:
@@ -111,4 +122,4 @@ components:
       required: true
       schema:
         type: string
-       
+        

@@ -69,7 +69,8 @@ router.post('/disableUser/:id', isAdmin, disableUser);
 router.post('/login', UserLogin);
 router.post('/adminLogin', AdminLogin);
 router.post('/register', register);
-router.patch('/users/profiles/:id', profileController.updateUserProfile);
+router.patch('/profile', profileController.updateUserProfile);
+router.get('/profile', profileController.getMyinfo);
 router.get('/product/:id', getProductById);
 
 router.post('/reset/password', requestResetPassword);
