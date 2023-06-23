@@ -1,3 +1,5 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 // CLASS FOR HANDLING ALL INCOMING SOCKET CONNECTIONS
@@ -12,11 +14,10 @@ export default class SocketHandler {
       connectedAt: null,
     };
     this.dbId = null;
-    this.rooms = new Set();
   }
 
   async onConnection(socket) {
-    // Register socket attributes to this instance.
+    // Configurations
     const { handshake } = socket;
     this.properties.id = socket.id;
     this.properties.address = handshake.address;
@@ -24,8 +25,6 @@ export default class SocketHandler {
 
     // Save socket to db here.(DURING DB INTEGRATION PHASE)
     this.dbId = await chatsDb.saveSocketInstance(this.properties.id, this.properties.address, this.properties.connectedAt);
-
-    this.rooms.add('Public room');
 
     socket.emit('server-message', '[You\'re Connected]');
 

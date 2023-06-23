@@ -2,6 +2,9 @@
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
 // global variables so they can be accessed anywhere.
+
+// import { io } from 'socket.io-client';
+
 let inRoom;
 let activeRoom;
 const rooms = [];
@@ -68,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('Email:', email);
     console.log('Password:', password);
+    console.log('Authenticating...');
 
     try {
       const response = await fetch('http://localhost:3000/api/login', {
@@ -80,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await response.json();
       if (res.status === 'success') {
         // Authentication successful, store the JWT token in local storage
+
+        console.log('authenticated!');
+
         localStorage.setItem('token', res.token);
         const { token } = res.data;
         const usr = await getUser(token);
@@ -87,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(usr);
 
         // Continue with the socket connection and event listeners
-        const socket = io('http://localhost:4000', { query: { user: usr.name, id: usr.id } });
+        const socket = io('http://localhost:3000', {transports: ['websocket'], query: { user: usr.name, id: usr.id } });
 
         // console.log('user', socket.handshake.query.user);
 
