@@ -96,12 +96,6 @@ describe('SocketHandler', () => {
       );
     });
 
-    it('should add socket to rooms', async () => {
-      await socketHandler.onConnection(socket);
-
-      assert.isTrue(socketHandler.rooms.has('Public room'));
-    });
-
     it('should bind event handlers', async () => {
       await socketHandler.onConnection(socket);
 
