@@ -102,7 +102,6 @@ export default class SocketHandler {
       // Create a new room in db & save this socket in it.
       const room = await chatsDb.getInRoom(socket.id, entity, true);
       if (!room) throw new Error('could not save new room to db.');
-      this.rooms.add(entity);
 
       feedback = '[New room created!]';
     }
