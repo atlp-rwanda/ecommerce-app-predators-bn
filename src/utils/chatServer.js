@@ -74,6 +74,7 @@ export default class SocketHandler {
 
       socket.to(activeRoom).emit('room-message', activeRoom, message);
     } catch (error) {
+      console.log(error)
       throw new Error(error);
     }
   }
