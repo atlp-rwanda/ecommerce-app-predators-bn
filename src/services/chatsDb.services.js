@@ -22,6 +22,7 @@ export default class dbHandler {
       );
       return chat.id;
     } catch (error) {
+      console.log(error);
       throw new Error('Failed to save chat instance', error);
     }
   }
