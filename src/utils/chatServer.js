@@ -49,7 +49,7 @@ export default class SocketHandler {
         src: 'public',
       };
       const userId = socket.handshake.query.id;
-      console.log('user id:', userId)
+      console.log('Public message user id:', userId)
       await chatsDb.saveChat(msg, userId, 'public');
 
       socket.broadcast.emit('public-message', message);
@@ -69,7 +69,7 @@ export default class SocketHandler {
         src: 'customer_support',
       };
       const userId = socket.handshake.query.id;
-      console.log('user id:', userId)
+      console.log('Private msg user id:', userId)
       await chatsDb.saveChat(msg, userId, activeRoom);
 
       socket.to(activeRoom).emit('room-message', activeRoom, message);
