@@ -15,6 +15,7 @@ const configurePassport = () => {
         passReqToCallback: true,
       },
       async (req, accessToken, refreshToken, profile, cb) => {
+        console.log('using googleAuth...')
         const defaultUser = {
           name: `${profile.name.givenName} ${profile.name.familyName}`,
           email: profile.emails[0].value,
