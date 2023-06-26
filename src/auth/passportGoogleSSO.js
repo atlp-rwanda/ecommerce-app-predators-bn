@@ -1,6 +1,5 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import dotenv from 'dotenv';
 import db from '../database/models/index.js';
 
 const USER = db.User;
@@ -24,33 +23,45 @@ const configurePassport = () => {
           status: 'active',
         };
 
-        const user = USER.findOrCreate({
-          where: { googleId: profile.id },
-          defaults: defaultUser,
-        }).catch((error) => {
-          console.log('Error signing up: ', error);
-          cb(error, null);
-        });
+        try {
+          const [user, created] = await USER.findOrCreate({
+            where: { googleId: profile.id },
+            defaults: defaultUser,
+          });
 
-        if (user && user[0]) {
-          return cb(null, user && user[0]);
+          if (created) {
+            console.log('New user created:', user);
+          } else {
+            console.log('Existing user found:', user);
+          }
+
+          return cb(null, user);
+        } catch (error) {
+          console.log('Error signing up:', error);
+          return cb(error, null);
         }
       },
     ),
   );
 
   passport.serializeUser((user, cb) => {
-    console.log('serializing user');
+    console.log('Serializing user');
     cb(null, user.id);
   });
-  
-  passport.deserializeUser(async (id, cb) => {
-    const user = USER.findOne({ where: { id } }).catch((error) => {
-      cb(error, null);
-    });
-    console.log('Deserialized user', user);
 
-    if (user) cb(null, user);
+  passport.deserializeUser(async (id, cb) => {
+    try {
+      const user = await USER.findOne({ where: { id } });
+
+      if (user) {
+        console.log('Deserialized user:', user);
+        return cb(null, user);
+      }
+      return cb(new Error('User not found'), null);
+    } catch (error) {
+      console.log('Error deserializing user:', error);
+      return cb(error, null);
+    }
   });
 };
 
