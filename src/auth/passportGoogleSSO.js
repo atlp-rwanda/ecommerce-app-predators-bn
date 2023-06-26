@@ -32,7 +32,7 @@ const configurePassport = () => {
           console.log('Error signing up: ', error);
           cb(error, null);
         });
-
+        console.log('created new user...');
         if (user && user[0]) {
           return cb(null, user && user[0]);
         }
