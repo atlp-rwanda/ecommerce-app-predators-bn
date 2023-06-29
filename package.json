@@ -59,7 +59,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "flush-cache": "^1.0.1",
-    "i18next": "^22.4.13",
+    "i18next": "^22.5.1",
     "i18next-express-middleware": "^2.0.0",
     "i18next-fs-backend": "^2.1.1",
     "i18next-http-middleware": "^3.3.0",
