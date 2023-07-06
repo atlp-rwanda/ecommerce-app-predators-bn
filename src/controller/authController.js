@@ -311,16 +311,16 @@ export const register = async (req, res) => {
 
 // requesting reset password
 export const requestResetPassword = async (req, res) => {
-  const { email } = req.body;
+  const {email} = req.body;
   try {
     const user = await getUserByEmail(email);
 
-    if (!user) {
-      return res.status(400).jsend.error({
-        code: 400,
+    if (!user) { 
+      res.status(404).send(jsend.fail({
+        code: 404,
         message: 'User with email does not exist!',
-        data: false,
-      });
+        data:false,
+      }));
     }
 
     const userEmail = { email, id: user.id };
@@ -330,20 +330,16 @@ export const requestResetPassword = async (req, res) => {
     const text=` <p>Reset your password.</p>
                     <p>Please click the link below to reset your password.</p> 
                     
-                    <a href="${process.env.APP_URL}/api/user/reset-password/${token}">Reset password</a>
+                    <a href="http://localhost:5173/confirm-password-page">Reset password</a>
                     `;
     sendEmail.sendEmail(email,subject,text);
     res.cookie('reset-token', token, { httponly: true, expiresIn: '15m' });
+    res.status(200).json({ message: 'Password Reset Link sent to your email', token });
 
-    res.status(200).send(jsend.success({
-      code: 200,
-      message: 'Password reset link was sent to your email',
-      data: { token },
-    }));
   } catch (error) {
     return res.status(500).send(jsend.fail({
       code: 500,
-      message: error.message,
+      message: error,
       data: false,
     }));
   }
@@ -353,8 +349,7 @@ export const requestResetPassword = async (req, res) => {
 export const resetPasswordLink = async (req, res) => {
   try {
     const { token } = req.params;
-    const payload = Jwt.verifyToken(token);
-     
+    const payload = Jwt.verifyToken(token); 
     const userEmail = { email: payload.value.email }; 
     const user = await getUserByEmail(userEmail.email);
     if (!payload) {
@@ -370,10 +365,16 @@ export const resetPasswordLink = async (req, res) => {
   }
 };
 
-// reset password
+// reset password 
+
 export const resetPassword = async (req, res) => {
+  const authheader = req.headers.authorization;
+  // assuming the token is sent in the Authorization header
+  if (!authheader) {
+    return res.status(403).json({ message: req.t('Token_not_provided') }); // assuming the token is sent in the Authorization header
+  }
   try {
-    const { token } = req.params; 
+    const token = authheader.split(" ")[1];
     const payload = Jwt.verifyToken(token); 
     const userPass = req.body;
     await updateUserPassword(payload, userPass).then((result) => {
