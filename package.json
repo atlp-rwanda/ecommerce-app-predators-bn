@@ -86,7 +86,7 @@
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.7.0",
     "speakeasy": "^2.0.0",
-    "stripe": "^12.6.0",
+    "stripe": "^12.9.0",
     "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
