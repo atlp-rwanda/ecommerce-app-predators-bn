@@ -41,7 +41,13 @@ export default class SocketHandler {
   // Send message to all Sockets
   async handlePublicTransmit(socket, msg) {
     try {
-      const message = `[${socket.handshake.query.user}] says: ${msg}`;
+      // const message = `[${socket.handshake.query.user}] says: ${msg}`;
+      const time = this.properties.connectedAt;
+      const message = {
+        text: msg,
+        dateTime: new Date(time).toISOString(),
+        src: 'public',
+      };
       const userId = socket.handshake.query.id;
 
       await chatsDb.saveChat(msg, userId, 'public');
@@ -55,7 +61,13 @@ export default class SocketHandler {
   // Send message to specific room only.
   async handlePrivateTransmit(socket, activeRoom, msg) {
     try {
-      const message = `[${socket.handshake.query.user}]: ${msg}`;
+      // const message = `[${socket.handshake.query.user}]: ${msg}`;
+      const time = this.properties.connectedAt;
+      const message = {
+        text: msg,
+        dateTime: new Date(time).toISOString(),
+        src: 'customer_support',
+      };
       const userId = socket.handshake.query.id;
 
       await chatsDb.saveChat(msg, userId, activeRoom);
@@ -108,6 +120,6 @@ export default class SocketHandler {
     await chatsDb.deleteSocketInstance(this.dbId);
 
     // Tell all server clients of the disconnected client.
-    socket.broadcast.emit('message', message);
+    socket.broadcast.emit('server-message', message);
   }
 }

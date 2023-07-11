@@ -199,7 +199,7 @@ describe('SocketHandler', () => {
       sinon.assert.calledOnceWithExactly(chatsDb.deleteSocketInstance, socketHandler.dbId);
       sinon.assert.calledOnceWithExactly(
         socket.broadcast.emit,
-        'message',
+        'server-message',
         `User disconnected: [${socket.id}].`,
       );
     });
