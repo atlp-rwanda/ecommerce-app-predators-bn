@@ -50,8 +50,8 @@ export const makePayment = async (req, res) => {
         };
       }),
       mode: 'payment',
-      success_url: `${process.env.DOMAIN_URL}/api/pay/success/?id=${id}`,
-      cancel_url: `${process.env.DOMAIN_URL}/api/pay/cancel`,
+      success_url: 'http://localhost:5173/payment/success',
+      cancel_url: 'http://localhost:5173/payment/fail',
     });
     // redirect to the STRIPE checkout page
     return res.status(200).json(jsend.success({ url: session.url }));
