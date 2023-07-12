@@ -28,6 +28,7 @@ export const makePayment = async (req, res) => {
     // get the order contents using the id
     const { id } = req.user;
     const order = await getOrderItems(id);
+    console.log(order);
     if (!order) {
       return res.status(400).send({ error: 'User has no pending orders' });
     }
