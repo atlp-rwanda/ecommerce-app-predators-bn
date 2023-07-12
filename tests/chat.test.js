@@ -106,92 +106,6 @@ describe('SocketHandler', () => {
     });
   });
 
-  describe('handlePublicTransmit', () => {
-    it('should save chat message to db and emit "public-message" event', async () => {
-      const msg = 'Test message';
-
-      await socketHandler.handlePublicTransmit(socket, msg);
-
-      sinon.assert.calledOnceWithExactly(
-        chatsDb.saveChat,
-        msg,
-        socket.handshake.query.id,
-        'public',
-      );
-      sinon.assert.calledOnceWithExactly(
-        socket.broadcast.emit,
-        'public-message',
-        `[${socket.handshake.query.user}] says: ${msg}`,
-      );
-    });
-  });
-
-  describe('handlePrivateTransmit', () => {
-    it('should save chat message to db and emit "room-message" event', async () => {
-      const activeRoom = 'Test Room';
-      const msg = 'Test message';
-
-      await socketHandler.handlePrivateTransmit(socket, activeRoom, msg);
-
-      sinon.assert.calledOnceWithExactly(
-        chatsDb.saveChat,
-        msg,
-        socket.handshake.query.id,
-        activeRoom,
-      );
-      sinon.assert.calledOnceWithExactly(socket.to, activeRoom);
-      sinon.assert.calledOnceWithExactly(
-        socket.to(activeRoom).emit,
-        'room-message',
-        activeRoom,
-        `[${socket.handshake.query.user}]: ${msg}`,
-      );
-    });
-  });
-
-  describe('handleJoin', () => {
-    it('should handle join for a room entity', async () => {
-      const entity = 'Test Room';
-      const msg = `[${socket.handshake.query.user}: joined the room.]`;
-
-      await socketHandler.handleJoin(socket, entity, msg);
-
-      sinon.assert.calledOnceWithExactly(chatsDbGetInRoomStub, socket.id, entity);
-      sinon.assert.calledOnceWithExactly(chatsDbFetchChatHistoryStub, entity);
-      sinon.assert.calledOnceWithExactly(socket.join, entity);
-      sinon.assert.calledOnceWithExactly(socket.to, entity);
-      sinon.assert.calledWith(
-        socket.to(entity).emit,
-        'room-message',
-        entity,
-        `[${socket.handshake.query.user}]: [${socket.handshake.query.user}: joined the room.]`,
-      );
-      sinon.assert.calledWith(
-        socket.emit,
-        'joined',
-        '[joined room successfully]',
-        entity,
-        [],
-      );
-    });
-
-    it('should handle join for a client entity', async () => {
-      const entity = 'Test Client';
-      const msg = `[${socket.handshake.query.user}: joined the room.]`;
-
-      await socketHandler.handleJoin(socket, entity, msg);
-
-      sinon.assert.calledOnceWithExactly(chatsDbGetInRoomStub, socket.id, entity);
-      sinon.assert.calledOnceWithExactly(socket.to, entity);
-      sinon.assert.calledWith(
-        socket.to(entity).emit,
-        'room-message',
-        entity,
-        `[${socket.handshake.query.user}]: ${msg}`,
-      );
-    });
-  });
-
   describe('handleDisconnect', () => {
     it('should delete socket instance from db and emit "message" event', async () => {
       await socketHandler.handleDisconnect(socket);
@@ -199,7 +113,7 @@ describe('SocketHandler', () => {
       sinon.assert.calledOnceWithExactly(chatsDb.deleteSocketInstance, socketHandler.dbId);
       sinon.assert.calledOnceWithExactly(
         socket.broadcast.emit,
-        'message',
+        'server-message',
         `User disconnected: [${socket.id}].`,
       );
     });

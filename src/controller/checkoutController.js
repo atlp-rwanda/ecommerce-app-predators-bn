@@ -17,7 +17,7 @@ const get_discount = async (cart_item) => {
   const product = await db.Product.findOne({
     where: { id: cart_item.product_id },
   });
-  let { name, description, price } = product;
+  let { id, name, description, price } = product;
   price = parseInt(price);
   let { quantity } = cart_item;
   if (product.instock < quantity) {
@@ -27,6 +27,7 @@ const get_discount = async (cart_item) => {
     product.instock -= quantity;
     await product.save();
     return {
+      id,
       name,
       description,
       quantity,
@@ -41,6 +42,7 @@ const get_discount = async (cart_item) => {
   product.instock -= quantity;
   await product.save();
   return {
+    id,
     name,
     description,
     quantity,
@@ -191,4 +193,35 @@ export const updateOrderStatus = async (req, res) => {
     });
   }
 };
-export default { checkout, getOrderStatus, updateOrderStatus };
+export const getAllUserOrder = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(403).json({
+        status: "fail",
+        message: req.t("Unauthorized"),
+      });
+    }
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const order = await db.Order.findAll({
+      where: { user_id: decoded.id },
+    });
+    return res.status(200).json({
+      status: "success",
+      code: 200,
+      data: {
+        message: "Order status updated successfully",
+        order, // removing unnecessary curly braces around order
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "fail",
+      code: 500,
+      message: error,
+    });
+  }
+};
+export default { checkout, getOrderStatus, updateOrderStatus, getAllUserOrder };
