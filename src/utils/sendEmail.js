@@ -71,7 +71,7 @@ class sendEmail {
 
   static sendEmail(to, subject, text) {
     const { USER_EMAIL, USER_PASS } = process.env; 
-    console.log(USER_EMAIL);
+ 
    const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
@@ -90,8 +90,8 @@ class sendEmail {
       html:text,
     }; 
     transporter.sendMail(mailOptions, (err, success) => {
-      if (err) return false;
-      return true;
+      if (err) return error;
+      return success;
     });
 
 

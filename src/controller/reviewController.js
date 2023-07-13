@@ -2,11 +2,11 @@ import db from '../database/models/index.js';
 import jsend from 'jsend';
 
 
-export const addReview = async(req, res) => {
+export const addReview = async (req, res) => {
     // pass the product id as a parameter
 
     try {
-        const product_id=req.params.id;
+        const product_id = req.params.id;
         const product = await db.Product.findOne({
             where: { id: product_id },
         });
@@ -29,7 +29,7 @@ export const addReview = async(req, res) => {
                 }),
             );
         }
-       
+
         // check if the order is completed
         if (order.status !== 'completed') {
             return res.status(401).json(
@@ -47,8 +47,8 @@ export const addReview = async(req, res) => {
         // save review
         const review = await db.Review.create({
             buyer_id: req.user.id,
-            product_id:product_id,
-            rating,            
+            product_id: product_id,
+            rating,
             feedback
         });
         // send response
@@ -60,16 +60,16 @@ export const addReview = async(req, res) => {
     } catch (error) {
         // Handle database errors
         console.error(error);
-        return res.status(500).json(jsend.error('Failed to save review'));
+        return res.status(500).json(jsend.error('Failed to save review,something wrong. Please try again later'));
     }// end of addReview
 }
 
 // //get all reviews
 export const getReviews = async (req, res) => {
     try {
-        
-        const review = await db.Review.findAll({   
-           
+
+        const review = await db.Review.findAll({
+
         });
         const totalReview = review.length;
         if (!review) {
@@ -96,47 +96,7 @@ export const getReviews = async (req, res) => {
     }
 }
 
-// // delete review fucntion
-export const deleteReview = async (req, res) => {
-    try {
-        // only seller can delete review
-        if (req.user.roleId !== 1) {
-            return res.status(401).json(
-                jsend.fail({
-                    message: 'you are not allowed to delete this review😥',
-                }),
-            );
-        }
-            
-        const review = await db.Review.findOne({
-            where: { id: req.params.id },
-        });
-        if (!review) {
-            return res.status(404).json({
-                status: "fail",
-                code: 404,
-                data: { review },
-                message: "No review found",
-            });
-        }
-        await db.Review.destroy({
-            where: { id: req.params.id },
-        });
-        return res.status(200).json({
-            status: "success",
-            code: 200,
-            message: "review deleted successfully",
-            data: { review },
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            status: "server error",
-            code: 500,
-            data: { message: "Server error!!" },
-        });
-    }
-}
 
-export default { addReview, getReviews, deleteReview };
+
+export default { addReview, getReviews };
 

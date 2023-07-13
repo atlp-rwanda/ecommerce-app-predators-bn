@@ -40,6 +40,7 @@ export const addWishlist = async (req, res) => {
     });
   } catch (error) {
     res.status(400).send({status: "fail", message: "Encountered Error", data: { error: error.message}})
+    console.log(error)
   }
 };
 export const deleteFromWishlist = async (req, res) => {
@@ -66,16 +67,29 @@ export const deleteFromWishlist = async (req, res) => {
     res.status(400).send({ status: 'fail', message: 'Encountered Error', data: { error: error.message } });
   }
 };
-export const getWishlist = async (req, res) => { 
-  try{
+export const getWishlist = async (req, res) => {
+  try {
     const wishlist = await db.wishlist.findAll({
       where: { userId: req.user.id },
       include: [{ model: db.Product, attributes: ['name', 'price', 'picture_urls'] }],
     });
-    res.status(200).json({message: "item successfully retrieved", wishlist});
-  }catch (error) {
-    res.status(400).send({ status: 'fail', message: 'Encountered Error', data: { error: error.message } });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        message: 'Items successfully retrieved',
+        wishlist,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        message: 'Encountered error',
+        error: error.message,
+      },
+    });
   }
-}
+};
 
 export default {addWishlist, deleteFromWishlist, getWishlist};

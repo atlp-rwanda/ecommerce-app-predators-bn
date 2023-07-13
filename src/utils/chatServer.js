@@ -49,7 +49,7 @@ export default class SocketHandler {
         src: 'public',
       };
       const userId = socket.handshake.query.id;
-
+      console.log('Public message', msg, 'user id:', userId)
       await chatsDb.saveChat(msg, userId, 'public');
 
       socket.broadcast.emit('public-message', message);
@@ -69,11 +69,12 @@ export default class SocketHandler {
         src: 'customer_support',
       };
       const userId = socket.handshake.query.id;
-
+      console.log('Private msg', msg, 'user id:', userId)
       await chatsDb.saveChat(msg, userId, activeRoom);
 
       socket.to(activeRoom).emit('room-message', activeRoom, message);
     } catch (error) {
+      console.log(error)
       throw new Error(error);
     }
   }
@@ -101,7 +102,6 @@ export default class SocketHandler {
       // Create a new room in db & save this socket in it.
       const room = await chatsDb.getInRoom(socket.id, entity, true);
       if (!room) throw new Error('could not save new room to db.');
-      this.rooms.add(entity);
 
       feedback = '[New room created!]';
     }

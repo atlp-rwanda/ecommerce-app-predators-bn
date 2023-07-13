@@ -41,7 +41,6 @@ const isSeller = async (req, res, next) => {
   }
   const token = authheader.split(" ")[1];
   const { id } = req.params;
-
   try {
     const decodedToken = JwtUtility.verifyToken(token);
     const user = await db.User.findOne({ where: { id: decodedToken.value.id } });
