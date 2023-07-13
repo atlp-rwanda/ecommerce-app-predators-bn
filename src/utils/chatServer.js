@@ -41,9 +41,15 @@ export default class SocketHandler {
   // Send message to all Sockets
   async handlePublicTransmit(socket, msg) {
     try {
-      const message = `[${socket.handshake.query.user}] says: ${msg}`;
+      // const message = `[${socket.handshake.query.user}] says: ${msg}`;
+      const time = this.properties.connectedAt;
+      const message = {
+        text: msg,
+        dateTime: new Date(time).toISOString(),
+        src: 'public',
+      };
       const userId = socket.handshake.query.id;
-
+      console.log('Public message', msg, 'user id:', userId)
       await chatsDb.saveChat(msg, userId, 'public');
 
       socket.broadcast.emit('public-message', message);
@@ -55,13 +61,20 @@ export default class SocketHandler {
   // Send message to specific room only.
   async handlePrivateTransmit(socket, activeRoom, msg) {
     try {
-      const message = `[${socket.handshake.query.user}]: ${msg}`;
+      // const message = `[${socket.handshake.query.user}]: ${msg}`;
+      const time = this.properties.connectedAt;
+      const message = {
+        text: msg,
+        dateTime: new Date(time).toISOString(),
+        src: 'customer_support',
+      };
       const userId = socket.handshake.query.id;
-
+      console.log('Private msg', msg, 'user id:', userId)
       await chatsDb.saveChat(msg, userId, activeRoom);
 
       socket.to(activeRoom).emit('room-message', activeRoom, message);
     } catch (error) {
+      console.log(error)
       throw new Error(error);
     }
   }
@@ -89,7 +102,6 @@ export default class SocketHandler {
       // Create a new room in db & save this socket in it.
       const room = await chatsDb.getInRoom(socket.id, entity, true);
       if (!room) throw new Error('could not save new room to db.');
-      this.rooms.add(entity);
 
       feedback = '[New room created!]';
     }
@@ -108,6 +120,6 @@ export default class SocketHandler {
     await chatsDb.deleteSocketInstance(this.dbId);
 
     // Tell all server clients of the disconnected client.
-    socket.broadcast.emit('message', message);
+    socket.broadcast.emit('server-message', message);
   }
 }
