@@ -22,7 +22,8 @@ export default class dbHandler {
       );
       return chat.id;
     } catch (error) {
-      throw new Error('Failed to save chat instance');
+      console.log(error);
+      throw new Error('Failed to save chat instance', error);
     }
   }
 
@@ -39,7 +40,7 @@ export default class dbHandler {
 
       return chatHistory;
     } catch (error) {
-      throw new Error('Failed to save chat instance');
+      throw new Error('Failed to save chat instance', error);
     }
   }
 
@@ -54,7 +55,7 @@ export default class dbHandler {
       );
       return socket.id;
     } catch (error) {
-      throw new Error('Failed to save socket instance');
+      throw new Error('Failed to save socket instance', error);
     }
   }
 
@@ -71,12 +72,6 @@ export default class dbHandler {
     } catch (error) {
       throw new Error('delete socket Error');
     }
-  }
-
-  // Get all sockets from db
-  static async getAllSockets() {
-    const res = db.SocketConnection.findAll();
-    return res;
   }
 
   // Get in a room from db, or create if it doesn't exist. Return room id.
@@ -114,13 +109,9 @@ export default class dbHandler {
   }
 
   static async getRoomByName(name) {
-    try {
-      const data = { name };
-      const id = await dbHandler.fetchJSON(`${dbHandler.DOMAIN}/post/getRoomByName`, 'POST', data);
-      return id;
-    } catch (error) {
-      throw new Error('get room by name Error');
-    }
+    const data = { name };
+    const id = await dbHandler.fetchJSON(`${dbHandler.DOMAIN}/post/getRoomByName`, 'POST', data);
+    return id;
   }
 
   // figure out type of entity

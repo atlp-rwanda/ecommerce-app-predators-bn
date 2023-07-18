@@ -28,6 +28,7 @@ export const makePayment = async (req, res) => {
     // get the order contents using the id
     const { id } = req.user;
     const order = await getOrderItems(id);
+    console.log(order);
     if (!order) {
       return res.status(400).send({ error: 'User has no pending orders' });
     }
@@ -50,8 +51,9 @@ export const makePayment = async (req, res) => {
         };
       }),
       mode: 'payment',
-      success_url: `${process.env.DOMAIN_URL}/api/pay/success/?id=${id}`,
-      cancel_url: `${process.env.DOMAIN_URL}/api/pay/cancel`,
+      success_url: process.env.STRIPE_SUCCESS_URL,
+      cancel_url: process.env.STRIPE_FAIL_URL,
+
     });
     // redirect to the STRIPE checkout page
     return res.status(200).json(jsend.success({ url: session.url }));

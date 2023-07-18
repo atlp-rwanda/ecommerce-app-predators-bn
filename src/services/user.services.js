@@ -1,5 +1,5 @@
 import db from "../database/models/index.js";
-
+import hasher from "../utils/hashPassword.js"
 export const registerGoogle = async (data) => {
   try {
     const user = await db.User.create(data);
@@ -11,7 +11,7 @@ export const registerGoogle = async (data) => {
 };
 //getUserByEmail
 export const getUserByEmail = async (email) => {
-  try {
+  try { 
     const user = await db.User.findOne({
       where: {
         email: email,
@@ -22,9 +22,10 @@ export const getUserByEmail = async (email) => {
     }
     return user;
   } catch (error) {
-    return false
+    return false;
   }
 };
+
 export const getUserByGoogleId = async (googleId) => {
   try {
     const user = await db.User.findOne({
@@ -39,9 +40,9 @@ export const getUserByGoogleId = async (googleId) => {
 
 export const updateUserPassword = async (payload,userPass) => {
   try{ 
-        const email = payload.email; 
+        const email = payload.value.email; 
         const pass = userPass.password; 
-        const password = await hashPassword(pass);  
+        const password = await hasher(pass);  
         const findData = await db.User.findOne({
               where: { email },
             });
@@ -57,7 +58,7 @@ export const updateUserPassword = async (payload,userPass) => {
         }else{
           return false
         }
-      }catch(error){
+      }catch(error){ 
         return false
       }
 };
