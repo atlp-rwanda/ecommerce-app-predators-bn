@@ -31,7 +31,7 @@ export const addReview = async (req, res) => {
         }
 
         // check if the order is completed
-        if (order.status !== 'completed') {
+        if (order.status !== 'paid') {
             return res.status(401).json(
                 jsend.fail({
                     message: 'you have to complete your Order before you provide a review😥',
