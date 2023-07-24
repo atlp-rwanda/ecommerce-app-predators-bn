@@ -67,10 +67,71 @@ const getUserById = async (req, res) => {
     });
   }
 };
+
+// Getting Own Profile
+
+const getMyinfo = async (req, res) => {
+  const userToken = req.headers.authorization.split(' ')[1];// Get user token from request headers
+  const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // Verify user token
+  try {
+    const user = await db.User.findOne({
+      where: { id: decoded.id },
+    });
+
+    if (!user) {      
+      return res.status(404).json({
+        status: req.t('status_message_fail'),
+        code: 404,
+        data: { user },
+        message: req.t('user_not_found_exception'),
+      });
+    }
+    const {
+      name,
+      email,
+      status,
+      gender,
+      phone_number,
+      country,
+      province,
+      district,
+      sector,
+      streetAddress,
+      preferred_language,
+      preferred_currency,
+      password,
+    } = user;
+    
+    return res.status(200).json({
+      status: req.t('status_message_success'),
+      code: 200,
+      data: {
+        name,
+        email,
+        gender,
+        phone_number,
+        country,
+        province,
+        district,
+        sector,
+        streetAddress,
+        preferred_language,
+        preferred_currency,
+      },
+      message: req.t('user_retrieved_exception'),
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 'server error',
+      code: 500,
+      data:
+       { message: req.t('user_not_found_exception') },
+    });
+  }
+};
 // Updating user Profile
 const updateUserProfile = async (req, res) => {
   const userToken = req.headers.authorization.split(' ')[1];// Get user token from request headers
-  const { id } = req.params;
   const {
     name,
     email,
@@ -89,14 +150,7 @@ const updateUserProfile = async (req, res) => {
 
   try {
     const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // Verify user token
-    if (decoded.id !== parseInt(id)) { // Check if authenticated user ID matches requested user ID
-      return res.status(403).json({
-        status: req.t('status_message_fail'),
-        code: 403,
-        message: req.t('not_authorized_exception'),
-      });
-    }
-    const user = await db.User.findOne({ where: { id } });
+    const user = await db.User.findOne({ where: { id: decoded.id } });
 
     if (!user) {
       return res.status(404).json({
@@ -131,11 +185,10 @@ const updateUserProfile = async (req, res) => {
     return res.status(200).json({
       status: req.t('status_message_success'),
       code: 200,
-      data: { user },
       message: req.t('user_updated_exception'),
     });
   } catch (err) {
     return res.status(500).json({ status: 'server error', code: 500 });
   }
 };
-export default { getUserProfile, updateUserProfile, getUserById };
+export default { getUserProfile, getMyinfo, updateUserProfile, getUserById };

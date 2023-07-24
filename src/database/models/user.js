@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) => {
       });
       User.hasMany(models.Chat, {
         foreignKey: "userId", // the "userId" is the name of the foreign key in Chat and User models.
-        as: 'Chat', // the "chats" is the name of the association in the current model and the one in the associated model.  This should probably be
+        as: 'Chats', // the "chats" is the name of the association in the current model and the one in the associated model.  This should probably be
       });
       User.hasMany(models.Product, {
         foreignKey: "vendor_id",
@@ -46,7 +46,7 @@ export default (sequelize, DataTypes) => {
     phone_number: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
     status: DataTypes.STRING,
-    googleId: DataTypes.BIGINT,
+    googleId: DataTypes.TEXT,
     gender: DataTypes.STRING,
     otp_enabled: DataTypes.BOOLEAN,
     otp_verified: DataTypes.BOOLEAN,
