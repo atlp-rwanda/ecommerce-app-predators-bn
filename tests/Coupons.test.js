@@ -30,7 +30,7 @@ describe('Discount Coupon CRUD Operations', function() {
         code: '2023',
         discountPercentage: 0.7,
         expiresAt: '2023-05-31',
-        productId: 1,
+        productId: 3,
       })
       .auth(token, { type: 'bearer' });
     expect(res).to.have.status(200);
