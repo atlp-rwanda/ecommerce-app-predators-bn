@@ -10,7 +10,7 @@ const User = models.User;
 const Order = models.Order;
 
 // Schedule a job to emit the "product:expiring_soon" event every day at 9 AM
-const expiring_soon = cron.schedule("0 0 * * *  ", async () => {
+const expiring_soon = cron.schedule("* * *  * * * ", async () => {
   // Get all products
   const products = await Product.findAll();
 
@@ -34,7 +34,7 @@ const expiring_soon = cron.schedule("0 0 * * *  ", async () => {
 });
 
 // Schedule a cron job to emit the 'product:expired' event every day at midnight
-const expired = cron.schedule("0 0 * * * ", async () => {
+const expired = cron.schedule("* * * * * * ", async () => {
   const products = await Product.findAll();
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() + 7);
@@ -47,7 +47,7 @@ const expired = cron.schedule("0 0 * * * ", async () => {
   }
 });
 
-const orderExpiry = cron.schedule("0 0 * * * ", async () => {
+const orderExpiry = cron.schedule("* * * * * * ", async () => {
   const orders = await Order.findAll();
   for (const order of orders) {
     const createdAt = new Date(order.createdAt);
@@ -62,7 +62,7 @@ const orderExpiry = cron.schedule("0 0 * * * ", async () => {
   }
 });
 // Run this script every day at midnight
-const passwordUpdated = cron.schedule("0 0 * * *", async () => {
+const passwordUpdated = cron.schedule("* * *  * * *", async () => {
   // Get all users
   const users = await User.findAll();
   // Check if the password has expired
