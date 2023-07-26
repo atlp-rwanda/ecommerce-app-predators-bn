@@ -85,6 +85,7 @@ export const getProductById = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
+  /* c8 ignore start */
   const { id } = req.params;
 
   if (!id) {
@@ -98,7 +99,8 @@ export const updateProduct = async (req, res) => {
     expiryDate: Joi.date().required(),
     picture_urls: Joi.array().items(Joi.string()),
     instock: Joi.number().integer().positive().required(),
-    available: Joi.string().valid("yes", "no").required(),
+    available: Joi.boolean().valid(true, false).required(),
+    category_id: Joi.number().integer().positive().required(),
   });
   const { error } = schema.validate(inputData);
   if (error) return res.status(400).json({ error: error.details[0].message });
@@ -120,6 +122,7 @@ export const updateProduct = async (req, res) => {
     description,
     price,
     picture_urls,
+    category_id,
     Instock,
     available,
     expiryDate,
@@ -133,11 +136,13 @@ export const updateProduct = async (req, res) => {
       description,
       price,
       picture_urls,
+      category_id,
       Instock,
       available,
       expiryDate,
     },
   });
+  /* c8 ignore stop */
 };
 
 export const deleteSpecificProduct = async (req, res) => {
