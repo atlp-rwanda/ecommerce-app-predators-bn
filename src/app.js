@@ -52,7 +52,7 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
-configurePassport();
+
 
 // Middleware
 app.use(express.json());
@@ -67,13 +67,15 @@ if(config.NODE_ENV != 'test') {
 app.use(
   session({
     secret: 'some_secret_key',
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
   }),
 );
 app.use(middleware.handle(i18next));
 app.use(passport.initialize());
 app.use(passport.session());
+
+configurePassport();
 
 expired.start();
 expiring_soon.start();
@@ -91,6 +93,16 @@ const options = {
 
 
 // Chat Routes
+app.get('/authentication/get-user', (req, res) => {
+  console.log('***User was called*** ');
+  try {
+    console.log('User: ', req.user);
+    res.send(req.user);
+  } catch (error) {
+    console.log('No user');
+    res.send('No user');
+  }
+});
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swagger, false, options));
 app.use('/chat/chatRoom', (req, res) => { res.render('chatRoom'); });
 app.use('/api/cart', cartRoute);

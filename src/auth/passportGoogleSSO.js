@@ -1,6 +1,7 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import db from '../database/models/index.js';
+import hasher from '../utils/hashPassword.js';
 
 const USER = db.User;
 
@@ -17,7 +18,7 @@ const configurePassport = () => {
         const defaultUser = {
           name: `${profile.name.givenName} ${profile.name.familyName}`,
           email: profile.emails[0].value,
-          password: 'password',
+          password: await hasher('password'),
           roleId: 2,
           googleId: profile.id,
           status: 'active',
@@ -30,9 +31,9 @@ const configurePassport = () => {
           });
 
           if (created) {
-            console.log('New user created:', user);
+            console.log('New user created:');
           } else {
-            console.log('Existing user found:', user);
+            console.log('Existing user found:');
           }
 
           return cb(null, user);
@@ -46,15 +47,16 @@ const configurePassport = () => {
 
   passport.serializeUser((user, cb) => {
     console.log('Serializing user');
-    cb(null, user.id);
+    cb(null, user);
   });
 
-  passport.deserializeUser(async (id, cb) => {
+  passport.deserializeUser(async (user, cb) => {
     try {
-      const user = await USER.findOne({ where: { id } });
+      const { id } = user;
+      const usr = await USER.findOne({ where: { id } });
 
-      if (user) {
-        console.log('Deserialized user:', user);
+      if (usr) {
+        console.log('Deserialized user:', user.name);
         return cb(null, user);
       }
       return cb(new Error('User not found'), null);
@@ -64,5 +66,4 @@ const configurePassport = () => {
     }
   });
 };
-
 export default configurePassport;
